@@ -807,6 +807,7 @@ function renderActionView() {
           <span>Último: ${r.ultimo===0?'—':fmt(r.ultimo,2)}</span>
           <span>Subtotal: ${r.subtotal===0?'—':'R$ '+fmt(r.subtotal,2)}</span>
           <span class="${r.resultado>=0?'positive':'negative'}" style="color:${r.resultado>=0?'var(--green)':'var(--red)'}">Res: ${(r.resultado>=0?'+':'')+fmt(r.resultado,2)}</span>
+          <span class="${r.pct>=0?'positive':'negative'}" style="color:${r.pct>=0?'var(--green)':'var(--red)'}">${r.pct===-1?'-100%':(r.pct>=0?'+':'')+fmt(r.pct*100,1)+'%'}</span>
         </div>
       `;
       investorList.appendChild(row);
@@ -823,6 +824,7 @@ function renderActionView() {
           <span style="color:var(--text)">Inv: R$ ${fmt(totalInv)}</span>
           <span style="color:var(--text)">Atual: R$ ${fmt(totalSub)}</span>
           <span class="${totalRes>=0?'positive':'negative'}" style="color:${totalRes>=0?'var(--green)':'var(--red)'}">Res: ${(totalRes>=0?'+':'')+fmt(totalRes)}</span>
+          <span class="${totalRes>=0?'positive':'negative'}" style="color:${totalRes>=0?'var(--green)':'var(--red)'}">${totalInv>0?(totalRes>=0?'+':'')+fmt((totalRes/totalInv)*100,1)+'%':'—'}</span>
         </div>
       `;
       investorList.appendChild(tot);
