@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Dashboard de Investimentos</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --green: #10d98a;
+    --red: #ff4d6d;
+    --yellow: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --card-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0d1b2e 0%, #111827 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .logo { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+  .logo span { color: var(--accent); }
+  .date-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+  /* View Toggle */
+  .view-toggle {
+    display: flex;
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 3px;
+    gap: 2px;
+    border: 1px solid var(--border);
+  }
+  .toggle-btn {
+    flex: 1;
+    padding: 8px 14px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .toggle-btn.active {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  /* Main container */
+  .container { padding: 16px; max-width: 900px; margin: 0 auto; }
+
+  /* Investor selector */
+  .investor-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    scrollbar-width: none;
+  }
+  .investor-scroll::-webkit-scrollbar { display: none; }
+  .investor-chip {
+    flex-shrink: 0;
+    padding: 7px 14px;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .investor-chip.active {
+    border-color: var(--accent);
+    background: rgba(0,212,255,0.12);
+    color: var(--accent);
+  }
+  .investor-chip:hover:not(.active) {
+    border-color: var(--accent2);
+    color: var(--text);
+  }
+
+  /* Summary Cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .summary-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+    border-radius: 2px 0 0 2px;
+  }
+  .summary-card.green::before { background: var(--green); }
+  .summary-card.red::before { background: var(--red); }
+  .summary-card.yellow::before { background: var(--yellow); }
+  .summary-card.purple::before { background: var(--accent2); }
+  .card-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+  .card-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    word-break: break-all;
+  }
+  .card-value.positive { color: var(--green); }
+  .card-value.negative { color: var(--red); }
+
+  /* Lucro Mensal */
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .monthly-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .month-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+  }
+  .month-label {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .month-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--green);
+  }
+  .month-value.negative { color: var(--red); }
+
+  /* Table */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .table-header {
+    background: var(--surface2);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .table-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .count-badge {
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(0,212,255,0.1);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+  }
+  .table-scroll { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  thead th {
+    padding: 10px 12px;
+    text-align: right;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    background: var(--surface2);
+  }
+  thead th:first-child { text-align: left; }
+  tbody tr {
+    border-bottom: 1px solid rgba(30,45,69,0.5);
+    transition: background 0.15s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(0,212,255,0.04); }
+  td {
+    padding: 11px 12px;
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  td:first-child {
+    text-align: left;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 13px;
+  }
+  td.positive { color: var(--green); }
+  td.negative { color: var(--red); }
+  /* Total row */
+  .total-row td {
+    border-top: 2px solid var(--border);
+    font-weight: 700;
+    background: var(--surface2);
+  }
+  .total-row td:first-child { color: var(--text); font-family: 'DM Mono', monospace; }
+
+  /* By Action view */
+  .action-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .action-header {
+    background: var(--surface2);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+  .action-header:hover { background: rgba(0,212,255,0.06); }
+  .action-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.3px;
+  }
+  .action-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .action-result {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .chevron {
+    font-size: 12px;
+    color: var(--muted);
+    transition: transform 0.2s;
+  }
+  .action-body { overflow: hidden; }
+  .action-investors {
+    padding: 0 16px 12px;
+  }
+  .investor-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(30,45,69,0.5);
+    font-size: 12px;
+    gap: 8px;
+  }
+  .investor-row:last-child { border-bottom: none; }
+  .inv-name {
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+    min-width: 80px;
+  }
+  .inv-data {
+    display: flex;
+    gap: 16px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    font-size: 11px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .inv-data span { white-space: nowrap; }
+
+  /* No data */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 480px) {
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .monthly-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Animations */
+  .fade-in { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .spinner {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo">📈 Invest<span>Hub</span></div>
+    <div class="date-badge" id="date-display">—</div>
+  </div>
+  <div class="view-toggle">
+    <button class="toggle-btn active" onclick="setView('investor')">Por Investidor</button>
+    <button class="toggle-btn" onclick="setView('action')">Por Ação</button>
+  </div>
+</div>
+
+<div class="container">
+  <div id="app-content"></div>
+</div>
+
+<script>
+// ==============================
+// DATA
+// ==============================
+const investimentos = [
+  // LEONILDES XP
+  {inv:"LEONILDES XP",acao:"ANIM3",qtde:237000,compra:4.2398,total:1004832.6,ultimo:4.32,subtotal:1023840.0,resultado:18312.09,pct:0.0182},
+  {inv:"LEONILDES XP",acao:"INTB3",qtde:72200,compra:13.989418,total:1010036,ultimo:14.39,subtotal:1038958,resultado:28920.08,pct:0.0286},
+  {inv:"LEONILDES XP",acao:"PETR3",qtde:73000,compra:54.56,total:3982880,ultimo:53.66,subtotal:3917180,resultado:-68209.05,pct:-0.0171},
+  {inv:"LEONILDES XP",acao:"PETR4",qtde:80000,compra:49.73,total:3978400,ultimo:48.58,subtotal:3886400,resultado:-94497.85,pct:-0.0237},
+  {inv:"LEONILDES XP",acao:"PRIO3",qtde:16000,compra:64.29,total:1028640,ultimo:64.25,subtotal:1028000,resultado:-640,pct:-0.0006},
+  {inv:"LEONILDES XP",acao:"VALE3",qtde:25000,compra:81.70,total:2042439,ultimo:87.44,subtotal:2186000,resultado:142198.03,pct:0.0696},
+  {inv:"LEONILDES XP",acao:"VLID3",qtde:59000,compra:21.568,total:1272512,ultimo:20.5,subtotal:1209500,resultado:-63838.71,pct:-0.0501},
+  {inv:"LEONILDES XP",acao:"VULC3",qtde:110000,compra:18.8399,total:2072386.8,ultimo:17.1,subtotal:1881000,resultado:-192679.01,pct:-0.0929},
+  {inv:"LEONILDES XP",acao:"AMER3",qtde:52247,compra:106.29,total:5553328.29,ultimo:0,subtotal:0,resultado:-5554994.98,pct:-1},
+  {inv:"LEONILDES XP",acao:"AZUL4",qtde:2164216.4,compra:4.5467,total:9840088,ultimo:0,subtotal:0,resultado:-9842236.76,pct:-1},
+  {inv:"LEONILDES XP",acao:"MGLU3",qtde:25600,compra:73.53,total:1882420,ultimo:0,subtotal:0,resultado:-1882997.26,pct:-1},
+  {inv:"LEONILDES XP",acao:"OIBR3",qtde:10514,compra:200.95,total:2112827.17,ultimo:0,subtotal:0,resultado:-2112734.45,pct:-1},
+  {inv:"LEONILDES XP",acao:"OIBR4",qtde:3705,compra:173.89,total:644280,ultimo:0,subtotal:0,resultado:-644482.71,pct:-1},
+  {inv:"LEONILDES XP",acao:"TASA4",qtde:82060,compra:17.88,total:1467218,ultimo:5.13,subtotal:420967.8,resultado:-1046844.30,pct:-0.7132},
+  {inv:"LEONILDES XP",acao:"VIIA3",qtde:10360,compra:143.21,total:1483658.76,ultimo:0,subtotal:0,resultado:-1483632.54,pct:-1},
+  // FRANCINE XP
+  {inv:"FRANCINE XP",acao:"BBSE3",qtde:24000,compra:38.993,total:935841.28,ultimo:35.01,subtotal:840240,resultado:-95889.84,pct:-0.1024},
+  {inv:"FRANCINE XP",acao:"TASA3",qtde:25850,compra:17.94,total:463713.12,ultimo:5.28,subtotal:136488,resultado:-327273.73,pct:-0.7057},
+  {inv:"FRANCINE XP",acao:"AMER3",qtde:268500,compra:12.10,total:3248548.83,ultimo:0,subtotal:0,resultado:-3248548.83,pct:-1},
+  {inv:"FRANCINE XP",acao:"AZUL4",qtde:167016.7,compra:12.75,total:2129741.20,ultimo:0,subtotal:0,resultado:-2129741.20,pct:-1},
+  {inv:"FRANCINE XP",acao:"MGLU3",qtde:180000,compra:7.18,total:1292320.17,ultimo:0,subtotal:0,resultado:-1292320.17,pct:-1},
+  {inv:"FRANCINE XP",acao:"OIBR3",qtde:14150,compra:35.70,total:505216.42,ultimo:0,subtotal:0,resultado:-505216.42,pct:-1},
+  // LETICIA XP
+  {inv:"LETICIA XP",acao:"BBSE3",qtde:14000,compra:38.98,total:545720,ultimo:35.01,subtotal:490140,resultado:-55940.25,pct:-0.1024},
+  {inv:"LETICIA XP",acao:"TASA4",qtde:33000,compra:17.44,total:575400,ultimo:5.13,subtotal:169290,resultado:-406110,pct:-0.7058},
+  {inv:"LETICIA XP",acao:"AMER3",qtde:118500,compra:16.01,total:1897500,ultimo:0,subtotal:0,resultado:-1898114.23,pct:-1},
+  {inv:"LETICIA XP",acao:"AZUL4",qtde:160016,compra:12.20,total:1952091,ultimo:0,subtotal:0,resultado:-1952747.41,pct:-1},
+  {inv:"LETICIA XP",acao:"ONCO3",qtde:37000,compra:10.75,total:397610,ultimo:0,subtotal:0,resultado:-397740.40,pct:-1},
+  // NUNAM
+  {inv:"NUNAM",acao:"ORCL",qtde:12000,compra:164.00,total:1968009.40,ultimo:178.34,subtotal:2140080,resultado:165640.74,pct:0.0839},
+  {inv:"NUNAM",acao:"VALE CS",qtde:65000,compra:15.36,total:998517,ultimo:17.43,subtotal:1132950,resultado:134433,pct:0.1346},
+  {inv:"NUNAM",acao:"OURO UBS",qtde:2667.43,compra:243.68,total:649999.34,ultimo:256.17,subtotal:683315.54,resultado:33059.92,pct:0.0508},
+  {inv:"NUNAM",acao:"CERT",qtde:380000,compra:2.12,total:805600,ultimo:1.69,subtotal:642200,resultado:-163400,pct:-0.2028},
+  {inv:"NUNAM",acao:"COP",qtde:8000,compra:121.91,total:975280,ultimo:121.57,subtotal:972560,resultado:-2720,pct:-0.0028},
+  {inv:"NUNAM",acao:"CVX",qtde:7700,compra:193.54,total:1490260,ultimo:188.15,subtotal:1448755,resultado:-41505,pct:-0.0279},
+  {inv:"NUNAM",acao:"FEVR",qtde:35500,compra:21.35,total:757926.15,ultimo:8.31,subtotal:295005,resultado:-464503.33,pct:-0.6116},
+  {inv:"NUNAM",acao:"FEVR CS",qtde:5500,compra:8.92,total:49060,ultimo:8.31,subtotal:45705,resultado:-3355,pct:-0.0684},
+  {inv:"NUNAM",acao:"HPQ",qtde:86000,compra:24.06,total:2069220,ultimo:19.72,subtotal:1695920,resultado:-373300,pct:-0.1804},
+  {inv:"NUNAM",acao:"ORCL CS",qtde:4200,compra:203.75,total:855750,ultimo:178.34,subtotal:749028,resultado:-106722,pct:-0.1247},
+  {inv:"NUNAM",acao:"VALE",qtde:57000,compra:17.41,total:992370,ultimo:17.43,subtotal:993510,resultado:-2166.06,pct:-0.0022},
+  {inv:"NUNAM",acao:"BKI",qtde:2694000,compra:0.2966,total:799104.30,ultimo:0.095,subtotal:255930,resultado:-545991.98,pct:-0.6809},
+  // LEO PATY - sem dados de ações
+  // GILSON XP 2
+  {inv:"GILSON XP 2",acao:"AMER3",qtde:2806,compra:25.46,total:71431.66,ultimo:6.26,subtotal:17565.56,resultado:-53904.68,pct:-0.7542},
+  // MARTA GUIDE
+  {inv:"MARTA GUIDE",acao:"AMER3",qtde:3480,compra:29.26,total:101840,ultimo:6.26,subtotal:21784.8,resultado:-80111.44,pct:-0.7862},
+  {inv:"MARTA GUIDE",acao:"MGLU3",qtde:800,compra:66.2,total:52960,ultimo:9.21,subtotal:7368,resultado:-45618.96,pct:-0.8609},
+  {inv:"MARTA GUIDE",acao:"OIBR3",qtde:780,compra:238.0,total:185640,ultimo:0.16,subtotal:124.8,resultado:-185586.77,pct:-0.9993},
+  {inv:"MARTA GUIDE",acao:"OIBR4",qtde:760,compra:254.07,total:193090,ultimo:1.25,subtotal:950,resultado:-192229.02,pct:-0.9951},
+  {inv:"MARTA GUIDE",acao:"TASA3",qtde:2000,compra:27.9,total:55800,ultimo:5.29,subtotal:10580,resultado:-45249.30,pct:-0.8105},
+  {inv:"MARTA GUIDE",acao:"TASA4",qtde:6000,compra:22.75,total:136501,ultimo:5.2,subtotal:31200,resultado:-105372.54,pct:-0.7716},
+  {inv:"MARTA GUIDE",acao:"VIIA3",qtde:280,compra:258.02,total:72245,ultimo:2.84,subtotal:795.2,resultado:-71488.42,pct:-0.989},
+  {inv:"MARTA GUIDE",acao:"AZUL4",qtde:0.25,compra:121800,total:30450,ultimo:0.000191,subtotal:0,resultado:-30466.17,pct:-1.0},
+  // PATRICIA LEO
+  {inv:"PATRÍCIA LEO",acao:"OIBR3",qtde:390,compra:139.72,total:54490,ultimo:0.16,subtotal:62.4,resultado:-54455.19,pct:-0.9989},
+  {inv:"PATRÍCIA LEO",acao:"TASA3",qtde:700,compra:27.9,total:19530,ultimo:5.29,subtotal:3703,resultado:-15840.62,pct:-0.8105},
+  {inv:"PATRÍCIA LEO",acao:"TASA4",qtde:2600,compra:23.64,total:61458,ultimo:5.2,subtotal:13520,resultado:-47977.13,pct:-0.7802},
+  // MARICLEIDE LEO
+  {inv:"MARICLEIDE LEO",acao:"OIBR3",qtde:900,compra:238.0,total:214200,ultimo:0.16,subtotal:144,resultado:-214127.18,pct:-0.9993},
+  {inv:"MARICLEIDE LEO",acao:"VVAR3",qtde:280,compra:498.875,total:139685,ultimo:2.84,subtotal:795.2,resultado:-138966.45,pct:-0.9943},
+  // GILSON XP
+  {inv:"GILSON XP",acao:"AMER3",qtde:15100,compra:22.79,total:344076.69,ultimo:6.26,subtotal:94526,resultado:-249620.41,pct:-0.7253},
+  {inv:"GILSON XP",acao:"MGLU3",qtde:3300,compra:69.0,total:227700,ultimo:9.21,subtotal:30393,resultado:-197393.11,pct:-0.8666},
+  {inv:"GILSON XP",acao:"OIBR4",qtde:3970,compra:227.20,total:901978,ultimo:1.25,subtotal:4962.5,resultado:-897331.21,pct:-0.9945},
+  {inv:"GILSON XP",acao:"AZUL4",qtde:0,compra:340004.39,total:0,ultimo:0.000191,subtotal:0,resultado:-0,pct:-1.0},
+  // LEONILDES XP 2
+  {inv:"LEONILDES XP 2",acao:"AURA33",qtde:1200,compra:50.93,total:61115.17,ultimo:173.9,subtotal:208680,resultado:146718.66,pct:2.3679},
+  {inv:"LEONILDES XP 2",acao:"BMOB3",qtde:4400,compra:20.46,total:90032.95,ultimo:28.2,subtotal:124080,resultado:33646.09,pct:0.3721},
+  {inv:"LEONILDES XP 2",acao:"CSMG3",qtde:1400,compra:49.91,total:69871.42,ultimo:56.84,subtotal:79576,resultado:9443.58,pct:0.1347},
+  {inv:"LEONILDES XP 2",acao:"ELET6",qtde:1800.69,compra:49.79,total:89655.31,ultimo:72.09,subtotal:129811.69,resultado:39615.14,pct:0.4392},
+  {inv:"LEONILDES XP 2",acao:"GGBR4",qtde:5900,compra:16.83,total:99267.98,ultimo:21.12,subtotal:124608,resultado:24943.24,pct:0.2503},
+  {inv:"LEONILDES XP 2",acao:"ITLC34",qtde:1300,compra:38.04,total:49457.68,ultimo:54.2,subtotal:70460,resultado:20771.22,pct:0.418},
+  {inv:"LEONILDES XP 2",acao:"PLPL3",qtde:5800,compra:15.37,total:89174.86,ultimo:14.02,subtotal:81316,resultado:-8119.44,pct:-0.0908},
+  {inv:"LEONILDES XP 2",acao:"RAPT4",qtde:8000,compra:6.28,total:50230.59,ultimo:5.58,subtotal:44640,resultado:-5868.33,pct:-0.1162},
+  {inv:"LEONILDES XP 2",acao:"SLCE3",qtde:8264,compra:15.54,total:128441.99,ultimo:19.1,subtotal:157842.4,resultado:28463.39,pct:0.22},
+  {inv:"LEONILDES XP 2",acao:"TTEN3",qtde:6000,compra:16.62,total:99703.55,ultimo:16.48,subtotal:98880,resultado:-1300.43,pct:-0.013},
+  // MARIO MULLER
+  {inv:"MARIO MULLER",acao:"AMER3",qtde:4900,compra:15.0,total:73500,ultimo:6.26,subtotal:30674,resultado:-42867.17,pct:-0.5829},
+  {inv:"MARIO MULLER",acao:"AZUL4",qtde:0.32,compra:109100,total:34912,ultimo:0.000191,subtotal:0,resultado:-34928.78,pct:-1.0},
+];
+
+const saldosCC = {
+  "LEONILDES XP": 5501763.95,
+  "FRANCINE XP": 2078536.98,
+  "LETICIA XP": 1311447.86,
+  "NUNAM UBS": 486051.20,
+  "NUNAM CS": 37911.18
+};
+
+const lucrosAcumulados = {
+  "LEONILDES XP": {JAN:212373.62, FEV:366212.74, MAR:3953415.45, ABR:514933.42},
+  "FRANCINE XP":  {JAN:168072.27, FEV:138795.52, MAR:949621.70, ABR:194456.20},
+  "LETICIA XP":   {JAN:168766.95, FEV:61240.92,  MAR:1063833.09, ABR:166941.02},
+  "NUNAM UBS":    {JAN:855277.62, FEV:52342.18,  MAR:103317.48,  ABR:109828.38},
+  "NUNAM CS":     {JAN:164718,    FEV:0,          MAR:229600,     ABR:0},
+};
+
+const allInvestors = ["LEONILDES XP", "FRANCINE XP", "LETICIA XP", "NUNAM"];
+// Nunam actions (USD) - used to separate in Por Ação view
+const nunamAcoes = new Set(investimentos.filter(i => i.inv === "NUNAM").map(i => i.acao));
+
+let currentView = 'investor';
+let selectedInvestor = allInvestors[0];
+
+// ==============================
+// UTILS
+// ==============================
+const fmt = (n, decimals=2) => {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  return new Intl.NumberFormat('pt-BR', {minimumFractionDigits:decimals, maximumFractionDigits:decimals}).format(n);
+};
+const fmtR = (n) => {
+  if (!n && n !== 0) return '—';
+  const cls = n >= 0 ? 'positive' : 'negative';
+  const sign = n >= 0 ? '+' : '';
+  return `<span class="${cls}">${sign}R$ ${fmt(n)}</span>`;
+};
+const fmtPct = (n) => {
+  if (!n && n !== 0) return '—';
+  const cls = n >= 0 ? 'positive' : 'negative';
+  const sign = n >= 0 ? '+' : '';
+  return `<span class="${cls}">${sign}${fmt(n*100,1)}%</span>`;
+};
+const fmtMoney = (n) => n ? `R$ ${fmt(n)}` : '—';
+const fmtMoneyUSD = (n, label) => {
+  if (!n) return '—';
+  const sym = label && (label.includes('CS') || ['ORCL','HPQ','COP','CVX','BKI','CERT','FEVR'].some(s => label.includes(s))) ? 'US$ ' : 'R$ ';
+  return sym + fmt(n);
+};
+
+// ==============================
+// RENDER
+// ==============================
+function setView(v) {
+  currentView = v;
+  document.querySelectorAll('.toggle-btn').forEach((b,i) => {
+    b.classList.toggle('active', (i===0 && v==='investor') || (i===1 && v==='action'));
+  });
+  renderContent();
+}
+
+function selectInvestor(inv) {
+  selectedInvestor = inv;
+  renderContent();
+}
+
+function renderContent() {
+  const el = document.getElementById('app-content');
+  el.innerHTML = '';
+  el.className = 'fade-in';
+  void el.offsetWidth;
+
+  if (currentView === 'investor') {
+    el.appendChild(renderInvestorView());
+  } else {
+    el.appendChild(renderActionView());
+  }
+}
+
+function renderInvestorView() {
+  const frag = document.createDocumentFragment();
+
+  // Investor chips
+  const scroll = document.createElement('div');
+  scroll.className = 'investor-scroll';
+  allInvestors.forEach(inv => {
+    const chip = document.createElement('div');
+    chip.className = 'investor-chip' + (inv === selectedInvestor ? ' active' : '');
+    chip.textContent = inv;
+    chip.onclick = () => selectInvestor(inv);
+    scroll.appendChild(chip);
+  });
+  frag.appendChild(scroll);
+
+  // Only rows with a valid "ultimo" price (non-zero)
+  const allData = investimentos.filter(i => i.inv === selectedInvestor);
+  const data = allData.filter(i => i.ultimo && i.ultimo !== 0);
+
+  const totalInvestido = data.reduce((s,i) => s + (i.total||0), 0);
+  const totalAtual = data.reduce((s,i) => s + (i.subtotal||0), 0);
+  const totalResult = data.reduce((s,i) => s + (i.resultado||0), 0);
+  const pctGeral = totalInvestido > 0 ? totalResult / totalInvestido : 0;
+
+  // Saldo CC — NUNAM gets two separate CC balances shown
+  const isNunam = selectedInvestor.toUpperCase() === 'NUNAM';
+  let ccCards = [];
+  let totalCC = 0;
+  if (isNunam) {
+    ccCards = [
+      {label:'Saldo C.C. UBS', val:`$ ${fmt(saldosCC["NUNAM UBS"])}`, cls:'yellow'},
+      {label:'Saldo C.C. CS',  val:`$ ${fmt(saldosCC["NUNAM CS"])}`,  cls:'yellow'},
+    ];
+    totalCC = (saldosCC["NUNAM UBS"]||0) + (saldosCC["NUNAM CS"]||0);
+  } else {
+    const ccKey = Object.keys(saldosCC).find(k => k.toUpperCase() === selectedInvestor.toUpperCase());
+    if (ccKey) {
+      totalCC = saldosCC[ccKey];
+      ccCards = [{label:'Saldo C.C.', val:`R$ ${fmt(totalCC)}`, cls:'yellow'}];
+    }
+  }
+
+  // Summary cards
+  const grid = document.createElement('div');
+  grid.className = 'summary-grid';
+
+  const cards = [
+    {label:'Total Investido', val:`R$ ${fmt(totalInvestido)}`, cls:''},
+    {label:'Valor Atual', val:`R$ ${fmt(totalAtual)}`, cls: totalAtual >= totalInvestido ? 'green' : 'red'},
+    {label:'Resultado', val:(totalResult>=0?'+':'')+'R$ '+fmt(totalResult), cls: totalResult>=0?'green':'red'},
+    {label:'Retorno %', val:(pctGeral>=0?'+':'')+fmt(pctGeral*100,2)+'%', cls: pctGeral>=0?'green':'red'},
+    ...ccCards,
+  ];
+
+  if (totalCC > 0) {
+    const pat = isNunam
+      ? `$ ${fmt(totalAtual + totalCC)}`
+      : `R$ ${fmt(totalAtual + totalCC)}`;
+    cards.push({label:'Patrimônio Total', val: pat, cls:'purple'});
+  }
+
+  cards.forEach(c => {
+    const card = document.createElement('div');
+    card.className = `summary-card ${c.cls}`;
+    card.innerHTML = `<div class="card-label">${c.label}</div><div class="card-value">${c.val}</div>`;
+    grid.appendChild(card);
+  });
+  frag.appendChild(grid);
+
+  // Lucro mensal — NUNAM shows UBS + CS separately in $
+  if (isNunam) {
+    const secTitle = document.createElement('div');
+    secTitle.className = 'section-title';
+    secTitle.textContent = 'Lucro Acumulado por Mês';
+    frag.appendChild(secTitle);
+
+    ['NUNAM UBS', 'NUNAM CS'].forEach(subKey => {
+      const meses = lucrosAcumulados[subKey];
+      const subLabel = document.createElement('div');
+      subLabel.style.cssText = 'font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;';
+      subLabel.textContent = subKey;
+      frag.appendChild(subLabel);
+
+      const monthly = document.createElement('div');
+      monthly.className = 'monthly-grid';
+      monthly.style.marginBottom = '12px';
+      Object.entries(meses).forEach(([mes, val]) => {
+        const mc = document.createElement('div');
+        mc.className = 'month-card';
+        mc.innerHTML = `<div class="month-label">${mes}</div><div class="month-value ${val<0?'negative':''}">${val===0?'—':'$ '+fmt(val)}</div>`;
+        monthly.appendChild(mc);
+      });
+      frag.appendChild(monthly);
+    });
+  } else {
+    const lucroKey = Object.keys(lucrosAcumulados).find(k => k.toUpperCase() === selectedInvestor.toUpperCase());
+    if (lucroKey) {
+      const meses = lucrosAcumulados[lucroKey];
+      const secTitle = document.createElement('div');
+      secTitle.className = 'section-title';
+      secTitle.textContent = 'Lucro Acumulado por Mês';
+      frag.appendChild(secTitle);
+
+      const monthly = document.createElement('div');
+      monthly.className = 'monthly-grid';
+      Object.entries(meses).forEach(([mes, val]) => {
+        const mc = document.createElement('div');
+        mc.className = 'month-card';
+        mc.innerHTML = `<div class="month-label">${mes}</div><div class="month-value ${val<0?'negative':''}">${val===0?'—':'R$ '+fmt(val)}</div>`;
+        monthly.appendChild(mc);
+      });
+      frag.appendChild(monthly);
+    }
+  }
+
+  // Portfolio table
+  const secTitle2 = document.createElement('div');
+  secTitle2.className = 'section-title';
+  secTitle2.textContent = 'Portfólio';
+  frag.appendChild(secTitle2);
+
+  if (data.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.textContent = allData.length > 0
+      ? 'Todas as posições estão sem cotação (Último = 0) e foram ocultadas.'
+      : 'Nenhuma posição registrada para este investidor.';
+    frag.appendChild(empty);
+    return frag;
+  }
+
+  // Sort table rows alphabetically by acao
+  const dataSorted = [...data].sort((a,b) => a.acao.localeCompare(b.acao, 'pt-BR'));
+
+  const tableWrap = document.createElement('div');
+  tableWrap.className = 'table-wrap';
+
+  const tableHeader = document.createElement('div');
+  tableHeader.className = 'table-header';
+  tableHeader.innerHTML = `<div class="table-title">${selectedInvestor}</div><div class="count-badge">${data.length} ações</div>`;
+  tableWrap.appendChild(tableHeader);
+
+  const scroll2 = document.createElement('div');
+  scroll2.className = 'table-scroll';
+  scroll2.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Ação</th>
+          <th>Qtde</th>
+          <th>Compra</th>
+          <th>Total</th>
+          <th>Último</th>
+          <th>Subtotal</th>
+          <th>Resultado</th>
+          <th>%</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${dataSorted.map(d => `
+          <tr>
+            <td>${d.acao}</td>
+            <td>${fmt(d.qtde,0)}</td>
+            <td>${fmt(d.compra,2)}</td>
+            <td>${fmt(d.total,2)}</td>
+            <td>${d.ultimo === 0 ? '<span style="color:var(--muted)">—</span>' : fmt(d.ultimo,2)}</td>
+            <td>${d.subtotal === 0 ? '<span style="color:var(--muted)">—</span>' : fmt(d.subtotal,2)}</td>
+            <td class="${d.resultado >= 0 ? 'positive' : 'negative'}">${(d.resultado>=0?'+':'')}${fmt(d.resultado,2)}</td>
+            <td class="${d.pct >= 0 ? 'positive' : 'negative'}">${d.pct===-1?'<span style="color:var(--red)">-100%</span>':(d.pct>=0?'+':'')+fmt(d.pct*100,1)+'%'}</td>
+          </tr>
+        `).join('')}
+        <tr class="total-row">
+          <td>TOTAL</td>
+          <td>—</td>
+          <td>—</td>
+          <td>${fmt(totalInvestido,2)}</td>
+          <td>—</td>
+          <td>${fmt(totalAtual,2)}</td>
+          <td class="${totalResult>=0?'positive':'negative'}">${(totalResult>=0?'+':'')}${fmt(totalResult,2)}</td>
+          <td class="${pctGeral>=0?'positive':'negative'}">${(pctGeral>=0?'+':'')}${fmt(pctGeral*100,1)}%</td>
+        </tr>
+      </tbody>
+    </table>
+  `;
+  tableWrap.appendChild(scroll2);
+  frag.appendChild(tableWrap);
+
+  return frag;
+}
+
+function renderActionView() {
+  const frag = document.createDocumentFragment();
+
+  // Only positions from selected investors with a valid ultimo price
+  const visibleInv = investimentos.filter(i => allInvestors.includes(i.inv) && i.ultimo && i.ultimo !== 0);
+
+  // Group by action
+  const byAction = {};
+  visibleInv.forEach(i => {
+    if (!byAction[i.acao]) byAction[i.acao] = [];
+    byAction[i.acao].push(i);
+  });
+
+  // Summary total from visible only
+  const totalInvestido = visibleInv.reduce((s,i) => s+(i.total||0), 0);
+  const totalAtual = visibleInv.reduce((s,i) => s+(i.subtotal||0), 0);
+  const totalResult = visibleInv.reduce((s,i) => s+(i.resultado||0), 0);
+
+  const grid = document.createElement('div');
+  grid.className = 'summary-grid';
+  [
+    {label:'Total Investido Geral', val:`R$ ${fmt(totalInvestido)}`, cls:''},
+    {label:'Valor Atual Geral', val:`R$ ${fmt(totalAtual)}`, cls: totalAtual>=totalInvestido?'green':'red'},
+    {label:'Resultado Geral', val:(totalResult>=0?'+':'')+'R$ '+fmt(totalResult), cls:totalResult>=0?'green':'red'},
+    {label:'Investidores', val: allInvestors.length+' ativos', cls:'yellow'},
+  ].forEach(c => {
+    const card = document.createElement('div');
+    card.className = `summary-card ${c.cls}`;
+    card.innerHTML = `<div class="card-label">${c.label}</div><div class="card-value">${c.val}</div>`;
+    grid.appendChild(card);
+  });
+  frag.appendChild(grid);
+
+  const secTitle = document.createElement('div');
+  secTitle.className = 'section-title';
+  secTitle.textContent = `${Object.keys(byAction).length} Ações em Carteira`;
+  frag.appendChild(secTitle);
+
+  // Sort: BRL actions (non-NUNAM) alphabetically first, then NUNAM actions alphabetically
+  const sorted = Object.entries(byAction).sort((a,b) => {
+    const aIsNunam = nunamAcoes.has(a[0]);
+    const bIsNunam = nunamAcoes.has(b[0]);
+    if (aIsNunam !== bIsNunam) return aIsNunam ? 1 : -1;
+    return a[0].localeCompare(b[0], 'pt-BR');
+  });
+
+  sorted.forEach(([acao, rows]) => {
+    const totalRes = rows.reduce((s,i) => s+(i.resultado||0), 0);
+    const totalInv = rows.reduce((s,i) => s+(i.total||0), 0);
+    const totalSub = rows.reduce((s,i) => s+(i.subtotal||0), 0);
+
+    const group = document.createElement('div');
+    group.className = 'action-group';
+
+    const header = document.createElement('div');
+    header.className = 'action-header';
+    header.innerHTML = `
+      <div class="action-name">${acao}</div>
+      <div class="action-meta">
+        <div class="action-result ${totalRes>=0?'positive':'negative'}" style="color:${totalRes>=0?'var(--green)':'var(--red)'}">${(totalRes>=0?'+':'')+'R$ '+fmt(totalRes)}</div>
+        <div class="chevron">▼</div>
+      </div>
+    `;
+
+    const body = document.createElement('div');
+    body.className = 'action-body';
+    body.style.display = 'none';
+
+    const investorList = document.createElement('div');
+    investorList.className = 'action-investors';
+
+    rows.forEach(r => {
+      const row = document.createElement('div');
+      row.className = 'investor-row';
+      row.innerHTML = `
+        <div class="inv-name">${r.inv}</div>
+        <div class="inv-data">
+          <span>Qtde: ${fmt(r.qtde,0)}</span>
+          <span>Compra: ${fmt(r.compra,2)}</span>
+          <span>Total: R$ ${fmt(r.total,2)}</span>
+          <span>Último: ${r.ultimo===0?'—':fmt(r.ultimo,2)}</span>
+          <span>Subtotal: ${r.subtotal===0?'—':'R$ '+fmt(r.subtotal,2)}</span>
+          <span class="${r.resultado>=0?'positive':'negative'}" style="color:${r.resultado>=0?'var(--green)':'var(--red)'}">Res: ${(r.resultado>=0?'+':'')+fmt(r.resultado,2)}</span>
+        </div>
+      `;
+      investorList.appendChild(row);
+    });
+
+    // Total row for action
+    if (rows.length > 1) {
+      const tot = document.createElement('div');
+      tot.className = 'investor-row';
+      tot.style.fontWeight = '700';
+      tot.innerHTML = `
+        <div class="inv-name" style="color:var(--muted)">TOTAL</div>
+        <div class="inv-data">
+          <span style="color:var(--text)">Inv: R$ ${fmt(totalInv)}</span>
+          <span style="color:var(--text)">Atual: R$ ${fmt(totalSub)}</span>
+          <span class="${totalRes>=0?'positive':'negative'}" style="color:${totalRes>=0?'var(--green)':'var(--red)'}">Res: ${(totalRes>=0?'+':'')+fmt(totalRes)}</span>
+        </div>
+      `;
+      investorList.appendChild(tot);
+    }
+
+    body.appendChild(investorList);
+    group.appendChild(header);
+    group.appendChild(body);
+    frag.appendChild(group);
+
+    let open = false;
+    header.onclick = () => {
+      open = !open;
+      body.style.display = open ? 'block' : 'none';
+      header.querySelector('.chevron').style.transform = open ? 'rotate(180deg)' : '';
+    };
+  });
+
+  return frag;
+}
+
+// Init
+document.getElementById('date-display').textContent = new Date().toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric'});
+renderContent();
+</script>
+</body>
+</html>
