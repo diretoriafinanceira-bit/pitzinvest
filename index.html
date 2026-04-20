@@ -476,6 +476,33 @@ const allInvestors = ["LEONILDES XP", "FRANCINE XP", "LETICIA XP", "NUNAM"];
 // Nunam actions (USD) - used to separate in Por Ação view
 const nunamAcoes = new Set(investimentos.filter(i => i.inv === "NUNAM").map(i => i.acao));
 
+// Balanço data: ordem colocada, data balanço
+// resultado previsto = (ordem - compra) / compra
+const balanco = {
+  "ANIM3":   {dataBalanco:"06/05/2026", ordem:0},
+  "BBSE3":   {dataBalanco:"04/05/2026", ordem:39.38},
+  "INTB3":   {dataBalanco:"06/05/2026", ordem:14.43},
+  "PETR3":   {dataBalanco:"11/05/2026", ordem:54.95},
+  "PETR4":   {dataBalanco:"11/05/2026", ordem:49.87},
+  "VLID3":   {dataBalanco:"06/05/2026", ordem:22.81},
+  "VULC3":   {dataBalanco:"05/05/2026", ordem:19.58},
+  "VALE3":   {dataBalanco:"28/04/2026", ordem:91.32},
+  "TASA3":   {dataBalanco:"13/05/2026", ordem:0},
+  "TASA4":   {dataBalanco:"13/05/2026", ordem:0},
+  "PRIO3":   {dataBalanco:"05/05/2026", ordem:0},
+  "CERT":    {dataBalanco:"13/05/2026", ordem:2.18},
+  "CVX":     {dataBalanco:"01/05/2026", ordem:197.41},
+  "COP":     {dataBalanco:"30/04/2026", ordem:131.53},
+  "FEVR CS": {dataBalanco:"15/09/2026", ordem:9.1},
+  "VALE":    {dataBalanco:"28/04/2026", ordem:18.13},
+  "VALE CS": {dataBalanco:"28/04/2026", ordem:18.13},
+  "ORCL":    {dataBalanco:"16/06/2026", ordem:0},
+  "ORCL CS": {dataBalanco:"16/06/2026", ordem:0},
+  "HPQ":     {dataBalanco:"03/06/2026", ordem:0},
+  "FEVR":    {dataBalanco:"15/09/2026", ordem:0},
+  "BKI":     {dataBalanco:"08/05/2026", ordem:0},
+};
+
 let currentView = 'investor';
 let selectedInvestor = allInvestors[0];
 
@@ -581,9 +608,9 @@ function renderInvestorView() {
   grid.className = 'summary-grid';
 
   const cards = [
-    {label:'Total Investido', val:`R$ ${fmt(totalInvestido)}`, cls:''},
-    {label:'Valor Atual', val:`R$ ${fmt(totalAtual)}`, cls: totalAtual >= totalInvestido ? 'green' : 'red'},
-    {label:'Resultado', val:(totalResult>=0?'+':'')+'R$ '+fmt(totalResult), cls: totalResult>=0?'green':'red'},
+    {label:'Total Investido', val: isNunam ? `$ ${fmt(totalInvestido)}` : `R$ ${fmt(totalInvestido)}`, cls:''},
+    {label:'Valor Atual', val: isNunam ? `$ ${fmt(totalAtual)}` : `R$ ${fmt(totalAtual)}`, cls: totalAtual >= totalInvestido ? 'green' : 'red'},
+    {label:'Resultado', val:(totalResult>=0?'+':'')+(isNunam?'$ ':'R$ ')+fmt(totalResult), cls: totalResult>=0?'green':'red'},
     {label:'Retorno %', val:(pctGeral>=0?'+':'')+fmt(pctGeral*100,2)+'%', cls: pctGeral>=0?'green':'red'},
     ...ccCards,
   ];
@@ -774,7 +801,15 @@ function renderActionView() {
     const totalRes = rows.reduce((s,i) => s+(i.resultado||0), 0);
     const totalInv = rows.reduce((s,i) => s+(i.total||0), 0);
     const totalSub = rows.reduce((s,i) => s+(i.subtotal||0), 0);
+    const isNunamAcao = nunamAcoes.has(acao);
+    const cur = isNunamAcao ? '$' : 'R$';
 
+    // Balanço info
+    const bal = balanco[acao] || {};
+    const ordem = bal.ordem && bal.ordem !== 0 ? bal.ordem : null;
+    const dataBalanco = bal.dataBalanco || null;
+
+    // Resultado previsto: calculated per investor row using their compra price
     const group = document.createElement('div');
     group.className = 'action-group';
 
@@ -783,7 +818,7 @@ function renderActionView() {
     header.innerHTML = `
       <div class="action-name">${acao}</div>
       <div class="action-meta">
-        <div class="action-result ${totalRes>=0?'positive':'negative'}" style="color:${totalRes>=0?'var(--green)':'var(--red)'}">${(totalRes>=0?'+':'')+'R$ '+fmt(totalRes)}</div>
+        <div class="action-result ${totalRes>=0?'positive':'negative'}" style="color:${totalRes>=0?'var(--green)':'var(--red)'}">${(totalRes>=0?'+':'')+(cur)+' '+fmt(totalRes)}</div>
         <div class="chevron">▼</div>
       </div>
     `;
@@ -792,10 +827,25 @@ function renderActionView() {
     body.className = 'action-body';
     body.style.display = 'none';
 
+    // Balanço info bar (shown once per action)
+    if (dataBalanco || ordem) {
+      const infoBar = document.createElement('div');
+      infoBar.style.cssText = 'padding:8px 16px 0;display:flex;gap:16px;flex-wrap:wrap;font-size:11px;font-family:"DM Mono",monospace;';
+      if (dataBalanco) {
+        infoBar.innerHTML += `<span style="color:var(--muted)">📅 Balanço: <span style="color:var(--text)">${dataBalanco}</span></span>`;
+      }
+      if (ordem) {
+        infoBar.innerHTML += `<span style="color:var(--muted)">🎯 Ordem: <span style="color:var(--accent)">${cur} ${fmt(ordem,2)}</span></span>`;
+      }
+      body.appendChild(infoBar);
+    }
+
     const investorList = document.createElement('div');
     investorList.className = 'action-investors';
 
     rows.forEach(r => {
+      // Resultado previsto = (ordem - compra) / compra
+      const resPrevisto = ordem && r.compra > 0 ? ((ordem - r.compra) / r.compra) * 100 : null;
       const row = document.createElement('div');
       row.className = 'investor-row';
       row.innerHTML = `
@@ -803,11 +853,12 @@ function renderActionView() {
         <div class="inv-data">
           <span>Qtde: ${fmt(r.qtde,0)}</span>
           <span>Compra: ${fmt(r.compra,2)}</span>
-          <span>Total: R$ ${fmt(r.total,2)}</span>
+          <span>Total: ${cur} ${fmt(r.total,2)}</span>
           <span>Último: ${r.ultimo===0?'—':fmt(r.ultimo,2)}</span>
-          <span>Subtotal: ${r.subtotal===0?'—':'R$ '+fmt(r.subtotal,2)}</span>
+          <span>Subtotal: ${r.subtotal===0?'—':cur+' '+fmt(r.subtotal,2)}</span>
           <span class="${r.resultado>=0?'positive':'negative'}" style="color:${r.resultado>=0?'var(--green)':'var(--red)'}">Res: ${(r.resultado>=0?'+':'')+fmt(r.resultado,2)}</span>
           <span class="${r.pct>=0?'positive':'negative'}" style="color:${r.pct>=0?'var(--green)':'var(--red)'}">${r.pct===-1?'-100%':(r.pct>=0?'+':'')+fmt(r.pct*100,1)+'%'}</span>
+          ${resPrevisto !== null ? `<span style="color:var(--yellow)">Prev: ${resPrevisto>=0?'+':''}${fmt(resPrevisto,2)}%</span>` : ''}
         </div>
       `;
       investorList.appendChild(row);
@@ -821,8 +872,8 @@ function renderActionView() {
       tot.innerHTML = `
         <div class="inv-name" style="color:var(--muted)">TOTAL</div>
         <div class="inv-data">
-          <span style="color:var(--text)">Inv: R$ ${fmt(totalInv)}</span>
-          <span style="color:var(--text)">Atual: R$ ${fmt(totalSub)}</span>
+          <span style="color:var(--text)">Inv: ${cur} ${fmt(totalInv)}</span>
+          <span style="color:var(--text)">Atual: ${cur} ${fmt(totalSub)}</span>
           <span class="${totalRes>=0?'positive':'negative'}" style="color:${totalRes>=0?'var(--green)':'var(--red)'}">Res: ${(totalRes>=0?'+':'')+fmt(totalRes)}</span>
           <span class="${totalRes>=0?'positive':'negative'}" style="color:${totalRes>=0?'var(--green)':'var(--red)'}">${totalInv>0?(totalRes>=0?'+':'')+fmt((totalRes/totalInv)*100,1)+'%':'—'}</span>
         </div>
