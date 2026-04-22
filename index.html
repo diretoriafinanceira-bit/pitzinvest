@@ -7,391 +7,100 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0e1a;
-    --surface: #111827;
-    --surface2: #1a2235;
-    --border: #1e2d45;
-    --accent: #00d4ff;
-    --accent2: #7c3aed;
-    --green: #10d98a;
-    --red: #ff4d6d;
-    --yellow: #fbbf24;
-    --text: #e2e8f0;
-    --muted: #64748b;
-    --card-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    --bg:#0a0e1a; --surface:#111827; --surface2:#1a2235; --border:#1e2d45;
+    --accent:#00d4ff; --accent2:#7c3aed; --green:#10d98a; --red:#ff4d6d;
+    --yellow:#fbbf24; --orange:#f97316; --text:#e2e8f0; --muted:#64748b;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Syne', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  /* Header */
-  .header {
-    background: linear-gradient(135deg, #0d1b2e 0%, #111827 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 20px 12px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(10px);
-  }
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-  .logo { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
-  .logo span { color: var(--accent); }
-  .date-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    background: var(--surface2);
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-  }
-  /* View Toggle */
-  .view-toggle {
-    display: flex;
-    background: var(--surface2);
-    border-radius: 10px;
-    padding: 3px;
-    gap: 2px;
-    border: 1px solid var(--border);
-  }
-  .toggle-btn {
-    flex: 1;
-    padding: 8px 14px;
-    border: none;
-    background: transparent;
-    color: var(--muted);
-    border-radius: 8px;
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .toggle-btn.active {
-    background: var(--accent);
-    color: var(--bg);
-  }
-  /* Main container */
-  .container { padding: 16px; max-width: 900px; margin: 0 auto; }
-
-  /* Investor selector */
-  .investor-scroll {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 8px;
-    margin-bottom: 16px;
-    scrollbar-width: none;
-  }
-  .investor-scroll::-webkit-scrollbar { display: none; }
-  .investor-chip {
-    flex-shrink: 0;
-    padding: 7px 14px;
-    border-radius: 24px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .investor-chip.active {
-    border-color: var(--accent);
-    background: rgba(0,212,255,0.12);
-    color: var(--accent);
-  }
-  .investor-chip:hover:not(.active) {
-    border-color: var(--accent2);
-    color: var(--text);
-  }
-
-  /* Summary Cards */
-  .summary-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .summary-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 16px;
-    position: relative;
-    overflow: hidden;
-  }
-  .summary-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px; height: 100%;
-    background: var(--accent);
-    border-radius: 2px 0 0 2px;
-  }
-  .summary-card.green::before { background: var(--green); }
-  .summary-card.red::before { background: var(--red); }
-  .summary-card.yellow::before { background: var(--yellow); }
-  .summary-card.purple::before { background: var(--accent2); }
-  .card-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 6px;
-  }
-  .card-value {
-    font-family: 'DM Mono', monospace;
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
-    word-break: break-all;
-  }
-  .card-value.positive { color: var(--green); }
-  .card-value.negative { color: var(--red); }
-
-  /* Lucro Mensal */
-  .section-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-  .monthly-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-  .month-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
-  }
-  .month-label {
-    font-size: 10px;
-    color: var(--muted);
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
-  }
-  .month-value {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--green);
-  }
-  .month-value.negative { color: var(--red); }
-
-  /* Table */
-  .table-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    margin-bottom: 20px;
-  }
-  .table-header {
-    background: var(--surface2);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-  }
-  .table-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .count-badge {
-    font-size: 11px;
-    color: var(--accent);
-    background: rgba(0,212,255,0.1);
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-family: 'DM Mono', monospace;
-  }
-  .table-scroll { overflow-x: auto; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
-  thead th {
-    padding: 10px 12px;
-    text-align: right;
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-    background: var(--surface2);
-  }
-  thead th:first-child { text-align: left; }
-  tbody tr {
-    border-bottom: 1px solid rgba(30,45,69,0.5);
-    transition: background 0.15s;
-  }
-  tbody tr:last-child { border-bottom: none; }
-  tbody tr:hover { background: rgba(0,212,255,0.04); }
-  td {
-    padding: 11px 12px;
-    text-align: right;
-    font-family: 'DM Mono', monospace;
-    color: var(--text);
-    white-space: nowrap;
-  }
-  td:first-child {
-    text-align: left;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    color: var(--accent);
-    font-size: 13px;
-  }
-  td.positive { color: var(--green); }
-  td.negative { color: var(--red); }
-  /* Total row */
-  .total-row td {
-    border-top: 2px solid var(--border);
-    font-weight: 700;
-    background: var(--surface2);
-  }
-  .total-row td:first-child { color: var(--text); font-family: 'DM Mono', monospace; }
-
-  /* By Action view */
-  .action-group {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-  .action-header {
-    background: var(--surface2);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    user-select: none;
-  }
-  .action-header:hover { background: rgba(0,212,255,0.06); }
-  .action-name {
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--accent);
-    letter-spacing: -0.3px;
-  }
-  .action-meta {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-  .action-result {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    font-weight: 500;
-  }
-  .chevron {
-    font-size: 12px;
-    color: var(--muted);
-    transition: transform 0.2s;
-  }
-  .action-body { overflow: hidden; }
-  .action-investors {
-    padding: 0 16px 12px;
-  }
-  .investor-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(30,45,69,0.5);
-    font-size: 12px;
-    gap: 8px;
-  }
-  .investor-row:last-child { border-bottom: none; }
-  .inv-name {
-    font-weight: 600;
-    color: var(--text);
-    flex: 1;
-    min-width: 80px;
-  }
-  .inv-data {
-    display: flex;
-    gap: 16px;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-    font-size: 11px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-  .inv-data span { white-space: nowrap; }
-
-  /* No data */
-  .empty-state {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--muted);
-    font-size: 13px;
-  }
-
-  /* Responsive tweaks */
-  @media (max-width: 480px) {
-    .summary-grid { grid-template-columns: repeat(2, 1fr); }
-    .monthly-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  /* Animations */
-  .fade-in { animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .spinner {
-    display: inline-block;
-    width: 12px; height: 12px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    margin-left: 6px;
-    vertical-align: middle;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+  .header{background:linear-gradient(135deg,#0d1b2e 0%,#111827 100%);border-bottom:1px solid var(--border);padding:16px 20px 12px;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);}
+  .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .logo{font-size:18px;font-weight:800;letter-spacing:-0.5px;}
+  .logo span{color:var(--accent);}
+  .date-badge{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);background:var(--surface2);padding:4px 10px;border-radius:20px;border:1px solid var(--border);}
+  .view-toggle{display:flex;background:var(--surface2);border-radius:10px;padding:3px;gap:2px;border:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+  .view-toggle::-webkit-scrollbar{display:none;}
+  .toggle-btn{flex-shrink:0;padding:8px 14px;border:none;background:transparent;color:var(--muted);border-radius:8px;font-family:'Syne',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+  .toggle-btn.active{background:var(--accent);color:var(--bg);}
+  .container{padding:16px;max-width:900px;margin:0 auto;}
+  .investor-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:16px;scrollbar-width:none;}
+  .investor-scroll::-webkit-scrollbar{display:none;}
+  .investor-chip{flex-shrink:0;padding:7px 14px;border-radius:24px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+  .investor-chip.active{border-color:var(--accent);background:rgba(0,212,255,0.12);color:var(--accent);}
+  .summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+  .summary-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;position:relative;overflow:hidden;}
+  .summary-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);border-radius:2px 0 0 2px;}
+  .summary-card.green::before{background:var(--green);}
+  .summary-card.red::before{background:var(--red);}
+  .summary-card.yellow::before{background:var(--yellow);}
+  .summary-card.purple::before{background:var(--accent2);}
+  .card-label{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;}
+  .card-value{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--text);word-break:break-all;}
+  .section-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+  .monthly-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;}
+  .month-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;}
+  .month-label{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:0.5px;margin-bottom:4px;}
+  .month-value{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--green);}
+  .month-value.negative{color:var(--red);}
+  .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px;}
+  .table-header{background:var(--surface2);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+  .table-title{font-size:13px;font-weight:700;color:var(--text);}
+  .count-badge{font-size:11px;color:var(--accent);background:rgba(0,212,255,0.1);padding:2px 8px;border-radius:20px;font-family:'DM Mono',monospace;}
+  .table-scroll{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  thead th{padding:10px 12px;text-align:right;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;border-bottom:1px solid var(--border);white-space:nowrap;background:var(--surface2);}
+  thead th:first-child{text-align:left;}
+  tbody tr{border-bottom:1px solid rgba(30,45,69,0.5);transition:background 0.15s;}
+  tbody tr:last-child{border-bottom:none;}
+  tbody tr:hover{background:rgba(0,212,255,0.04);}
+  td{padding:10px 12px;text-align:right;font-family:'DM Mono',monospace;color:var(--text);white-space:nowrap;}
+  td:first-child{text-align:left;font-family:'Syne',sans-serif;font-weight:700;color:var(--accent);font-size:13px;}
+  td.positive{color:var(--green);}
+  td.negative{color:var(--red);}
+  .total-row td{border-top:2px solid var(--border);font-weight:700;background:var(--surface2);}
+  .total-row td:first-child{color:var(--text);font-family:'DM Mono',monospace;}
+  /* Expandable extra info */
+  .expand-row td{padding:0;border-bottom:1px solid rgba(30,45,69,0.5);}
+  .expand-content{padding:0 16px;max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s ease;background:rgba(0,0,0,0.25);}
+  .expand-content.open{padding:12px 16px;max-height:200px;}
+  .expand-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  .expand-item .expand-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;}
+  .expand-item .expand-val{font-family:'DM Mono',monospace;font-size:12px;}
+  .expand-val.buy{color:var(--green);}
+  .expand-val.sell{color:var(--orange);}
+  .expand-val.divid{color:var(--yellow);}
+  .row-toggle{cursor:pointer;}
+  .row-toggle:hover td{background:rgba(0,212,255,0.04);}
+  .row-arrow{font-size:9px;color:var(--muted);transition:transform 0.2s;display:inline-block;margin-left:4px;vertical-align:middle;}
+  /* Action groups */
+  .action-group{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px;}
+  .action-header{background:var(--surface2);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+  .action-header:hover{background:rgba(0,212,255,0.06);}
+  .action-name{font-size:15px;font-weight:800;color:var(--accent);letter-spacing:-0.3px;}
+  .chevron{font-size:12px;color:var(--muted);transition:transform 0.2s;}
+  .action-investors{padding:0 16px 12px;}
+  .investor-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(30,45,69,0.5);font-size:12px;gap:8px;}
+  .investor-row:last-child{border-bottom:none;}
+  .inv-name{font-weight:600;color:var(--text);flex:1;min-width:80px;}
+  .inv-data{display:flex;gap:10px;font-family:'DM Mono',monospace;color:var(--muted);font-size:11px;flex-wrap:wrap;justify-content:flex-end;}
+  .inv-data span{white-space:nowrap;}
+  .info-bar{padding:8px 16px;display:flex;gap:16px;flex-wrap:wrap;font-size:11px;font-family:'DM Mono',monospace;border-bottom:1px solid rgba(30,45,69,0.4);background:rgba(0,0,0,0.15);}
+  /* Vendas */
+  .vendas-block{margin-bottom:16px;}
+  .vendas-inv-header{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:2px;}
+  .vendas-inv-header:hover{background:rgba(0,212,255,0.06);}
+  .vendas-inv-name{font-size:14px;font-weight:700;color:var(--accent);}
+  .vendas-body{background:var(--surface);border:1px solid var(--border);border-radius:0 0 12px 12px;overflow:hidden;display:none;}
+  .positive{color:var(--green);}
+  .negative{color:var(--red);}
+  .empty-state{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;}
+  .fade-in{animation:fadeIn 0.3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:480px){.summary-grid{grid-template-columns:repeat(2,1fr);}.monthly-grid{grid-template-columns:repeat(2,1fr);}}
 </style>
 </head>
 <body>
-
 <div class="header">
   <div class="header-top">
     <div class="logo">📈 Pitz<span> Invest</span></div>
@@ -400,19 +109,14 @@
   <div class="view-toggle">
     <button class="toggle-btn active" onclick="setView('investor')">Por Investidor</button>
     <button class="toggle-btn" onclick="setView('action')">Por Ação</button>
+    <button class="toggle-btn" onclick="setView('vendas')">Vendas</button>
   </div>
 </div>
-
-<div class="container">
-  <div id="app-content"></div>
-</div>
+<div class="container"><div id="app-content"></div></div>
 
 <script>
-// ==============================
-// DATA
-// ==============================
+// ── DATA ──────────────────────────────────────────────
 const investimentos = [
-  // LEONILDES XP
   {inv:"LEONILDES XP",acao:"PETR3",qtde:146000,compra:53.2051,total:7767944.6,ultimo:51.74,subtotal:7554040,resultado:-218609.56,pct:-0.028125},
   {inv:"LEONILDES XP",acao:"PETR4",qtde:160000,compra:48.33525,total:7733640,ultimo:47.02,subtotal:7523200,resultado:-215125.52,pct:-0.0278},
   {inv:"LEONILDES XP",acao:"PRIO3",qtde:32000,compra:63.01842,total:2016589.44,ultimo:61.63,subtotal:1972160,resultado:-45665.42,pct:-0.022631},
@@ -425,7 +129,6 @@ const investimentos = [
   {inv:"LEONILDES XP",acao:"OIBR4",qtde:3705,compra:173.894737,total:644280,ultimo:0,subtotal:0,resultado:-644482.71,pct:-1},
   {inv:"LEONILDES XP",acao:"TASA4",qtde:82060,compra:17.87982,total:1467218,ultimo:0,subtotal:0,resultado:-1467679.64,pct:-1},
   {inv:"LEONILDES XP",acao:"VIIA3",qtde:10360,compra:143.210305,total:1483658.76,ultimo:0,subtotal:0,resultado:-1483632.54,pct:-1},
-  // FRANCINE XP
   {inv:"FRANCINE XP",acao:"BBSE3",qtde:24000,compra:38.993387,total:935841.28,ultimo:35.28,subtotal:846720,resultado:-89412.06,pct:-0.095512},
   {inv:"FRANCINE XP",acao:"PETR4",qtde:20000,compra:46.928315,total:938566.30,ultimo:47.02,subtotal:940400,resultado:1568.81,pct:0.001671},
   {inv:"FRANCINE XP",acao:"PRIO3",qtde:16000,compra:63.023209,total:1008371.35,ultimo:61.63,subtotal:986080,resultado:-22592.78,pct:-0.022399},
@@ -434,7 +137,6 @@ const investimentos = [
   {inv:"FRANCINE XP",acao:"MGLU3",qtde:180000,compra:7.179557,total:1292320.17,ultimo:0,subtotal:0,resultado:-1292320.17,pct:-1},
   {inv:"FRANCINE XP",acao:"OIBR3",qtde:14150,compra:35.70434,total:505216.42,ultimo:0,subtotal:0,resultado:-505216.42,pct:-1},
   {inv:"FRANCINE XP",acao:"TASA3",qtde:25850,compra:17.938612,total:463713.12,ultimo:0,subtotal:0,resultado:-463713.12,pct:-1},
-  // LETICIA XP
   {inv:"LETICIA XP",acao:"BBSE3",qtde:14000,compra:38.98,total:545720,ultimo:35.28,subtotal:493920,resultado:-52161.57,pct:-0.09552},
   {inv:"LETICIA XP",acao:"PETR4",qtde:6000,compra:46.8707,total:281224.2,ultimo:47.02,subtotal:282120,resultado:733.30,pct:0.002606},
   {inv:"LETICIA XP",acao:"PRIO3",qtde:16000,compra:62.95895,total:1007343.2,ultimo:61.63,subtotal:986080,resultado:-21879.19,pct:-0.021706},
@@ -442,436 +144,472 @@ const investimentos = [
   {inv:"LETICIA XP",acao:"AZUL4",qtde:160016,compra:12.199349,total:1952091,ultimo:0,subtotal:0,resultado:-1952747.41,pct:-1},
   {inv:"LETICIA XP",acao:"ONCO3",qtde:37000,compra:10.746216,total:397610,ultimo:0,subtotal:0,resultado:-397740.40,pct:-1},
   {inv:"LETICIA XP",acao:"TASA4",qtde:33000,compra:17.436364,total:575400,ultimo:0,subtotal:0,resultado:-575400,pct:-1},
-  // NUNAM
   {inv:"NUNAM",acao:"OURO UBS",qtde:2667.43,compra:243.68,total:649999.34,ultimo:259.39,subtotal:691904.67,resultado:41647.39,pct:0.064048},
-  {inv:"NUNAM",acao:"VALE CS",qtde:65000,compra:15.3618,total:998517,ultimo:17.82,subtotal:1158300,resultado:159783,pct:0.16002},
-  {inv:"NUNAM",acao:"CERT",qtde:380000,compra:2.12,total:805600,ultimo:1.78,subtotal:676400,resultado:-129200,pct:-0.160377},
-  {inv:"NUNAM",acao:"COP",qtde:8000,compra:121.91,total:975280,ultimo:116.46,subtotal:931680,resultado:-43600,pct:-0.044705},
-  {inv:"NUNAM",acao:"CVX",qtde:7700,compra:193.54026,total:1490260,ultimo:183.25,subtotal:1411025,resultado:-79235,pct:-0.053169},
-  {inv:"NUNAM",acao:"FEVR",qtde:35500,compra:21.350032,total:757926.15,ultimo:8.6,subtotal:305300,resultado:-454223.80,pct:-0.598038},
-  {inv:"NUNAM",acao:"FEVR CS",qtde:5500,compra:8.92,total:49060,ultimo:8.6,subtotal:47300,resultado:-1760,pct:-0.035874},
-  {inv:"NUNAM",acao:"HPQ",qtde:86000,compra:24.060698,total:2069220,ultimo:16.59,subtotal:1426740,resultado:-642480,pct:-0.310494},
-  {inv:"NUNAM",acao:"ORCL CS",qtde:4200,compra:203.75,total:855750,ultimo:177.58,subtotal:745836,resultado:-109914,pct:-0.128442},
+  {inv:"NUNAM",acao:"VALE CS",qtde:65000,compra:15.3618,total:998517,ultimo:17.45,subtotal:1134250,resultado:135733,pct:0.135935},
+  {inv:"NUNAM",acao:"CERT",qtde:380000,compra:2.12,total:805600,ultimo:1.75,subtotal:665000,resultado:-140600,pct:-0.174528},
+  {inv:"NUNAM",acao:"COP",qtde:8000,compra:121.91,total:975280,ultimo:120.26,subtotal:962080,resultado:-13200,pct:-0.013535},
+  {inv:"NUNAM",acao:"CVX",qtde:7700,compra:193.54026,total:1490260,ultimo:185.98,subtotal:1432046,resultado:-58214,pct:-0.039063},
+  {inv:"NUNAM",acao:"FEVR",qtde:35500,compra:21.350032,total:757926.15,ultimo:8.39,subtotal:297845,resultado:-461667.59,pct:-0.607847},
+  {inv:"NUNAM",acao:"FEVR CS",qtde:5500,compra:8.92,total:49060,ultimo:8.39,subtotal:46145,resultado:-2915,pct:-0.059417},
+  {inv:"NUNAM",acao:"HPQ",qtde:86000,compra:24.060698,total:2069220,ultimo:21.09,subtotal:1813740,resultado:-255480,pct:-0.123467},
+  {inv:"NUNAM",acao:"ORCL CS",qtde:4200,compra:203.75,total:855750,ultimo:181.17,subtotal:760914,resultado:-94836,pct:-0.110822},
   {inv:"NUNAM",acao:"BKI",qtde:2694000,compra:0.296624,total:799104.30,ultimo:0.09,subtotal:242460,resultado:-559426.00,pct:-0.697638},
 ];
 
 const saldosCC = {
-  "LEONILDES XP": 1297080.07,
-  "FRANCINE XP":  132166.20,
-  "LETICIA XP":   22982.05,
-  "NUNAM UBS":    3585871.20,
-  "NUNAM CS":     37911.18
+  "LEONILDES XP":1297080.07, "FRANCINE XP":132166.20,
+  "LETICIA XP":22982.05, "NUNAM UBS":3585871.20, "NUNAM CS":37911.18
 };
 
 const lucrosAcumulados = {
-  "LEONILDES XP": {JAN:212373.62, FEV:366212.74, MAR:3953415.45, ABR:781442.94},
-  "FRANCINE XP":  {JAN:168072.27, FEV:138795.52, MAR:949621.70,  ABR:193874.95},
-  "LETICIA XP":   {JAN:168766.95, FEV:61240.92,  MAR:1063833.09, ABR:166536.27},
-  "NUNAM UBS":    {JAN:855277.62, FEV:52342.18,  MAR:103317.48,  ABR:249536.62},
-  "NUNAM CS":     {JAN:164718,    FEV:0,          MAR:229600,     ABR:0},
+  "LEONILDES XP":{JAN:212373.62,FEV:366212.74,MAR:3953415.45,ABR:781442.94},
+  "FRANCINE XP": {JAN:168072.27,FEV:138795.52,MAR:949621.70, ABR:193874.95},
+  "LETICIA XP":  {JAN:168766.95,FEV:61240.92, MAR:1063833.09,ABR:166536.27},
+  "NUNAM UBS":   {JAN:855277.62,FEV:52342.18, MAR:103317.48, ABR:249536.62},
+  "NUNAM CS":    {JAN:164718,   FEV:0,         MAR:229600,    ABR:0},
 };
 
-const allInvestors = ["LEONILDES XP", "FRANCINE XP", "LETICIA XP", "NUNAM"];
-// Nunam actions (USD) - used to separate in Por Ação view
-const nunamAcoes = new Set(investimentos.filter(i => i.inv === "NUNAM").map(i => i.acao));
+const ordens = {
+  "LEONILDES XP":{
+    "PETR3":{lb:"20/04/2026",lbv:51.85,lbd:2,ls:"23/03/2026",lsv:50.31,lsd:30},
+    "PETR4":{lb:"20/04/2026",lbv:46.94,lbd:2,ls:"23/03/2026",lsv:45.47,lsd:30},
+    "PRIO3":{lb:"20/04/2026",lbv:64.75,lbd:2,ls:"14/04/2026",lsv:66.09,lsd:8},
+    "VLID3":{lb:"17/03/2026",lbv:20.27,lbd:36,ls:null,lsv:null,lsd:null},
+    "VULC3":{lb:"19/01/2026",lbv:18.30,lbd:93,ls:null,lsv:null,lsd:null},
+  },
+  "FRANCINE XP":{
+    "BBSE3":{lb:"12/02/2026",lbv:38.98,lbd:69,ls:"15/05/2024",lsv:34.21,lsd:707},
+    "PETR4":{lb:"20/04/2026",lbv:46.92,lbd:2,ls:"09/03/2026",lsv:43.59,lsd:44},
+    "PRIO3":{lb:"20/04/2026",lbv:61.74,lbd:2,ls:null,lsv:null,lsd:null},
+  },
+  "LETICIA XP":{
+    "BBSE3":{lb:"12/02/2026",lbv:38.98,lbd:69,ls:"15/05/2024",lsv:34.26,lsd:707},
+    "PETR4":{lb:"20/04/2026",lbv:46.87,lbd:2,ls:"09/03/2026",lsv:43.59,lsd:44},
+    "PRIO3":{lb:"20/04/2026",lbv:61.73,lbd:2,ls:null,lsv:null,lsd:null},
+  },
+  "NUNAM":{
+    "OURO UBS":{lb:"27/03/2026",lbv:243.68,lbd:26,ls:null,lsv:null,lsd:null},
+    "VALE CS":  {lb:"10/03/2026",lbv:15.36, lbd:43,ls:null,lsv:null,lsd:null},
+    "CERT":     {lb:"23/01/2026",lbv:2.12,  lbd:89,ls:"18/12/2025",lsv:1.65,lsd:125},
+    "COP":      {lb:"17/03/2026",lbv:121.91,lbd:36,ls:null,lsv:null,lsd:null},
+    "CVX":      {lb:"09/04/2026",lbv:191.05,lbd:13,ls:"16/03/2026",lsv:196.00,lsd:37},
+    "FEVR":     {lb:"28/01/2022",lbv:20.35, lbd:1545,ls:"07/12/2021",lsv:26.96,lsd:1597},
+    "FEVR CS":  {lb:"22/01/2026",lbv:8.92,  lbd:90,ls:null,lsv:null,lsd:null},
+    "HPQ":      {lb:"08/01/2026",lbv:21.39, lbd:104,ls:"28/08/2025",lsv:28.81,lsd:237},
+    "ORCL CS":  {lb:"13/01/2026",lbv:203.75,lbd:99,ls:null,lsv:null,lsd:null},
+    "BKI":      {lb:"22/09/2021",lbv:0.27,  lbd:1673,ls:"13/07/2021",lsv:0.47,lsd:1744},
+  },
+};
 
-// Balanço data: ordem colocada, data balanço
-// resultado previsto = (ordem - compra) / compra
+const exDividendos = {
+  "PETR3":{d:"23/04/2026",v:0.62}, "PETR4":{d:"23/04/2026",v:0.62},
+  "VLID3":{d:"01/12/2025",v:1.505873}, "VULC3":{d:"23/12/2025",v:0.65},
+  "BBSE3":{d:"15/08/2025",v:1.942095}, "PRIO3":{d:"14/12/2023",v:0.072},
+  "CVX":{d:"17/02/2026",v:1.78}, "COP":{d:"18/02/2026",v:0.84},
+  "ORCL CS":{d:"09/01/2026",v:0.50}, "HPQ":{d:"11/03/2026",v:0.30},
+  "VALE CS":{d:"12/12/2025",v:0.663291},
+  "FEVR":{d:"25/09/2025",v:5.97}, "FEVR CS":{d:"25/09/2025",v:5.97},
+};
+
 const balanco = {
-  "BBSE3":   {dataBalanco:"04/05/2026", ordem:39.38},
-  "PETR3":   {dataBalanco:"11/05/2026", ordem:0},
-  "PETR4":   {dataBalanco:"11/05/2026", ordem:0},
-  "VLID3":   {dataBalanco:"06/05/2026", ordem:22.81},
-  "VULC3":   {dataBalanco:"05/05/2026", ordem:19.58},
-  "TASA3":   {dataBalanco:"13/05/2026", ordem:0},
-  "TASA4":   {dataBalanco:"13/05/2026", ordem:0},
-  "PRIO3":   {dataBalanco:"05/05/2026", ordem:0},
-  "CERT":    {dataBalanco:"13/05/2026", ordem:2.18},
-  "CVX":     {dataBalanco:"01/05/2026", ordem:0},
-  "COP":     {dataBalanco:"30/04/2026", ordem:0},
-  "FEVR CS": {dataBalanco:"15/09/2026", ordem:9.1},
-  "VALE CS": {dataBalanco:"28/04/2026", ordem:17.8},
-  "ORCL":    {dataBalanco:"16/06/2026", ordem:0},
-  "ORCL CS": {dataBalanco:"16/06/2026", ordem:0},
-  "HPQ":     {dataBalanco:"03/06/2026", ordem:0},
-  "FEVR":    {dataBalanco:"15/09/2026", ordem:0},
-  "BKI":     {dataBalanco:"08/05/2026", ordem:0},
+  "BBSE3":{db:"04/05/2026",o:39.38}, "PETR3":{db:"11/05/2026",o:0},
+  "PETR4":{db:"11/05/2026",o:0}, "VLID3":{db:"06/05/2026",o:22.81},
+  "VULC3":{db:"05/05/2026",o:19.58}, "PRIO3":{db:"05/05/2026",o:0},
+  "CERT":{db:"13/05/2026",o:2.18}, "CVX":{db:"01/05/2026",o:0},
+  "COP":{db:"30/04/2026",o:0}, "FEVR CS":{db:"15/09/2026",o:9.1},
+  "VALE CS":{db:"28/04/2026",o:17.8}, "ORCL CS":{db:"16/06/2026",o:0},
+  "HPQ":{db:"03/06/2026",o:0}, "FEVR":{db:"15/09/2026",o:0},
+  "BKI":{db:"08/05/2026",o:0},
 };
 
-let currentView = 'investor';
-let selectedInvestor = allInvestors[0];
+const vendasRealizadas = {
+  "LEONILDES XP":[
+    {a:"ANIM3",d:"07/01/2026",q:240000,cu:3.4275,ct:822600,vu:4.02,vt:964800,r:141614.53,p:17.20},
+    {a:"BBDC3",d:"19/01/2026",q:63000,cu:15.95,ct:1004850,vu:16.18,vt:1019314.8,r:13783.10,p:1.37},
+    {a:"ITUB4",d:"19/01/2026",q:39140,cu:38.745,ct:1516496.25,vu:39.645,vt:1551463.88,r:33934.49,p:2.24},
+    {a:"SLCE3",d:"19/01/2026",q:61875,cu:14.693,ct:909113.60,vu:15.087,vt:932774.48,r:23041.50,p:2.54},
+    {a:"INTB3",d:"02/02/2026",q:105000,cu:11.2165,ct:1177736.03,vu:12.43,vt:1305150,r:126599.77,p:10.74},
+    {a:"WEGE3",d:"03/02/2026",q:20000,cu:50.26,ct:1005200,vu:54.00,vt:1080000,r:74085.97,p:7.37},
+    {a:"WEGE3",d:"11/02/2026",q:18600,cu:50.26,ct:934836,vu:53.98,vt:1004028,r:68548.95,p:7.33},
+    {a:"INTB3",d:"12/02/2026",q:100000,cu:11.2165,ct:1121653.37,vu:12.194,vt:1219400,r:96978.05,p:8.64},
+    {a:"PETR3",d:"06/03/2026",q:50000,cu:36.047,ct:1802364.74,vu:46.16,vt:2308000,r:504299.15,p:27.96},
+    {a:"PETR3",d:"09/03/2026",q:140000,cu:36.047,ct:5046621.26,vu:47.5527,vt:6657378,r:1607241.58,p:31.83},
+    {a:"PETR4",d:"09/03/2026",q:36000,cu:32.443,ct:1167934.29,vu:43.7674,vt:1575626.4,r:406875.67,p:34.81},
+    {a:"PRIO3",d:"20/03/2026",q:16500,cu:61.764,ct:1019102.70,vu:67.89,vt:1120185,r:100375.66,p:9.84},
+    {a:"PETR3",d:"23/03/2026",q:100000,cu:49.938,ct:4993830,vu:50.31,vt:5031000,r:33988.52,p:0.68},
+    {a:"PETR4",d:"23/03/2026",q:100000,cu:32.443,ct:3244264.71,vu:45.47,vt:4547000,r:1300230.75,p:40.05},
+    {a:"VALE3",d:"01/04/2026",q:24000,cu:81.698,ct:1960741.47,vu:82.9966,vt:1991918.4,r:29910.49,p:1.52},
+    {a:"WEGE3",d:"01/04/2026",q:43000,cu:48.969,ct:2105672,vu:50.938,vt:2190334,r:83278.82,p:3.95},
+    {a:"RRRP3",d:"07/04/2026",q:85000,cu:17.997,ct:1529727.5,vu:21.29,vt:1809650,r:278789.46,p:18.21},
+    {a:"BBSE3",d:"09/04/2026",q:56000,cu:35.27,ct:1975120,vu:36.28,vt:2031680,r:55897.55,p:2.83},
+    {a:"BRAV3",d:"14/04/2026",q:49000,cu:20.58,ct:1008420,vu:20.90,vt:1024100,r:15351.46,p:1.52},
+    {a:"PRIO3",d:"14/04/2026",q:40000,cu:64.756,ct:2590220.8,vu:66.09,vt:2643600,r:51705.65,p:1.99},
+    {a:"ANIM3",d:"20/04/2026",q:237000,cu:4.2398,ct:1004832.6,vu:4.4399,vt:1052256.3,r:46740.74,p:4.65},
+    {a:"INTB3",d:"20/04/2026",q:72200,cu:13.989,ct:1010036,vu:14.6357,vt:1056697.54,r:46320.61,p:4.58},
+    {a:"VALE3",d:"20/04/2026",q:25000,cu:81.698,ct:2042439.03,vu:88.6859,vt:2217147.5,r:173336.78,p:8.48},
+  ],
+  "FRANCINE XP":[
+    {a:"VALE3",d:"14/01/2026",q:28500,cu:71.146,ct:2027658,vu:77.09,vt:2197065,r:168072.27,p:8.28},
+    {a:"WEGE3",d:"03/02/2026",q:20500,cu:47.201,ct:967616.6,vu:54.00,vt:1107000,r:138795.52,p:14.34},
+    {a:"PETR3",d:"04/03/2026",q:40000,cu:34.154,ct:1366144.32,vu:44.2518,vt:1770072,r:402906.02,p:29.47},
+    {a:"PETR3",d:"06/03/2026",q:23000,cu:43.97,ct:1011310,vu:46.16,vt:1061680,r:49681.78,p:4.91},
+    {a:"PETR4",d:"09/03/2026",q:49000,cu:33.422,ct:1637700,vu:43.5891,vt:2135865.9,r:497033.89,p:30.33},
+    {a:"WEGE3",d:"01/04/2026",q:15000,cu:49.086,ct:736294,vu:50.978,vt:764670,r:27887.21,p:3.78},
+    {a:"RRRP3",d:"07/04/2026",q:60000,cu:18.522,ct:1111337,vu:21.3018,vt:1278108,r:165987.74,p:14.93},
+  ],
+  "LETICIA XP":[
+    {a:"VALE3",d:"15/01/2026",q:28500,cu:71.146,ct:2027658,vu:77.09,vt:2197065,r:168766.95,p:8.32},
+    {a:"WEGE3",d:"03/02/2026",q:9000,cu:47.166,ct:424497.12,vu:54.00,vt:486000,r:61240.92,p:14.42},
+    {a:"PETR3",d:"04/03/2026",q:51000,cu:34.176,ct:1742958,vu:44.3215,vt:2260396.5,r:516147.63,p:29.59},
+    {a:"PETR3",d:"06/03/2026",q:23400,cu:43.954,ct:1028532.96,vu:46.16,vt:1080144,r:50905.07,p:4.95},
+    {a:"PETR4",d:"09/03/2026",q:49000,cu:33.430,ct:1638060,vu:43.5912,vt:2135968.8,r:496780.39,p:30.31},
+    {a:"RRRP3",d:"07/04/2026",q:60000,cu:18.511,ct:1110687,vu:21.3001,vt:1278006,r:166536.27,p:14.98},
+  ],
+  "NUNAM":[
+    {a:"VALE",d:"06/01/2026",q:129000,cu:13.360,ct:1723500.50,vu:14.05,vt:1812450,r:87185.27,p:5.05},
+    {a:"VALE2",d:"06/01/2026",q:62600,cu:11.419,ct:714812,vu:14.05,vt:879530,r:164718,p:23.04},
+    {a:"INTC",d:"07/01/2026",q:60000,cu:37.080,ct:2224786.65,vu:43.96,vt:2637600,r:409219.38,p:18.36},
+    {a:"XLE",d:"14/01/2026",q:21600,cu:46.140,ct:996621.30,vu:47.61,vt:1028376,r:31754.70,p:3.19},
+    {a:"BLK",d:"15/01/2026",q:360,cu:1086.86,ct:391269.6,vu:1147.24,vt:413006.4,r:21736.80,p:5.56},
+    {a:"XOM",d:"15/01/2026",q:3200,cu:123.04,ct:393728,vu:130.14,vt:416448,r:22720,p:5.77},
+    {a:"PBR UBS",d:"16/01/2026",q:70000,cu:11.69,ct:818300,vu:12.74,vt:891800,r:72037.47,p:8.79},
+    {a:"AMD",d:"21/01/2026",q:4800,cu:204.05,ct:979440,vu:247.93,vt:1190064,r:210624,p:21.50},
+    {a:"INTC",d:"02/02/2026",q:17500,cu:48.03,ct:840525,vu:49.03,vt:858025,r:16162.18,p:1.92},
+    {a:"SLB",d:"02/02/2026",q:9000,cu:44.36,ct:399240,vu:48.38,vt:435420,r:36180,p:9.06},
+    {a:"PBR",d:"06/03/2026",q:60000,cu:13.733,ct:824000,vu:17.56,vt:1053600,r:229600,p:27.86},
+    {a:"CVX",d:"16/03/2026",q:2500,cu:159.45,ct:398625,vu:196.00,vt:490000,r:90764.01,p:22.73},
+    {a:"INTC",d:"16/03/2026",q:17500,cu:48.03,ct:840525,vu:48.04,vt:840700,r:-2211.10,p:-0.26},
+    {a:"NVIDIA",d:"16/03/2026",q:6600,cu:187.547,ct:1237813.01,vu:188.49,vt:1244034,r:2647.69,p:0.21},
+    {a:"ORCL",d:"16/03/2026",q:9600,cu:156.739,ct:1504690,vu:158.30,vt:1519680,r:12116.88,p:0.80},
+    {a:"BLK",d:"09/04/2026",q:1000,cu:964.88,ct:964880,vu:1002.59,vt:1002590,r:37710,p:3.91},
+    {a:"NVIDIA",d:"09/04/2026",q:6500,cu:180.842,ct:1175475.99,vu:183.88,vt:1195220,r:18671.68,p:1.59},
+    {a:"NVIDIA",d:"10/04/2026",q:6500,cu:180.842,ct:1175475.99,vu:189.23,vt:1229995,r:53446.68,p:4.54},
+    {a:"ORCL",d:"20/04/2026",q:12000,cu:164.001,ct:1968009.40,vu:175.61,vt:2107320,r:136230.33,p:6.91},
+    {a:"VALE",d:"20/04/2026",q:57000,cu:17.41,ct:992370,vu:17.50,vt:997500,r:3477.92,p:0.35},
+  ],
+};
 
-// ==============================
-// UTILS
-// ==============================
-const fmt = (n, decimals=2) => {
-  if (n === null || n === undefined || isNaN(n)) return '—';
-  return new Intl.NumberFormat('pt-BR', {minimumFractionDigits:decimals, maximumFractionDigits:decimals}).format(n);
-};
-const fmtR = (n) => {
-  if (!n && n !== 0) return '—';
-  const cls = n >= 0 ? 'positive' : 'negative';
-  const sign = n >= 0 ? '+' : '';
-  return `<span class="${cls}">${sign}R$ ${fmt(n)}</span>`;
-};
-const fmtPct = (n) => {
-  if (!n && n !== 0) return '—';
-  const cls = n >= 0 ? 'positive' : 'negative';
-  const sign = n >= 0 ? '+' : '';
-  return `<span class="${cls}">${sign}${fmt(n*100,1)}%</span>`;
-};
-const fmtMoney = (n) => n ? `R$ ${fmt(n)}` : '—';
-const fmtMoneyUSD = (n, label) => {
-  if (!n) return '—';
-  const sym = label && (label.includes('CS') || ['ORCL','HPQ','COP','CVX','BKI','CERT','FEVR'].some(s => label.includes(s))) ? 'US$ ' : 'R$ ';
-  return sym + fmt(n);
+const allInvestors = ["LEONILDES XP","FRANCINE XP","LETICIA XP","NUNAM"];
+const nunamAcoes = new Set(investimentos.filter(i=>i.inv==="NUNAM").map(i=>i.acao));
+
+let currentView='investor', selectedInvestor=allInvestors[0];
+
+// ── UTILS ──────────────────────────────────────────────
+const fmt=(n,d=2)=>{
+  if(n===null||n===undefined||isNaN(n)) return '—';
+  return new Intl.NumberFormat('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
 };
 
-// ==============================
-// RENDER
-// ==============================
-function setView(v) {
-  currentView = v;
-  document.querySelectorAll('.toggle-btn').forEach((b,i) => {
-    b.classList.toggle('active', (i===0 && v==='investor') || (i===1 && v==='action'));
-  });
+// ── CONTROL ────────────────────────────────────────────
+function setView(v){
+  currentView=v;
+  document.querySelectorAll('.toggle-btn').forEach((b,i)=>
+    b.classList.toggle('active',(i===0&&v==='investor')||(i===1&&v==='action')||(i===2&&v==='vendas')));
   renderContent();
 }
-
-function selectInvestor(inv) {
-  selectedInvestor = inv;
-  renderContent();
+function selectInvestor(inv){selectedInvestor=inv;renderContent();}
+function renderContent(){
+  const el=document.getElementById('app-content');
+  el.innerHTML=''; el.className='fade-in'; void el.offsetWidth;
+  if(currentView==='investor') el.appendChild(renderInvestorView());
+  else if(currentView==='action') el.appendChild(renderActionView());
+  else el.appendChild(renderVendasView());
 }
 
-function renderContent() {
-  const el = document.getElementById('app-content');
-  el.innerHTML = '';
-  el.className = 'fade-in';
-  void el.offsetWidth;
+// ── POR INVESTIDOR ────────────────────────────────────
+function renderInvestorView(){
+  const frag=document.createDocumentFragment();
+  // Chips
+  const sc=document.createElement('div'); sc.className='investor-scroll';
+  allInvestors.forEach(inv=>{
+    const c=document.createElement('div');
+    c.className='investor-chip'+(inv===selectedInvestor?' active':'');
+    c.textContent=inv; c.onclick=()=>selectInvestor(inv); sc.appendChild(c);
+  }); frag.appendChild(sc);
 
-  if (currentView === 'investor') {
-    el.appendChild(renderInvestorView());
+  const allData=investimentos.filter(i=>i.inv===selectedInvestor);
+  const data=allData.filter(i=>i.ultimo&&i.ultimo!==0);
+  const ds=[...data].sort((a,b)=>a.acao.localeCompare(b.acao,'pt-BR'));
+  const tI=data.reduce((s,i)=>s+(i.total||0),0);
+  const tA=data.reduce((s,i)=>s+(i.subtotal||0),0);
+  const tR=data.reduce((s,i)=>s+(i.resultado||0),0);
+  const pG=tI>0?tR/tI:0;
+  const isN=selectedInvestor==='NUNAM';
+  const cur=isN?'$':'R$';
+
+  let ccCards=[],tCC=0;
+  if(isN){
+    ccCards=[
+      {label:'Saldo C.C. UBS',val:`$ ${fmt(saldosCC["NUNAM UBS"])}`,cls:'yellow'},
+      {label:'Saldo C.C. CS', val:`$ ${fmt(saldosCC["NUNAM CS"])}`, cls:'yellow'},
+    ]; tCC=(saldosCC["NUNAM UBS"]||0)+(saldosCC["NUNAM CS"]||0);
   } else {
-    el.appendChild(renderActionView());
-  }
-}
-
-function renderInvestorView() {
-  const frag = document.createDocumentFragment();
-
-  // Investor chips
-  const scroll = document.createElement('div');
-  scroll.className = 'investor-scroll';
-  allInvestors.forEach(inv => {
-    const chip = document.createElement('div');
-    chip.className = 'investor-chip' + (inv === selectedInvestor ? ' active' : '');
-    chip.textContent = inv;
-    chip.onclick = () => selectInvestor(inv);
-    scroll.appendChild(chip);
-  });
-  frag.appendChild(scroll);
-
-  // Only rows with a valid "ultimo" price (non-zero)
-  const allData = investimentos.filter(i => i.inv === selectedInvestor);
-  const data = allData.filter(i => i.ultimo && i.ultimo !== 0);
-
-  const totalInvestido = data.reduce((s,i) => s + (i.total||0), 0);
-  const totalAtual = data.reduce((s,i) => s + (i.subtotal||0), 0);
-  const totalResult = data.reduce((s,i) => s + (i.resultado||0), 0);
-  const pctGeral = totalInvestido > 0 ? totalResult / totalInvestido : 0;
-
-  // Saldo CC — NUNAM gets two separate CC balances shown
-  const isNunam = selectedInvestor.toUpperCase() === 'NUNAM';
-  let ccCards = [];
-  let totalCC = 0;
-  if (isNunam) {
-    ccCards = [
-      {label:'Saldo C.C. UBS', val:`$ ${fmt(saldosCC["NUNAM UBS"])}`, cls:'yellow'},
-      {label:'Saldo C.C. CS',  val:`$ ${fmt(saldosCC["NUNAM CS"])}`,  cls:'yellow'},
-    ];
-    totalCC = (saldosCC["NUNAM UBS"]||0) + (saldosCC["NUNAM CS"]||0);
-  } else {
-    const ccKey = Object.keys(saldosCC).find(k => k.toUpperCase() === selectedInvestor.toUpperCase());
-    if (ccKey) {
-      totalCC = saldosCC[ccKey];
-      ccCards = [{label:'Saldo C.C.', val:`R$ ${fmt(totalCC)}`, cls:'yellow'}];
-    }
+    const ck=Object.keys(saldosCC).find(k=>k.toUpperCase()===selectedInvestor.toUpperCase());
+    if(ck){tCC=saldosCC[ck]; ccCards=[{label:'Saldo C.C.',val:`R$ ${fmt(tCC)}`,cls:'yellow'}];}
   }
 
-  // Summary cards
-  const grid = document.createElement('div');
-  grid.className = 'summary-grid';
-
-  const cards = [
-    {label:'Total Investido', val: isNunam ? `$ ${fmt(totalInvestido)}` : `R$ ${fmt(totalInvestido)}`, cls:''},
-    {label:'Valor Atual', val: isNunam ? `$ ${fmt(totalAtual)}` : `R$ ${fmt(totalAtual)}`, cls: totalAtual >= totalInvestido ? 'green' : 'red'},
-    {label:'Resultado', val:(totalResult>=0?'+':'')+(isNunam?'$ ':'R$ ')+fmt(totalResult), cls: totalResult>=0?'green':'red'},
-    {label:'Retorno %', val:(pctGeral>=0?'+':'')+fmt(pctGeral*100,2)+'%', cls: pctGeral>=0?'green':'red'},
+  const grid=document.createElement('div'); grid.className='summary-grid';
+  const cards=[
+    {label:'Total Investido',val:`${cur} ${fmt(tI)}`,cls:''},
+    {label:'Valor Atual',val:`${cur} ${fmt(tA)}`,cls:tA>=tI?'green':'red'},
+    {label:'Resultado',val:(tR>=0?'+':'')+cur+' '+fmt(tR),cls:tR>=0?'green':'red'},
+    {label:'Retorno %',val:(pG>=0?'+':'')+fmt(pG*100,2)+'%',cls:pG>=0?'green':'red'},
     ...ccCards,
   ];
-
-  if (totalCC > 0) {
-    const pat = isNunam
-      ? `$ ${fmt(totalAtual + totalCC)}`
-      : `R$ ${fmt(totalAtual + totalCC)}`;
-    cards.push({label:'Patrimônio Total', val: pat, cls:'purple'});
-  }
-
-  cards.forEach(c => {
-    const card = document.createElement('div');
-    card.className = `summary-card ${c.cls}`;
-    card.innerHTML = `<div class="card-label">${c.label}</div><div class="card-value">${c.val}</div>`;
+  if(tCC>0) cards.push({label:'Patrimônio Total',val:`${cur} ${fmt(tA+tCC)}`,cls:'purple'});
+  cards.forEach(c=>{
+    const card=document.createElement('div'); card.className=`summary-card ${c.cls}`;
+    card.innerHTML=`<div class="card-label">${c.label}</div><div class="card-value">${c.val}</div>`;
     grid.appendChild(card);
-  });
-  frag.appendChild(grid);
+  }); frag.appendChild(grid);
 
-  // Lucro mensal — NUNAM shows UBS + CS separately in $
-  if (isNunam) {
-    const secTitle = document.createElement('div');
-    secTitle.className = 'section-title';
-    secTitle.textContent = 'Lucro Acumulado por Mês';
-    frag.appendChild(secTitle);
-
-    ['NUNAM UBS', 'NUNAM CS'].forEach(subKey => {
-      const meses = lucrosAcumulados[subKey];
-      const subLabel = document.createElement('div');
-      subLabel.style.cssText = 'font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;';
-      subLabel.textContent = subKey;
-      frag.appendChild(subLabel);
-
-      const monthly = document.createElement('div');
-      monthly.className = 'monthly-grid';
-      monthly.style.marginBottom = '12px';
-      Object.entries(meses).forEach(([mes, val]) => {
-        const mc = document.createElement('div');
-        mc.className = 'month-card';
-        mc.innerHTML = `<div class="month-label">${mes}</div><div class="month-value ${val<0?'negative':''}">${val===0?'—':'$ '+fmt(val)}</div>`;
-        monthly.appendChild(mc);
-      });
-      frag.appendChild(monthly);
+  // Lucro mensal
+  if(isN){
+    const st=document.createElement('div'); st.className='section-title'; st.textContent='Lucro Acumulado por Mês'; frag.appendChild(st);
+    ['NUNAM UBS','NUNAM CS'].forEach(sk=>{
+      const lbl=document.createElement('div');
+      lbl.style.cssText='font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;';
+      lbl.textContent=sk; frag.appendChild(lbl);
+      const mg=document.createElement('div'); mg.className='monthly-grid'; mg.style.marginBottom='12px';
+      Object.entries(lucrosAcumulados[sk]).forEach(([m,v])=>{
+        const mc=document.createElement('div'); mc.className='month-card';
+        mc.innerHTML=`<div class="month-label">${m}</div><div class="month-value ${v<0?'negative':''}">${v===0?'—':'$ '+fmt(v)}</div>`;
+        mg.appendChild(mc);
+      }); frag.appendChild(mg);
     });
   } else {
-    const lucroKey = Object.keys(lucrosAcumulados).find(k => k.toUpperCase() === selectedInvestor.toUpperCase());
-    if (lucroKey) {
-      const meses = lucrosAcumulados[lucroKey];
-      const secTitle = document.createElement('div');
-      secTitle.className = 'section-title';
-      secTitle.textContent = 'Lucro Acumulado por Mês';
-      frag.appendChild(secTitle);
-
-      const monthly = document.createElement('div');
-      monthly.className = 'monthly-grid';
-      Object.entries(meses).forEach(([mes, val]) => {
-        const mc = document.createElement('div');
-        mc.className = 'month-card';
-        mc.innerHTML = `<div class="month-label">${mes}</div><div class="month-value ${val<0?'negative':''}">${val===0?'—':'R$ '+fmt(val)}</div>`;
-        monthly.appendChild(mc);
-      });
-      frag.appendChild(monthly);
+    const lk=Object.keys(lucrosAcumulados).find(k=>k.toUpperCase()===selectedInvestor.toUpperCase());
+    if(lk){
+      const st=document.createElement('div'); st.className='section-title'; st.textContent='Lucro Acumulado por Mês'; frag.appendChild(st);
+      const mg=document.createElement('div'); mg.className='monthly-grid';
+      Object.entries(lucrosAcumulados[lk]).forEach(([m,v])=>{
+        const mc=document.createElement('div'); mc.className='month-card';
+        mc.innerHTML=`<div class="month-label">${m}</div><div class="month-value ${v<0?'negative':''}">${v===0?'—':'R$ '+fmt(v)}</div>`;
+        mg.appendChild(mc);
+      }); frag.appendChild(mg);
     }
   }
 
-  // Portfolio table
-  const secTitle2 = document.createElement('div');
-  secTitle2.className = 'section-title';
-  secTitle2.textContent = 'Portfólio';
-  frag.appendChild(secTitle2);
-
-  if (data.length === 0) {
-    const empty = document.createElement('div');
-    empty.className = 'empty-state';
-    empty.textContent = allData.length > 0
-      ? 'Todas as posições estão sem cotação (Último = 0) e foram ocultadas.'
-      : 'Nenhuma posição registrada para este investidor.';
-    frag.appendChild(empty);
-    return frag;
+  // Portfolio
+  const st2=document.createElement('div'); st2.className='section-title'; st2.textContent='Portfólio'; frag.appendChild(st2);
+  if(!data.length){
+    const e=document.createElement('div'); e.className='empty-state';
+    e.textContent=allData.length?'Posições sem cotação.':'Sem posições.'; frag.appendChild(e); return frag;
   }
 
-  // Sort table rows alphabetically by acao
-  const dataSorted = [...data].sort((a,b) => a.acao.localeCompare(b.acao, 'pt-BR'));
+  const tw=document.createElement('div'); tw.className='table-wrap';
+  const th=document.createElement('div'); th.className='table-header';
+  th.innerHTML=`<div class="table-title">${selectedInvestor}</div><div class="count-badge">${data.length} ações</div>`;
+  tw.appendChild(th);
+  const sc2=document.createElement('div'); sc2.className='table-scroll';
+  const tbl=document.createElement('table');
+  tbl.innerHTML=`<thead><tr>
+    <th>Ação</th><th>Qtde</th><th>Compra</th><th>Total</th>
+    <th>Último</th><th>Subtotal</th><th>Resultado</th><th>%</th>
+  </tr></thead>`;
+  const tbody=document.createElement('tbody');
 
-  const tableWrap = document.createElement('div');
-  tableWrap.className = 'table-wrap';
+  ds.forEach(d=>{
+    const ord=(ordens[selectedInvestor]||{})[d.acao]||{};
+    const exDiv=exDividendos[d.acao]||null;
+    const hasExtra=ord.lb||exDiv;
+    const tr=document.createElement('tr');
+    if(hasExtra) tr.className='row-toggle';
+    tr.innerHTML=`
+      <td>${d.acao}${hasExtra?`<span class="row-arrow" id="arr-${d.acao}">▼</span>`:''}</td>
+      <td>${fmt(d.qtde,0)}</td><td>${fmt(d.compra,2)}</td><td>${fmt(d.total,2)}</td>
+      <td>${fmt(d.ultimo,2)}</td><td>${fmt(d.subtotal,2)}</td>
+      <td class="${d.resultado>=0?'positive':'negative'}">${(d.resultado>=0?'+':'')}${fmt(d.resultado,2)}</td>
+      <td class="${d.pct>=0?'positive':'negative'}">${d.pct===-1?'-100%':(d.pct>=0?'+':'')+fmt(d.pct*100,1)+'%'}</td>`;
+    tbody.appendChild(tr);
 
-  const tableHeader = document.createElement('div');
-  tableHeader.className = 'table-header';
-  tableHeader.innerHTML = `<div class="table-title">${selectedInvestor}</div><div class="count-badge">${data.length} ações</div>`;
-  tableWrap.appendChild(tableHeader);
+    if(hasExtra){
+      const xtr=document.createElement('tr'); xtr.className='expand-row';
+      const xtd=document.createElement('td'); xtd.colSpan=8;
+      const xc=document.createElement('div'); xc.className='expand-content'; xc.id=`exp-${d.acao}`;
+      let html='<div class="expand-grid">';
+      if(ord.lb) html+=`<div class="expand-item"><div class="expand-label">🟢 Última Compra</div><div class="expand-val buy">${ord.lb} · ${cur} ${fmt(ord.lbv,2)} · ${ord.lbd}d atrás</div></div>`;
+      if(ord.ls) html+=`<div class="expand-item"><div class="expand-label">🔴 Última Venda</div><div class="expand-val sell">${ord.ls} · ${cur} ${fmt(ord.lsv,2)} · ${ord.lsd}d atrás</div></div>`;
+      if(exDiv) html+=`<div class="expand-item"><div class="expand-label">💰 Ex-Dividendo</div><div class="expand-val divid">${exDiv.d} · ${cur} ${fmt(exDiv.v,4)}/ação</div></div>`;
+      html+='</div>'; xc.innerHTML=html;
+      xtd.appendChild(xc); xtr.appendChild(xtd); tbody.appendChild(xtr);
+      tr.onclick=()=>{
+        const c=document.getElementById(`exp-${d.acao}`);
+        const a=document.getElementById(`arr-${d.acao}`);
+        const op=c.classList.toggle('open');
+        if(a) a.style.transform=op?'rotate(180deg)':'';
+      };
+    }
+  });
 
-  const scroll2 = document.createElement('div');
-  scroll2.className = 'table-scroll';
-  scroll2.innerHTML = `
-    <table>
-      <thead>
-        <tr>
-          <th>Ação</th>
-          <th>Qtde</th>
-          <th>Compra</th>
-          <th>Total</th>
-          <th>Último</th>
-          <th>Subtotal</th>
-          <th>Resultado</th>
-          <th>%</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${dataSorted.map(d => `
-          <tr>
-            <td>${d.acao}</td>
-            <td>${fmt(d.qtde,0)}</td>
-            <td>${fmt(d.compra,2)}</td>
-            <td>${fmt(d.total,2)}</td>
-            <td>${d.ultimo === 0 ? '<span style="color:var(--muted)">—</span>' : fmt(d.ultimo,2)}</td>
-            <td>${d.subtotal === 0 ? '<span style="color:var(--muted)">—</span>' : fmt(d.subtotal,2)}</td>
-            <td class="${d.resultado >= 0 ? 'positive' : 'negative'}">${(d.resultado>=0?'+':'')}${fmt(d.resultado,2)}</td>
-            <td class="${d.pct >= 0 ? 'positive' : 'negative'}">${d.pct===-1?'<span style="color:var(--red)">-100%</span>':(d.pct>=0?'+':'')+fmt(d.pct*100,1)+'%'}</td>
-          </tr>
-        `).join('')}
-        <tr class="total-row">
-          <td>TOTAL</td>
-          <td>—</td>
-          <td>—</td>
-          <td>${fmt(totalInvestido,2)}</td>
-          <td>—</td>
-          <td>${fmt(totalAtual,2)}</td>
-          <td class="${totalResult>=0?'positive':'negative'}">${(totalResult>=0?'+':'')}${fmt(totalResult,2)}</td>
-          <td class="${pctGeral>=0?'positive':'negative'}">${(pctGeral>=0?'+':'')}${fmt(pctGeral*100,1)}%</td>
-        </tr>
-      </tbody>
-    </table>
-  `;
-  tableWrap.appendChild(scroll2);
-  frag.appendChild(tableWrap);
-
+  // Total
+  const ttr=document.createElement('tr'); ttr.className='total-row';
+  ttr.innerHTML=`<td>TOTAL</td><td>—</td><td>—</td><td>${fmt(tI,2)}</td><td>—</td><td>${fmt(tA,2)}</td>
+    <td class="${tR>=0?'positive':'negative'}">${(tR>=0?'+':'')}${fmt(tR,2)}</td>
+    <td class="${pG>=0?'positive':'negative'}">${(pG>=0?'+':'')}${fmt(pG*100,1)}%</td>`;
+  tbody.appendChild(ttr);
+  tbl.appendChild(tbody); sc2.appendChild(tbl); tw.appendChild(sc2); frag.appendChild(tw);
   return frag;
 }
 
-function renderActionView() {
-  const frag = document.createDocumentFragment();
+// ── POR AÇÃO ──────────────────────────────────────────
+function renderActionView(){
+  const frag=document.createDocumentFragment();
+  const vis=investimentos.filter(i=>allInvestors.includes(i.inv)&&i.ultimo&&i.ultimo!==0);
+  const byA={};
+  vis.forEach(i=>{if(!byA[i.acao]) byA[i.acao]=[];byA[i.acao].push(i);});
 
-  // Only positions from selected investors with a valid ultimo price
-  const visibleInv = investimentos.filter(i => allInvestors.includes(i.inv) && i.ultimo && i.ultimo !== 0);
+  const st=document.createElement('div'); st.className='section-title'; st.style.marginTop='4px';
+  st.textContent=`${Object.keys(byA).length} Ações em Carteira`; frag.appendChild(st);
 
-  // Group by action
-  const byAction = {};
-  visibleInv.forEach(i => {
-    if (!byAction[i.acao]) byAction[i.acao] = [];
-    byAction[i.acao].push(i);
+  const sorted=Object.entries(byA).sort((a,b)=>{
+    const aN=nunamAcoes.has(a[0]),bN=nunamAcoes.has(b[0]);
+    if(aN!==bN) return aN?1:-1;
+    return a[0].localeCompare(b[0],'pt-BR');
   });
 
-  const secTitle = document.createElement('div');
-  secTitle.className = 'section-title';
-  secTitle.style.marginTop = '4px';
-  secTitle.textContent = `${Object.keys(byAction).length} Ações em Carteira`;
-  frag.appendChild(secTitle);
+  sorted.forEach(([acao,rows])=>{
+    const tR=rows.reduce((s,i)=>s+(i.resultado||0),0);
+    const tI=rows.reduce((s,i)=>s+(i.total||0),0);
+    const tS=rows.reduce((s,i)=>s+(i.subtotal||0),0);
+    const isNam=nunamAcoes.has(acao);
+    const cur=isNam?'$':'R$';
+    const bal=balanco[acao]||{};
+    const ordem=bal.o&&bal.o!==0?bal.o:null;
+    const exDiv=exDividendos[acao]||null;
+    const ult=rows[0].ultimo;
 
-  // Sort: BRL actions (non-NUNAM) alphabetically first, then NUNAM actions alphabetically
-  const sorted = Object.entries(byAction).sort((a,b) => {
-    const aIsNunam = nunamAcoes.has(a[0]);
-    const bIsNunam = nunamAcoes.has(b[0]);
-    if (aIsNunam !== bIsNunam) return aIsNunam ? 1 : -1;
-    return a[0].localeCompare(b[0], 'pt-BR');
-  });
-
-  sorted.forEach(([acao, rows]) => {
-    const totalRes = rows.reduce((s,i) => s+(i.resultado||0), 0);
-    const totalInv = rows.reduce((s,i) => s+(i.total||0), 0);
-    const totalSub = rows.reduce((s,i) => s+(i.subtotal||0), 0);
-    const isNunamAcao = nunamAcoes.has(acao);
-    const cur = isNunamAcao ? '$' : 'R$';
-
-    // Balanço info
-    const bal = balanco[acao] || {};
-    const ordem = bal.ordem && bal.ordem !== 0 ? bal.ordem : null;
-    const dataBalanco = bal.dataBalanco || null;
-
-    // Resultado previsto: calculated per investor row using their compra price
-    const group = document.createElement('div');
-    group.className = 'action-group';
-
-    const header = document.createElement('div');
-    header.className = 'action-header';
-    header.innerHTML = `
+    const grp=document.createElement('div'); grp.className='action-group';
+    const hdr=document.createElement('div'); hdr.className='action-header';
+    hdr.innerHTML=`
       <div class="action-name">${acao}</div>
-      <div class="action-meta">
-        <div class="action-result ${totalRes>=0?'positive':'negative'}" style="color:${totalRes>=0?'var(--green)':'var(--red)'}">${(totalRes>=0?'+':'')+(cur)+' '+fmt(totalRes)}</div>
-        <div class="chevron">▼</div>
-      </div>
-    `;
+      <div style="display:flex;gap:12px;align-items:center;">
+        <span style="font-family:'DM Mono',monospace;font-size:13px;color:${tR>=0?'var(--green)':'var(--red)'}">${(tR>=0?'+':'')+cur+' '+fmt(tR)}</span>
+        <span class="chevron">▼</span>
+      </div>`;
+    const body=document.createElement('div'); body.className='action-body'; body.style.display='none';
 
-    const body = document.createElement('div');
-    body.className = 'action-body';
-    body.style.display = 'none';
+    // Info bar
+    const ib=document.createElement('div'); ib.className='info-bar';
+    ib.innerHTML=`<span style="color:var(--muted)">Último: <span style="color:var(--accent);font-weight:600">${fmt(ult,2)}</span></span>`;
+    if(bal.db) ib.innerHTML+=`<span style="color:var(--muted)">📅 Balanço: <span style="color:var(--text)">${bal.db}</span></span>`;
+    if(exDiv) ib.innerHTML+=`<span style="color:var(--muted)">💰 Ex-Div: <span style="color:var(--yellow)">${exDiv.d} · ${cur} ${fmt(exDiv.v,4)}</span></span>`;
+    body.appendChild(ib);
 
-    // Info bar at top: Último + Data Balanço
-    const ultimoRef = rows[0].ultimo; // same for all rows of same action
-    const infoBar = document.createElement('div');
-    infoBar.style.cssText = 'padding:8px 16px 0;display:flex;gap:16px;flex-wrap:wrap;font-size:11px;font-family:"DM Mono",monospace;';
-    infoBar.innerHTML = `<span style="color:var(--muted)">Último: <span style="color:var(--accent);font-weight:600">${fmt(ultimoRef,2)}</span></span>`;
-    if (dataBalanco) {
-      infoBar.innerHTML += `<span style="color:var(--muted)">📅 Balanço: <span style="color:var(--text)">${dataBalanco}</span></span>`;
-    }
-    body.appendChild(infoBar);
-
-    const investorList = document.createElement('div');
-    investorList.className = 'action-investors';
-
-    rows.forEach(r => {
-      // Resultado previsto = (ordem - compra) / compra
-      const resPrevisto = ordem && r.compra > 0 ? ((ordem - r.compra) / r.compra) * 100 : null;
-      const row = document.createElement('div');
-      row.className = 'investor-row';
-      row.innerHTML = `
+    const il=document.createElement('div'); il.className='action-investors';
+    rows.forEach(r=>{
+      const ord=(ordens[r.inv]||{})[acao]||{};
+      const rp=ordem&&r.compra>0?((ordem-r.compra)/r.compra)*100:null;
+      const row=document.createElement('div'); row.className='investor-row';
+      row.innerHTML=`
         <div class="inv-name">${r.inv}</div>
         <div class="inv-data">
           <span>Qtde: ${fmt(r.qtde,0)}</span>
           <span>Compra: ${fmt(r.compra,2)}</span>
           <span>Total: ${cur} ${fmt(r.total,2)}</span>
-          <span>Subtotal: ${r.subtotal===0?'—':cur+' '+fmt(r.subtotal,2)}</span>
+          <span>Subtotal: ${cur} ${fmt(r.subtotal,2)}</span>
           <span class="${r.resultado>=0?'positive':'negative'}" style="color:${r.resultado>=0?'var(--green)':'var(--red)'}">Res: ${(r.resultado>=0?'+':'')+fmt(r.resultado,2)}</span>
           <span class="${r.pct>=0?'positive':'negative'}" style="color:${r.pct>=0?'var(--green)':'var(--red)'}">${r.pct===-1?'-100%':(r.pct>=0?'+':'')+fmt(r.pct*100,1)+'%'}</span>
-          ${ordem ? `<span style="color:var(--muted)">Ordem: <span style="color:var(--accent)">${cur} ${fmt(ordem,2)}</span></span>` : ''}
-          ${resPrevisto !== null ? `<span style="color:var(--yellow)">Prev: ${resPrevisto>=0?'+':''}${fmt(resPrevisto,2)}%</span>` : ''}
-        </div>
-      `;
-      investorList.appendChild(row);
+          ${ord.lb?`<span style="color:var(--green)">🟢 ${ord.lb} (${ord.lbd}d)</span>`:''}
+          ${ord.ls?`<span style="color:var(--orange)">🔴 ${ord.ls} (${ord.lsd}d)</span>`:''}
+          ${ordem?`<span style="color:var(--muted)">Ordem: <span style="color:var(--accent)">${cur} ${fmt(ordem,2)}</span></span>`:''}
+          ${rp!==null?`<span style="color:var(--yellow)">Prev: ${rp>=0?'+':''}${fmt(rp,2)}%</span>`:''}
+        </div>`;
+      il.appendChild(row);
     });
 
-    // Total row for action
-    if (rows.length > 1) {
-      const tot = document.createElement('div');
-      tot.className = 'investor-row';
-      tot.style.fontWeight = '700';
-      tot.innerHTML = `
+    if(rows.length>1){
+      const tot=document.createElement('div'); tot.className='investor-row'; tot.style.fontWeight='700';
+      const pT=tI>0?((tR/tI)*100):0;
+      tot.innerHTML=`
         <div class="inv-name" style="color:var(--muted)">TOTAL</div>
         <div class="inv-data">
-          <span style="color:var(--text)">Inv: ${cur} ${fmt(totalInv)}</span>
-          <span style="color:var(--text)">Atual: ${cur} ${fmt(totalSub)}</span>
-          <span class="${totalRes>=0?'positive':'negative'}" style="color:${totalRes>=0?'var(--green)':'var(--red)'}">Res: ${(totalRes>=0?'+':'')+fmt(totalRes)}</span>
-          <span class="${totalRes>=0?'positive':'negative'}" style="color:${totalRes>=0?'var(--green)':'var(--red)'}">${totalInv>0?(totalRes>=0?'+':'')+fmt((totalRes/totalInv)*100,1)+'%':'—'}</span>
-        </div>
-      `;
-      investorList.appendChild(tot);
+          <span style="color:var(--text)">Inv: ${cur} ${fmt(tI)}</span>
+          <span style="color:var(--text)">Atual: ${cur} ${fmt(tS)}</span>
+          <span class="${tR>=0?'positive':'negative'}" style="color:${tR>=0?'var(--green)':'var(--red)'}">Res: ${(tR>=0?'+':'')+fmt(tR)}</span>
+          <span class="${pT>=0?'positive':'negative'}" style="color:${pT>=0?'var(--green)':'var(--red)'}">${(pT>=0?'+':'')+fmt(pT,1)}%</span>
+        </div>`;
+      il.appendChild(tot);
     }
 
-    body.appendChild(investorList);
-    group.appendChild(header);
-    group.appendChild(body);
-    frag.appendChild(group);
-
-    let open = false;
-    header.onclick = () => {
-      open = !open;
-      body.style.display = open ? 'block' : 'none';
-      header.querySelector('.chevron').style.transform = open ? 'rotate(180deg)' : '';
+    body.appendChild(il); grp.appendChild(hdr); grp.appendChild(body); frag.appendChild(grp);
+    let open=false;
+    hdr.onclick=()=>{
+      open=!open; body.style.display=open?'block':'none';
+      hdr.querySelector('.chevron').style.transform=open?'rotate(180deg)':'';
     };
   });
+  return frag;
+}
 
+// ── VENDAS REALIZADAS ────────────────────────────────
+function renderVendasView(){
+  const frag=document.createDocumentFragment();
+  const st=document.createElement('div'); st.className='section-title'; st.style.marginTop='4px';
+  st.textContent='Vendas Realizadas por Investidor'; frag.appendChild(st);
+
+  allInvestors.forEach(inv=>{
+    const vendas=vendasRealizadas[inv]||[];
+    if(!vendas.length) return;
+    const isN=inv==='NUNAM'; const cur=isN?'$':'R$';
+    const tR=vendas.reduce((s,v)=>s+v.r,0);
+    const tC=vendas.reduce((s,v)=>s+v.ct,0);
+    const tV=vendas.reduce((s,v)=>s+v.vt,0);
+    const pT=tC>0?((tR/tC)*100):0;
+
+    const blk=document.createElement('div'); blk.className='vendas-block';
+    const ih=document.createElement('div'); ih.className='vendas-inv-header';
+    ih.innerHTML=`
+      <div class="vendas-inv-name">${inv}</div>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <span style="font-family:'DM Mono',monospace;font-size:12px;color:${tR>=0?'var(--green)':'var(--red)'}">
+          ${tR>=0?'+':''}${cur} ${fmt(tR)} · ${(pT>=0?'+':'')+fmt(pT,2)}% · ${vendas.length} ops
+        </span>
+        <span class="chevron">▼</span>
+      </div>`;
+
+    const bd=document.createElement('div'); bd.className='vendas-body';
+    const sc=document.createElement('div'); sc.className='table-scroll';
+    const tbl=document.createElement('table');
+    tbl.innerHTML=`<thead><tr>
+      <th>Ação</th><th>Data</th><th>Qtde</th>
+      <th>Compra Unit.</th><th>Compra Total</th>
+      <th>Venda Unit.</th><th>Venda Total</th>
+      <th>Resultado</th><th>%</th>
+    </tr></thead>`;
+    const tbody=document.createElement('tbody');
+    vendas.forEach(v=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td>${v.a}</td>
+        <td style="text-align:right;color:var(--muted)">${v.d}</td>
+        <td>${fmt(v.q,0)}</td>
+        <td>${fmt(v.cu,2)}</td><td>${fmt(v.ct,2)}</td>
+        <td>${fmt(v.vu,2)}</td><td>${fmt(v.vt,2)}</td>
+        <td class="${v.r>=0?'positive':'negative'}">${(v.r>=0?'+':'')}${fmt(v.r,2)}</td>
+        <td class="${v.p>=0?'positive':'negative'}">${(v.p>=0?'+':'')}${fmt(v.p,2)}%</td>`;
+      tbody.appendChild(tr);
+    });
+    const ttr=document.createElement('tr'); ttr.className='total-row';
+    ttr.innerHTML=`<td>TOTAL</td><td>—</td><td>—</td><td>—</td>
+      <td>${fmt(tC,2)}</td><td>—</td><td>${fmt(tV,2)}</td>
+      <td class="${tR>=0?'positive':'negative'}">${(tR>=0?'+':'')}${fmt(tR,2)}</td>
+      <td class="${pT>=0?'positive':'negative'}">${(pT>=0?'+':'')}${fmt(pT,2)}%</td>`;
+    tbody.appendChild(ttr);
+    tbl.appendChild(tbody); sc.appendChild(tbl); bd.appendChild(sc);
+    blk.appendChild(ih); blk.appendChild(bd); frag.appendChild(blk);
+
+    let open=false;
+    ih.onclick=()=>{
+      open=!open; bd.style.display=open?'block':'none';
+      ih.querySelector('.chevron').style.transform=open?'rotate(180deg)':'';
+    };
+  });
   return frag;
 }
 
 // Init
-document.getElementById('date-display').textContent = new Date().toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric'});
+document.getElementById('date-display').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
 renderContent();
 </script>
 </body>
