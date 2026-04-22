@@ -548,6 +548,23 @@ function renderVendasView(){
   const st=document.createElement('div'); st.className='section-title'; st.style.marginTop='4px';
   st.textContent='Vendas Realizadas por Investidor'; frag.appendChild(st);
 
+  // Month names
+  const meses=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+  // Convert dd/mm/yyyy → {month:0-11, year, sort key}
+  const parseMes = d => {
+    if(!d) return null;
+    const [dd,mm,yy] = d.split('/');
+    return {m:parseInt(mm)-1, y:parseInt(yy), key:yy+mm};
+  };
+
+  // Short date dd/mm/aa
+  const shortDate = d => {
+    if(!d) return '—';
+    const parts = d.split('/');
+    return `${parts[0]}/${parts[1]}/${parts[2].slice(-2)}`;
+  };
+
   allInvestors.forEach(inv=>{
     const vendas=vendasRealizadas[inv]||[];
     if(!vendas.length) return;
@@ -556,6 +573,17 @@ function renderVendasView(){
     const tC=vendas.reduce((s,v)=>s+v.ct,0);
     const tV=vendas.reduce((s,v)=>s+v.vt,0);
     const pT=tC>0?((tR/tC)*100):0;
+
+    // Group by month
+    const byMonth={};
+    vendas.forEach(v=>{
+      const info=parseMes(v.d);
+      if(!info) return;
+      const key=info.key;
+      if(!byMonth[key]) byMonth[key]={label:`${meses[info.m]}/${info.y}`,items:[],m:info.m,y:info.y};
+      byMonth[key].items.push(v);
+    });
+    const monthKeys=Object.keys(byMonth).sort();
 
     const blk=document.createElement('div'); blk.className='vendas-block';
     const ih=document.createElement('div'); ih.className='vendas-inv-header';
@@ -573,29 +601,62 @@ function renderVendasView(){
     const tbl=document.createElement('table');
     tbl.innerHTML=`<thead><tr>
       <th>Ação</th><th>Data</th><th>Qtde</th>
-      <th>Compra Unit.</th><th>Compra Total</th>
-      <th>Venda Unit.</th><th>Venda Total</th>
+      <th>C.Unit</th><th>C.Total</th>
+      <th>V.Unit</th><th>V.Total</th>
       <th>Resultado</th><th>%</th>
     </tr></thead>`;
     const tbody=document.createElement('tbody');
-    vendas.forEach(v=>{
-      const tr=document.createElement('tr');
-      tr.innerHTML=`
-        <td>${v.a}</td>
-        <td style="text-align:right;color:var(--muted)">${v.d}</td>
-        <td>${fmt(v.q,0)}</td>
-        <td>${fmt(v.cu,2)}</td><td>${fmt(v.ct,2)}</td>
-        <td>${fmt(v.vu,2)}</td><td>${fmt(v.vt,2)}</td>
-        <td class="${v.r>=0?'positive':'negative'}">${(v.r>=0?'+':'')}${fmt(v.r,2)}</td>
-        <td class="${v.p>=0?'positive':'negative'}">${(v.p>=0?'+':'')}${fmt(v.p,2)}%</td>`;
-      tbody.appendChild(tr);
+
+    monthKeys.forEach(key=>{
+      const grp=byMonth[key];
+      // Month header row
+      const mhdr=document.createElement('tr');
+      mhdr.innerHTML=`<td colspan="9" style="
+        text-align:left;color:var(--accent);font-family:'Syne',sans-serif;
+        font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;
+        background:rgba(0,212,255,0.06);padding:6px 12px;border-bottom:1px solid var(--border);
+      ">${grp.label}</td>`;
+      tbody.appendChild(mhdr);
+
+      // Rows for this month
+      let mR=0,mC=0,mV=0;
+      grp.items.forEach(v=>{
+        mR+=v.r; mC+=v.ct; mV+=v.vt;
+        const tr=document.createElement('tr');
+        tr.innerHTML=`
+          <td>${v.a}</td>
+          <td style="text-align:right;color:var(--muted)">${shortDate(v.d)}</td>
+          <td>${fmt(v.q,0)}</td>
+          <td>${fmt(v.cu,2)}</td><td>${fmt(v.ct,2)}</td>
+          <td>${fmt(v.vu,2)}</td><td>${fmt(v.vt,2)}</td>
+          <td class="${v.r>=0?'positive':'negative'}">${(v.r>=0?'+':'')}${fmt(v.r,2)}</td>
+          <td class="${v.p>=0?'positive':'negative'}">${(v.p>=0?'+':'')}${fmt(v.p,2)}%</td>`;
+        tbody.appendChild(tr);
+      });
+
+      // Monthly subtotal row
+      const mpct=mC>0?((mR/mC)*100):0;
+      const mtr=document.createElement('tr');
+      mtr.style.cssText='background:rgba(0,0,0,0.2);';
+      mtr.innerHTML=`
+        <td style="color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;">Subtotal ${grp.label}</td>
+        <td>—</td><td>—</td><td>—</td>
+        <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;">${fmt(mC,2)}</td>
+        <td>—</td>
+        <td style="text-align:right;font-family:'DM Mono',monospace;font-size:12px;">${fmt(mV,2)}</td>
+        <td class="${mR>=0?'positive':'negative'}" style="font-weight:700;">${(mR>=0?'+':'')}${fmt(mR,2)}</td>
+        <td class="${mpct>=0?'positive':'negative'}" style="font-weight:700;">${(mpct>=0?'+':'')}${fmt(mpct,2)}%</td>`;
+      tbody.appendChild(mtr);
     });
+
+    // Grand total
     const ttr=document.createElement('tr'); ttr.className='total-row';
-    ttr.innerHTML=`<td>TOTAL</td><td>—</td><td>—</td><td>—</td>
+    ttr.innerHTML=`<td>TOTAL GERAL</td><td>—</td><td>—</td><td>—</td>
       <td>${fmt(tC,2)}</td><td>—</td><td>${fmt(tV,2)}</td>
       <td class="${tR>=0?'positive':'negative'}">${(tR>=0?'+':'')}${fmt(tR,2)}</td>
       <td class="${pT>=0?'positive':'negative'}">${(pT>=0?'+':'')}${fmt(pT,2)}%</td>`;
     tbody.appendChild(ttr);
+
     tbl.appendChild(tbody); sc.appendChild(tbl); bd.appendChild(sc);
     blk.appendChild(ih); blk.appendChild(bd); frag.appendChild(blk);
 
