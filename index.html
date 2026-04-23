@@ -110,6 +110,7 @@
     <button class="toggle-btn active" onclick="setView('investor')">Por Investidor</button>
     <button class="toggle-btn" onclick="setView('action')">Por Ação</button>
     <button class="toggle-btn" onclick="setView('vendas')">Vendas</button>
+    <button class="toggle-btn" onclick="setView('pregao')">Pregão Online</button>
   </div>
 </div>
 <div class="container"><div id="app-content"></div></div>
@@ -315,7 +316,7 @@ const fmt=(n,d=2)=>{
 function setView(v){
   currentView=v;
   document.querySelectorAll('.toggle-btn').forEach((b,i)=>
-    b.classList.toggle('active',(i===0&&v==='investor')||(i===1&&v==='action')||(i===2&&v==='vendas')));
+    b.classList.toggle('active',(i===0&&v==='investor')||(i===1&&v==='action')||(i===2&&v==='vendas')||(i===3&&v==='pregao')));
   renderContent();
 }
 function selectInvestor(inv){selectedInvestor=inv;renderContent();}
@@ -324,7 +325,245 @@ function renderContent(){
   el.innerHTML=''; el.className='fade-in'; void el.offsetWidth;
   if(currentView==='investor') el.appendChild(renderInvestorView());
   else if(currentView==='action') el.appendChild(renderActionView());
-  else el.appendChild(renderVendasView());
+  else if(currentView==='vendas') el.appendChild(renderVendasView());
+  else renderPregaoView(el);
+}
+
+// ── PREGÃO ONLINE ─────────────────────────────────────
+// Ticker mapping: ação → Yahoo Finance symbol
+const tickerMap = {
+  // BR stocks → Brapi
+  "ANIM3":"ANIM3","PETR3":"PETR3","PETR4":"PETR4","PRIO3":"PRIO3",
+  "VLID3":"VLID3","VULC3":"VULC3","WEGE3":"WEGE3","BBSE3":"BBSE3",
+  // USD stocks → Yahoo Finance (via allorigins proxy)
+  "OURO UBS":"GLD","VALE CS":"VALE","CERT":"CERT","COP":"COP",
+  "CVX":"CVX","FEVR":"FEVR.L","FEVR CS":"FEVR.L","HPQ":"HPQ",
+  "ORCL CS":"ORCL","BKI":"BKI",
+};
+
+const brStocks = new Set(["ANIM3","PETR3","PETR4","PRIO3","VLID3","VULC3","WEGE3","BBSE3"]);
+
+// Cache to avoid re-fetching during the session
+const priceCache = {};
+
+async function fetchBrapi(tickers){
+  const list = [...new Set(tickers)].join(',');
+  try {
+    const res = await fetch(`https://brapi.dev/api/quote/${list}?fundamental=false`);
+    const json = await res.json();
+    const out = {};
+    (json.results||[]).forEach(r => { out[r.symbol] = r.regularMarketPrice; });
+    return out;
+  } catch(e){ return {}; }
+}
+
+async function fetchYahoo(tickers){
+  const out = {};
+  await Promise.all(tickers.map(async t => {
+    try {
+      const url = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${t}?interval=1d&range=1d`)}`;
+      const res = await fetch(url);
+      const json = await res.json();
+      const data = JSON.parse(json.contents);
+      const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+      if(price) out[t] = price;
+    } catch(e){}
+  }));
+  return out;
+}
+
+async function fetchAllPrices(acoes){
+  const brList = [], usdList = [];
+  acoes.forEach(a => {
+    const sym = tickerMap[a];
+    if(!sym || priceCache[a] !== undefined) return;
+    if(brStocks.has(a)) brList.push(sym);
+    else usdList.push(sym);
+  });
+
+  const [brPrices, usdPrices] = await Promise.all([
+    brList.length ? fetchBrapi(brList) : {},
+    usdList.length ? fetchYahoo(usdList) : {},
+  ]);
+
+  // Map back to ação name
+  acoes.forEach(a => {
+    if(priceCache[a] !== undefined) return;
+    const sym = tickerMap[a];
+    if(!sym) return;
+    const price = brStocks.has(a) ? brPrices[sym] : usdPrices[sym];
+    if(price !== undefined) priceCache[a] = price;
+  });
+}
+
+function renderPregaoView(container){
+  const frag = document.createDocumentFragment();
+
+  // Status bar
+  const statusBar = document.createElement('div');
+  statusBar.style.cssText = 'display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;margin-top:4px;';
+  statusBar.innerHTML = `
+    <div class="section-title" style="margin:0;flex:1;">Pregão Online</div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <span id="pregao-status" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);">Carregando...</span>
+      <button onclick="refreshPregao()" style="background:var(--accent);color:var(--bg);border:none;border-radius:8px;padding:6px 12px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">↻ Atualizar</button>
+    </div>`;
+  frag.appendChild(statusBar);
+
+  // Note about market hours
+  const note = document.createElement('div');
+  note.style.cssText = 'font-size:11px;color:var(--muted);margin-bottom:16px;font-family:"DM Mono",monospace;';
+  note.textContent = '⚠️ Cotações com possível atraso de 15 min. Mercado BR: 10h–17h | EUA: 14h30–21h (horário Brasília)';
+  frag.appendChild(note);
+
+  // Build investor sections
+  allInvestors.forEach(inv => {
+    const data = investimentos.filter(i => i.inv === inv && i.ultimo && i.ultimo !== 0);
+    if(!data.length) return;
+    const isN = inv === 'NUNAM';
+    const cur = isN ? '$' : 'R$';
+
+    const section = document.createElement('div');
+    section.style.marginBottom = '20px';
+
+    // Investor header
+    const hdr = document.createElement('div');
+    hdr.style.cssText = 'background:var(--surface2);border:1px solid var(--border);border-radius:12px 12px 0 0;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;';
+    hdr.innerHTML = `
+      <span style="font-size:14px;font-weight:700;color:var(--accent);">${inv}</span>
+      <span id="total-${inv.replace(/\s/g,'_')}" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);">calculando...</span>`;
+    section.appendChild(hdr);
+
+    // Table
+    const tableWrap = document.createElement('div');
+    tableWrap.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;overflow:hidden;';
+    const scroll = document.createElement('div');
+    scroll.className = 'table-scroll';
+
+    const tbl = document.createElement('table');
+    tbl.innerHTML = `<thead><tr>
+      <th style="text-align:left;">Ação</th>
+      <th>Qtde</th>
+      <th>Compra</th>
+      <th>Último</th>
+      <th>Resultado ${cur}</th>
+      <th>%</th>
+    </tr></thead>`;
+
+    const tbody = document.createElement('tbody');
+    tbody.id = `tbody-${inv.replace(/\s/g,'_')}`;
+
+    // Placeholder rows while loading
+    [...data].sort((a,b)=>a.acao.localeCompare(b.acao,'pt-BR')).forEach(d => {
+      const tr = document.createElement('tr');
+      tr.id = `row-${inv.replace(/\s/g,'_')}-${d.acao.replace(/\s/g,'_')}`;
+      tr.innerHTML = `
+        <td>${d.acao}</td>
+        <td>${fmt(d.qtde,0)}</td>
+        <td>${fmt(d.compra,2)}</td>
+        <td><span style="color:var(--muted);font-size:11px;">...</span></td>
+        <td>—</td>
+        <td>—</td>`;
+      tbody.appendChild(tr);
+    });
+
+    tbl.appendChild(tbody);
+    scroll.appendChild(tbl);
+    tableWrap.appendChild(scroll);
+    section.appendChild(tableWrap);
+    frag.appendChild(section);
+  });
+
+  container.appendChild(frag);
+
+  // Now fetch prices and update
+  loadPregaoData(container);
+}
+
+async function loadPregaoData(container){
+  const allAcoes = [...new Set(
+    investimentos
+      .filter(i => allInvestors.includes(i.inv) && i.ultimo && i.ultimo !== 0)
+      .map(i => i.acao)
+  )];
+
+  try {
+    await fetchAllPrices(allAcoes);
+  } catch(e){}
+
+  const now = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const statusEl = document.getElementById('pregao-status');
+  if(statusEl) statusEl.textContent = `Atualizado às ${now}`;
+
+  // Update each row
+  allInvestors.forEach(inv => {
+    const data = investimentos.filter(i => i.inv === inv && i.ultimo && i.ultimo !== 0)
+                              .sort((a,b)=>a.acao.localeCompare(b.acao,'pt-BR'));
+    if(!data.length) return;
+    const isN = inv === 'NUNAM';
+    const cur = isN ? '$' : 'R$';
+    const invKey = inv.replace(/\s/g,'_');
+
+    let totalRes = 0, totalInv = 0, totalAtual = 0, allLoaded = true;
+
+    data.forEach(d => {
+      const price = priceCache[d.acao];
+      const rowId = `row-${invKey}-${d.acao.replace(/\s/g,'_')}`;
+      const tr = document.getElementById(rowId);
+      if(!tr) return;
+
+      if(price === undefined || price === null){
+        allLoaded = false;
+        tr.innerHTML = `
+          <td>${d.acao}</td>
+          <td>${fmt(d.qtde,0)}</td>
+          <td>${fmt(d.compra,2)}</td>
+          <td><span style="color:var(--red);font-size:11px;">N/D</span></td>
+          <td>—</td><td>—</td>`;
+        return;
+      }
+
+      const res = (price - d.compra) * d.qtde;
+      const pct = d.compra > 0 ? ((price - d.compra) / d.compra) * 100 : 0;
+      const posInv = d.compra * d.qtde;
+      const posAtual = price * d.qtde;
+      totalRes += res; totalInv += posInv; totalAtual += posAtual;
+
+      const rColor = res >= 0 ? 'var(--green)' : 'var(--red)';
+      const pColor = pct >= 0 ? 'var(--green)' : 'var(--red)';
+
+      // Trend indicator vs stored último
+      const diff = price - d.ultimo;
+      const trend = diff > 0 ? '▲' : diff < 0 ? '▼' : '●';
+      const tColor = diff > 0 ? 'var(--green)' : diff < 0 ? 'var(--red)' : 'var(--muted)';
+
+      tr.innerHTML = `
+        <td>${d.acao}</td>
+        <td>${fmt(d.qtde,0)}</td>
+        <td>${fmt(d.compra,2)}</td>
+        <td style="font-weight:600;">${fmt(price,2)} <span style="color:${tColor};font-size:10px;">${trend}</span></td>
+        <td style="color:${rColor};font-weight:600;">${res>=0?'+':''}${fmt(res,2)}</td>
+        <td style="color:${pColor};font-weight:600;">${pct>=0?'+':''}${fmt(pct,2)}%</td>`;
+    });
+
+    // Update investor total
+    const totalEl = document.getElementById(`total-${invKey}`);
+    if(totalEl && totalInv > 0){
+      const totalPct = ((totalAtual - totalInv) / totalInv) * 100;
+      const tColor = totalRes >= 0 ? 'var(--green)' : 'var(--red)';
+      totalEl.innerHTML = `<span style="color:${tColor};font-weight:700;">${totalRes>=0?'+':''}${cur} ${fmt(totalRes)} &nbsp; ${totalRes>=0?'+':''}${fmt(totalPct,2)}%</span>`;
+    } else if(totalEl && !allLoaded){
+      totalEl.textContent = 'cotações parciais';
+    }
+  });
+}
+
+// Global refresh function
+function refreshPregao(){
+  // Clear cache to force re-fetch
+  Object.keys(priceCache).forEach(k => delete priceCache[k]);
+  const el = document.getElementById('app-content');
+  if(el){ el.innerHTML=''; renderPregaoView(el); }
 }
 
 // ── POR INVESTIDOR ────────────────────────────────────
