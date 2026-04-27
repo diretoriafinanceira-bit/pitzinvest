@@ -111,6 +111,7 @@
     <button class="toggle-btn" onclick="setView('action')">Por Ação</button>
     <button class="toggle-btn" onclick="setView('vendas')">Vendas</button>
     <button class="toggle-btn" onclick="setView('pregao')">Pregão Online</button>
+    <button class="toggle-btn" onclick="setView('historico')">Histórico</button>
   </div>
 </div>
 <div class="container"><div id="app-content"></div></div>
@@ -119,46 +120,46 @@
 // ── DATA ──────────────────────────────────────────────
 const investimentos = [
   // LEONILDES XP
-  {inv:"LEONILDES XP",acao:"ANIM3",qtde:266500, compra:4.221314, total:1124980.05, ultimo:4.13,  subtotal:1100645,   resultado:-25026.16,  pct:-0.022232},
-  {inv:"LEONILDES XP",acao:"PETR3",qtde:146000, compra:53.2051,  total:7767944.6,  ultimo:52.24, subtotal:7627040,   resultado:-145825.13, pct:-0.018761},
-  {inv:"LEONILDES XP",acao:"PETR4",qtde:160000, compra:48.33525, total:7733640,    ultimo:47.16, subtotal:7545600,   resultado:-192923.42, pct:-0.024930},
-  {inv:"LEONILDES XP",acao:"PRIO3",qtde:32000,  compra:64.51842, total:2064589.44, ultimo:62.63, subtotal:2004160,   resultado:-61741.47,  pct:-0.029886},
-  {inv:"LEONILDES XP",acao:"VLID3",qtde:59000,  compra:21.568,   total:1272512,    ultimo:19.85, subtotal:1171150,   resultado:-102175.93, pct:-0.080243},
-  {inv:"LEONILDES XP",acao:"VULC3",qtde:110000, compra:18.83988, total:2072386.8,  ultimo:15.94, subtotal:1753400,   resultado:-320237.30, pct:-0.154433},
+  {inv:"LEONILDES XP",acao:"ANIM3",qtde:266500, compra:4.221314, total:1124980.05, ultimo:4.02,  subtotal:1071330,   resultado:-54332.06,  pct:-0.048267},
+  {inv:"LEONILDES XP",acao:"PETR3",qtde:146000, compra:53.2051,  total:7767944.6,  ultimo:52.42, subtotal:7653320,   resultado:-119553.53, pct:-0.015381},
+  {inv:"LEONILDES XP",acao:"PETR4",qtde:160000, compra:48.33525, total:7733640,    ultimo:47.37, subtotal:7579200,   resultado:-159334.16, pct:-0.020590},
+  {inv:"LEONILDES XP",acao:"PRIO3",qtde:32000,  compra:64.51842, total:2064589.44, ultimo:64.35, subtotal:2059200,   resultado:-6719.21,   pct:-0.003252},
+  {inv:"LEONILDES XP",acao:"VLID3",qtde:59000,  compra:21.568,   total:1272512,    ultimo:19.44, subtotal:1146960,   resultado:-126357.88, pct:-0.099235},
+  {inv:"LEONILDES XP",acao:"VULC3",qtde:110000, compra:18.83988, total:2072386.8,  ultimo:15.78, subtotal:1735800,   resultado:-337831.55, pct:-0.162918},
   {inv:"LEONILDES XP",acao:"AMER3",qtde:52247,  compra:106.289898,total:5553328.29,ultimo:0,     subtotal:0,         resultado:-5554994.98,pct:-1},
-  {inv:"LEONILDES XP",acao:"AZUL4",qtde:14.428831,compra:794243.66915,total:11460007.47,ultimo:0,subtotal:0,         resultado:-11462329.37,pct:-1},
+  {inv:"LEONILDES XP",acao:"AZUL4",qtde:14.428831,compra:794243.66915,total:11460007.47,ultimo:0,subtotal:0,        resultado:-11462329.37,pct:-1},
   {inv:"LEONILDES XP",acao:"MGLU3",qtde:25600,  compra:73.532031,total:1882420,    ultimo:0,     subtotal:0,         resultado:-1882997.26,pct:-1},
   {inv:"LEONILDES XP",acao:"OIBR3",qtde:10514,  compra:200.953697,total:2112827.17,ultimo:0,     subtotal:0,         resultado:-2112734.45,pct:-1},
   {inv:"LEONILDES XP",acao:"OIBR4",qtde:3705,   compra:173.894737,total:644280,    ultimo:0,     subtotal:0,         resultado:-644482.71, pct:-1},
   {inv:"LEONILDES XP",acao:"TASA4",qtde:82060,  compra:17.87982, total:1467218,    ultimo:0,     subtotal:0,         resultado:-1467679.64,pct:-1},
   {inv:"LEONILDES XP",acao:"VIIA3",qtde:10360,  compra:143.210305,total:1483658.76,ultimo:0,     subtotal:0,         resultado:-1483632.54,pct:-1},
   // FRANCINE XP
-  {inv:"FRANCINE XP", acao:"BBSE3",qtde:24000,  compra:38.993387,total:935841.28,  ultimo:34.29, subtotal:822960,    resultado:-113163.90, pct:-0.120886},
-  {inv:"FRANCINE XP", acao:"PETR4",qtde:20000,  compra:46.928315,total:938566.30,  ultimo:47.16, subtotal:943200,    resultado:4368.02,    pct:0.004653},
-  {inv:"FRANCINE XP", acao:"PRIO3",qtde:16000,  compra:63.023209,total:1008371.35, ultimo:62.63, subtotal:1002080,   resultado:-6597.67,   pct:-0.006541},
+  {inv:"FRANCINE XP", acao:"BBSE3",qtde:24000,  compra:38.993387,total:935841.28,  ultimo:33.95, subtotal:814800,    resultado:-121321.10, pct:-0.129600},
+  {inv:"FRANCINE XP", acao:"PETR4",qtde:20000,  compra:46.928315,total:938566.30,  ultimo:47.37, subtotal:947400,    resultado:8566.84,    pct:0.009125},
+  {inv:"FRANCINE XP", acao:"PRIO3",qtde:16000,  compra:63.023209,total:1008371.35, ultimo:64.35, subtotal:1029600,   resultado:20913.92,   pct:0.020734},
   {inv:"FRANCINE XP", acao:"AMER3",qtde:268500, compra:12.098878,total:3248548.83, ultimo:0,     subtotal:0,         resultado:-3248548.83,pct:-1},
   {inv:"FRANCINE XP", acao:"AZUL4",qtde:167016.7,compra:12.751666,total:2129741.20,ultimo:0,     subtotal:0,         resultado:-2129741.20,pct:-1},
   {inv:"FRANCINE XP", acao:"MGLU3",qtde:180000, compra:7.179557, total:1292320.17, ultimo:0,     subtotal:0,         resultado:-1292320.17,pct:-1},
   {inv:"FRANCINE XP", acao:"OIBR3",qtde:14150,  compra:35.70434, total:505216.42,  ultimo:0,     subtotal:0,         resultado:-505216.42, pct:-1},
   {inv:"FRANCINE XP", acao:"TASA3",qtde:25850,  compra:17.938612,total:463713.12,  ultimo:0,     subtotal:0,         resultado:-463713.12, pct:-1},
   // LETICIA XP
-  {inv:"LETICIA XP",  acao:"BBSE3",qtde:14000,  compra:38.98,    total:545720,     ultimo:34.29, subtotal:480060,    resultado:-66016.74,  pct:-0.120893},
-  {inv:"LETICIA XP",  acao:"PETR4",qtde:6000,   compra:46.8707,  total:281224.2,   ultimo:47.16, subtotal:282960,    resultado:1573.06,    pct:0.005590},
-  {inv:"LETICIA XP",  acao:"PRIO3",qtde:16000,  compra:62.95895, total:1007343.2,  ultimo:62.63, subtotal:1002080,   resultado:-5884.13,   pct:-0.005838},
+  {inv:"LETICIA XP",  acao:"BBSE3",qtde:14000,  compra:38.98,    total:545720,     ultimo:33.95, subtotal:475300,    resultado:-70775.09,  pct:-0.129607},
+  {inv:"LETICIA XP",  acao:"PETR4",qtde:6000,   compra:46.8707,  total:281224.2,   ultimo:47.37, subtotal:284220,    resultado:2832.69,    pct:0.010067},
+  {inv:"LETICIA XP",  acao:"PRIO3",qtde:16000,  compra:62.95895, total:1007343.2,  ultimo:64.35, subtotal:1029600,   resultado:21627.37,   pct:0.021456},
   {inv:"LETICIA XP",  acao:"AMER3",qtde:118500, compra:16.012658,total:1897500,    ultimo:0,     subtotal:0,         resultado:-1898114.23,pct:-1},
   {inv:"LETICIA XP",  acao:"AZUL4",qtde:160016, compra:12.199349,total:1952091,    ultimo:0,     subtotal:0,         resultado:-1952747.41,pct:-1},
   {inv:"LETICIA XP",  acao:"ONCO3",qtde:37000,  compra:10.746216,total:397610,     ultimo:0,     subtotal:0,         resultado:-397740.40, pct:-1},
   {inv:"LETICIA XP",  acao:"TASA4",qtde:33000,  compra:17.436364,total:575400,     ultimo:0,     subtotal:0,         resultado:-575400,    pct:-1},
   // NUNAM
   {inv:"NUNAM",acao:"OURO UBS",qtde:2667.43, compra:243.68,   total:649999.34, ultimo:255.02, subtotal:680247.99, resultado:29992.96,  pct:0.046125},
-  {inv:"NUNAM",acao:"VALE CS", qtde:65000,   compra:15.3618,  total:998517,    ultimo:17.17,  subtotal:1116050,   resultado:117533,    pct:0.117708},
-  {inv:"NUNAM",acao:"CERT",    qtde:380000,  compra:2.12,     total:805600,    ultimo:1.91,   subtotal:725800,    resultado:-79800,    pct:-0.099057},
-  {inv:"NUNAM",acao:"COP",     qtde:16000,   compra:121.835,  total:1949360,   ultimo:121.65, subtotal:1946400,   resultado:-2960,     pct:-0.001518},
-  {inv:"NUNAM",acao:"CVX",     qtde:7700,    compra:193.54026,total:1490260,   ultimo:185.16, subtotal:1425732,   resultado:-64528,    pct:-0.043300},
-  {inv:"NUNAM",acao:"FEVR",    qtde:35500,   compra:21.350032,total:757926.15, ultimo:8.42,   subtotal:298910,    resultado:-460604.19,pct:-0.606446},
-  {inv:"NUNAM",acao:"FEVR CS", qtde:5500,    compra:8.92,     total:49060,     ultimo:8.42,   subtotal:46310,     resultado:-2750,     pct:-0.056054},
-  {inv:"NUNAM",acao:"HPQ",     qtde:86000,   compra:24.060698,total:2069220,   ultimo:19.80,  subtotal:1702800,   resultado:-366420,   pct:-0.177081},
-  {inv:"NUNAM",acao:"ORCL CS", qtde:4200,    compra:203.75,   total:855750,    ultimo:173.29, subtotal:727818,    resultado:-127932,   pct:-0.149497},
+  {inv:"NUNAM",acao:"VALE CS", qtde:65000,   compra:15.3618,  total:998517,    ultimo:17.07,  subtotal:1109550,   resultado:111033,    pct:0.111198},
+  {inv:"NUNAM",acao:"CERT",    qtde:380000,  compra:2.12,     total:805600,    ultimo:1.89,   subtotal:718200,    resultado:-87400,    pct:-0.108491},
+  {inv:"NUNAM",acao:"COP",     qtde:16000,   compra:121.835,  total:1949360,   ultimo:121.70, subtotal:1947200,   resultado:-2160,     pct:-0.001108},
+  {inv:"NUNAM",acao:"CVX",     qtde:7700,    compra:193.54026,total:1490260,   ultimo:184.88, subtotal:1423576,   resultado:-66684,    pct:-0.044747},
+  {inv:"NUNAM",acao:"FEVR",    qtde:35500,   compra:21.350032,total:757926.15, ultimo:8.33,   subtotal:295715,    resultado:-463794.39,pct:-0.612065},
+  {inv:"NUNAM",acao:"FEVR CS", qtde:5500,    compra:8.92,     total:49060,     ultimo:8.33,   subtotal:45815,     resultado:-3245,     pct:-0.066143},
+  {inv:"NUNAM",acao:"HPQ",     qtde:86000,   compra:24.060698,total:2069220,   ultimo:19.76,  subtotal:1699360,   resultado:-369860,   pct:-0.178744},
+  {inv:"NUNAM",acao:"ORCL CS", qtde:4200,    compra:203.75,   total:855750,    ultimo:172.99, subtotal:726558,    resultado:-129192,   pct:-0.150969},
   {inv:"NUNAM",acao:"BKI",     qtde:2694000, compra:0.296624, total:799104.30, ultimo:0.095,  subtotal:255930,    resultado:-545991.98,pct:-0.680854},
 ];
 
@@ -180,34 +181,34 @@ const lucrosAcumulados = {
 
 const ordens = {
   "LEONILDES XP": {
-    "ANIM3": {lb:"23/04/2026",lbv:4.18, lbd:5, ls:"20/04/2026",lsv:4.44,lsd:8},
-    "PETR3": {lb:"20/04/2026",lbv:51.85,lbd:8, ls:"23/03/2026",lsv:50.31,lsd:36},
-    "PETR4": {lb:"20/04/2026",lbv:46.94,lbd:8, ls:"23/03/2026",lsv:45.47,lsd:36},
-    "PRIO3": {lb:"20/04/2026",lbv:64.75,lbd:8, ls:"14/04/2026",lsv:66.09,lsd:14},
-    "VLID3": {lb:"17/03/2026",lbv:20.27,lbd:42,ls:null,lsv:null,lsd:null},
-    "VULC3": {lb:"19/01/2026",lbv:18.30,lbd:99,ls:null,lsv:null,lsd:null},
+    "ANIM3": {lb:"23/04/2026",lbv:4.18, lbd:7,  ls:"20/04/2026",lsv:4.44, lsd:10},
+    "PETR3": {lb:"20/04/2026",lbv:51.85,lbd:10, ls:"23/03/2026",lsv:50.31,lsd:38},
+    "PETR4": {lb:"20/04/2026",lbv:46.94,lbd:10, ls:"23/03/2026",lsv:45.47,lsd:38},
+    "PRIO3": {lb:"20/04/2026",lbv:64.75,lbd:10, ls:"14/04/2026",lsv:66.09,lsd:16},
+    "VLID3": {lb:"17/03/2026",lbv:20.27,lbd:44, ls:null,lsv:null,lsd:null},
+    "VULC3": {lb:"19/01/2026",lbv:18.30,lbd:101,ls:null,lsv:null,lsd:null},
   },
   "FRANCINE XP": {
-    "BBSE3": {lb:"12/02/2026",lbv:38.98,lbd:75,ls:"15/05/2024",lsv:34.21,lsd:713},
-    "PETR4": {lb:"20/04/2026",lbv:46.92,lbd:8, ls:"09/03/2026",lsv:43.59,lsd:50},
-    "PRIO3": {lb:"20/04/2026",lbv:61.74,lbd:8, ls:null,lsv:null,lsd:null},
+    "BBSE3": {lb:"12/02/2026",lbv:38.98,lbd:77, ls:"15/05/2024",lsv:34.21,lsd:715},
+    "PETR4": {lb:"20/04/2026",lbv:46.92,lbd:10, ls:"09/03/2026",lsv:43.59,lsd:52},
+    "PRIO3": {lb:"20/04/2026",lbv:61.74,lbd:10, ls:null,lsv:null,lsd:null},
   },
   "LETICIA XP": {
-    "BBSE3": {lb:"12/02/2026",lbv:38.98,lbd:75,ls:"15/05/2024",lsv:34.26,lsd:713},
-    "PETR4": {lb:"20/04/2026",lbv:46.87,lbd:8, ls:"09/03/2026",lsv:43.59,lsd:50},
-    "PRIO3": {lb:"20/04/2026",lbv:61.73,lbd:8, ls:null,lsv:null,lsd:null},
+    "BBSE3": {lb:"12/02/2026",lbv:38.98,lbd:77, ls:"15/05/2024",lsv:34.26,lsd:715},
+    "PETR4": {lb:"20/04/2026",lbv:46.87,lbd:10, ls:"09/03/2026",lsv:43.59,lsd:52},
+    "PRIO3": {lb:"20/04/2026",lbv:61.73,lbd:10, ls:null,lsv:null,lsd:null},
   },
   "NUNAM": {
-    "OURO UBS": {lb:"27/03/2026",lbv:243.68,lbd:32,  ls:null,         lsv:null,  lsd:null},
-    "VALE CS":  {lb:"10/03/2026",lbv:15.36, lbd:49,  ls:null,         lsv:null,  lsd:null},
-    "CERT":     {lb:"23/01/2026",lbv:2.12,  lbd:95,  ls:"18/12/2025", lsv:1.65,  lsd:131},
-    "COP":      {lb:"24/04/2026",lbv:121.76,lbd:4,   ls:null,         lsv:null,  lsd:null},
-    "CVX":      {lb:"09/04/2026",lbv:191.05,lbd:19,  ls:"16/03/2026", lsv:196.00,lsd:43},
-    "FEVR":     {lb:"28/01/2022",lbv:20.35, lbd:1551,ls:"07/12/2021", lsv:26.96, lsd:1603},
-    "FEVR CS":  {lb:"22/01/2026",lbv:8.92,  lbd:96,  ls:null,         lsv:null,  lsd:null},
-    "HPQ":      {lb:"08/01/2026",lbv:21.39, lbd:110, ls:"28/08/2025", lsv:28.81, lsd:243},
-    "ORCL CS":  {lb:"13/01/2026",lbv:203.75,lbd:105, ls:null,         lsv:null,  lsd:null},
-    "BKI":      {lb:"22/09/2021",lbv:0.27,  lbd:1679,ls:"13/07/2021", lsv:0.47,  lsd:1750},
+    "OURO UBS": {lb:"27/03/2026",lbv:243.68,lbd:34,  ls:null,         lsv:null,  lsd:null},
+    "VALE CS":  {lb:"10/03/2026",lbv:15.36, lbd:51,  ls:null,         lsv:null,  lsd:null},
+    "CERT":     {lb:"23/01/2026",lbv:2.12,  lbd:97,  ls:"18/12/2025", lsv:1.65,  lsd:133},
+    "COP":      {lb:"24/04/2026",lbv:121.76,lbd:6,   ls:null,         lsv:null,  lsd:null},
+    "CVX":      {lb:"09/04/2026",lbv:191.05,lbd:21,  ls:"16/03/2026", lsv:196.00,lsd:45},
+    "FEVR":     {lb:"28/01/2022",lbv:20.35, lbd:1553,ls:"07/12/2021", lsv:26.96, lsd:1605},
+    "FEVR CS":  {lb:"22/01/2026",lbv:8.92,  lbd:98,  ls:null,         lsv:null,  lsd:null},
+    "HPQ":      {lb:"08/01/2026",lbv:21.39, lbd:112, ls:"28/08/2025", lsv:28.81, lsd:245},
+    "ORCL CS":  {lb:"13/01/2026",lbv:203.75,lbd:107, ls:null,         lsv:null,  lsd:null},
+    "BKI":      {lb:"22/09/2021",lbv:0.27,  lbd:1681,ls:"13/07/2021", lsv:0.47,  lsd:1752},
   },
 };
 
@@ -339,7 +340,8 @@ function renderContent(){
   if(currentView==='investor') el.appendChild(renderInvestorView());
   else if(currentView==='action') el.appendChild(renderActionView());
   else if(currentView==='vendas') el.appendChild(renderVendasView());
-  else renderPregaoView(el);
+  else if(currentView==='pregao') renderPregaoView(el);
+  else renderHistoricoView(el);
 }
 
 // ── PREGÃO ONLINE ─────────────────────────────────────
@@ -368,73 +370,88 @@ const tickerMap = {
 
 const priceCache = {};
 
-// Safe fetch with timeout - compatible with all browsers including Safari mobile
+const FINNHUB_TOKEN = 'd7mb2k9r01qk7lvvmb20d7mb2k9r01qk7lvvmb2g';
+const BRAPI_TOKEN = 'ojPMC2vsSvFtcriTX97gGx';
+
+// Safe fetch - no AbortController (Safari mobile compatibility)
 function fetchWithTimeout(url, ms){
-  var ctrl = new AbortController();
-  var timer = setTimeout(function(){ ctrl.abort(); }, ms);
-  return fetch(url, {signal: ctrl.signal}).finally(function(){ clearTimeout(timer); });
+  return Promise.race([
+    fetch(url),
+    new Promise(function(_, reject){
+      setTimeout(function(){ reject(new Error('timeout')); }, ms);
+    })
+  ]);
 }
 
-// Fetch a single Yahoo Finance ticker via multiple CORS proxies
-async function fetchPrice(yhSym){
-  function parseChart(text){
-    var j = JSON.parse(text);
-    var price = j && j.chart && j.chart.result && j.chart.result[0] &&
-                j.chart.result[0].meta && j.chart.result[0].meta.regularMarketPrice;
-    if(!price) throw new Error('no price in response');
-    return price;
-  }
-  function parseAllorigins(text){
-    var w = JSON.parse(text);
-    return parseChart(w.contents);
-  }
-
-  var yhUrl1 = 'https://query1.finance.yahoo.com/v8/finance/chart/' + yhSym + '?interval=1d&range=1d';
-  var yhUrl2 = 'https://query2.finance.yahoo.com/v8/finance/chart/' + yhSym + '?interval=1d&range=1d';
-
-  var proxies = [
-    ['https://corsproxy.io/?' + encodeURIComponent(yhUrl1), parseChart],
-    ['https://corsproxy.io/?' + encodeURIComponent(yhUrl2), parseChart],
-    ['https://api.allorigins.win/get?url=' + encodeURIComponent(yhUrl1), parseAllorigins],
-    ['https://api.allorigins.win/get?url=' + encodeURIComponent(yhUrl2), parseAllorigins],
-    ['https://thingproxy.freeboard.io/fetch/' + yhUrl1, parseChart],
-  ];
-
-  for(var i = 0; i < proxies.length; i++){
-    try {
-      var r = await fetchWithTimeout(proxies[i][0], 12000);
-      if(!r.ok) continue;
-      var text = await r.text();
-      var price = proxies[i][1](text);
-      if(price && price > 0){
-        console.log('OK ' + yhSym + ' via proxy ' + i + ': ' + price);
-        return price;
-      }
-    } catch(e){
-      console.warn(yhSym + ' proxy ' + i + ' failed: ' + e.message);
-    }
-  }
+// Fetch BR stock via Brapi
+async function fetchBrapiPrice(symbol){
+  try {
+    var url = 'https://brapi.dev/api/quote/' + symbol + '?fundamental=false&token=' + BRAPI_TOKEN;
+    var r = await fetchWithTimeout(url, 10000);
+    if(!r.ok) throw new Error('status ' + r.status);
+    var j = await r.json();
+    var price = j && j.results && j.results[0] && j.results[0].regularMarketPrice;
+    if(price) return price;
+  } catch(e){ console.warn('Brapi ' + symbol + ': ' + e.message); }
   return null;
 }
 
+// Fetch USD stock via Finnhub
+async function fetchFinnhubPrice(symbol){
+  try {
+    var url = 'https://finnhub.io/api/v1/quote?symbol=' + symbol + '&token=' + FINNHUB_TOKEN;
+    var r = await fetchWithTimeout(url, 10000);
+    if(!r.ok) throw new Error('status ' + r.status);
+    var j = await r.json();
+    // c = current price, pc = previous close
+    var price = j && j.c && j.c > 0 ? j.c : null;
+    if(price) return price;
+  } catch(e){ console.warn('Finnhub ' + symbol + ': ' + e.message); }
+  return null;
+}
+
+// Fetch price for any stock: BR uses Brapi, USD uses Finnhub
+async function fetchPrice(sym){
+  // BR stocks end in .SA
+  if(sym && sym.endsWith('.SA')){
+    var brSym = sym.replace('.SA','');
+    return await fetchBrapiPrice(brSym);
+  } else {
+    return await fetchFinnhubPrice(sym);
+  }
+}
+
 async function fetchAllPrices(acoes){
-  // Deduplicate Yahoo symbols (FEVR and FEVR CS both map to FEVR.L)
   var fetched = {};
   for(var i = 0; i < acoes.length; i++){
     var acao = acoes[i];
     if(priceCache[acao] !== undefined) continue;
-    var yhSym = tickerMap[acao];
-    if(!yhSym){ console.warn('No ticker for: ' + acao); continue; }
+    var sym = tickerMap[acao];
+    if(!sym){ console.warn('No ticker for: ' + acao); continue; }
 
-    // Reuse if same yh symbol already fetched
-    if(fetched[yhSym] !== undefined){
-      priceCache[acao] = fetched[yhSym];
+    // Reuse if same symbol already fetched (e.g. FEVR and FEVR CS share FEVR.L)
+    if(fetched[sym] !== undefined){
+      priceCache[acao] = fetched[sym];
       continue;
     }
 
-    var price = await fetchPrice(yhSym);
-    fetched[yhSym] = price;
+    var price = null;
+    if(sym.endsWith('.SA')){
+      // BR stock → Brapi (strip .SA)
+      price = await fetchBrapiPrice(sym.replace('.SA',''));
+    } else if(sym.endsWith('.L')){
+      // London stock → Finnhub with exchange prefix
+      price = await fetchFinnhubPrice('LSE:' + sym.replace('.L',''));
+      // Fallback: try without prefix
+      if(price === null) price = await fetchFinnhubPrice(sym);
+    } else {
+      // US stock → Finnhub
+      price = await fetchFinnhubPrice(sym);
+    }
+
+    fetched[sym] = price;
     if(price !== null) priceCache[acao] = price;
+    console.log('Pregao ' + acao + ' (' + sym + '): ' + price);
   }
 }
 
@@ -954,6 +971,387 @@ function renderVendasView(){
     };
   });
   return frag;
+}
+
+
+// ── HISTÓRICO DE VENDAS POR INVESTIDOR ───────────────
+const historicoVendas = {
+  "LEONILDES XP": [
+    {a:"ABEV3",  d:"25/10/2018",v:15.04},
+    {a:"AMER3",  d:"30/11/2023",v:93.00},
+    {a:"AZUL4",  d:"10/01/2024",v:2284157.36},
+    {a:"BBAS3",  d:"22/08/2025",v:20.03},
+    {a:"BBDC3",  d:"19/01/2026",v:16.18},
+    {a:"BBDC4",  d:"07/08/2024",v:14.05},
+    {a:"BBSE3",  d:"09/04/2026",v:36.28},
+    {a:"BEEF3",  d:"13/01/2020",v:14.14},
+    {a:"BOVA11", d:"09/08/2024",v:126.65},
+    {a:"BRAV3",  d:"14/04/2026",v:20.90},
+    {a:"BRFS3",  d:"23/08/2024",v:25.24},
+    {a:"BRKM5",  d:"06/12/2021",v:64.25},
+    {a:"BTOW3",  d:"06/07/2020",v:114.83},
+    {a:"CCRO3",  d:"05/07/2019",v:13.95},
+    {a:"CIEL3",  d:"13/10/2017",v:22.26},
+    {a:"CMIG4",  d:"27/07/2018",v:8.30},
+    {a:"CMIN3",  d:"30/04/2021",v:10.69},
+    {a:"CSMG3",  d:"11/07/2024",v:20.68},
+    {a:"CSNA3",  d:"26/03/2021",v:34.83},
+    {a:"CURY3",  d:"11/07/2024",v:21.74},
+    {a:"ECOR3",  d:"12/11/2021",v:8.93},
+    {a:"ELET3",  d:"03/08/2022",v:46.93},
+    {a:"EMBR3",  d:"28/03/2022",v:15.16},
+    {a:"FJTA3",  d:"22/04/2020",v:3.74},
+    {a:"FJTA4",  d:"25/06/2020",v:7.39},
+    {a:"GGBR4",  d:"12/11/2025",v:19.10},
+    {a:"GOLL4",  d:"22/03/2022",v:15.62},
+    {a:"INTB3",  d:"20/04/2026",v:14.64},
+    {a:"IRBR3",  d:"20/04/2020",v:11.93},
+    {a:"ISAE4",  d:"07/08/2025",v:21.92},
+    {a:"ITSA4",  d:"13/07/2017",v:9.25},
+    {a:"ITUB3",  d:"23/09/2025",v:34.68},
+    {a:"ITUB4",  d:"19/01/2026",v:39.67},
+    {a:"JBSS3",  d:"15/05/2024",v:26.00},
+    {a:"JBSS32", d:"18/11/2025",v:73.33},
+    {a:"KLBN11", d:"08/01/2024",v:22.40},
+    {a:"KLNB11", d:"02/01/2018",v:18.10},
+    {a:"MGLU3",  d:"12/11/2021",v:126.50},
+    {a:"MOVI3",  d:"17/04/2018",v:8.19},
+    {a:"MRFG3",  d:"29/02/2024",v:9.90},
+    {a:"OIBR3",  d:"12/02/2021",v:206.00},
+    {a:"OIBR4",  d:"20/04/2020",v:108.00},
+    {a:"PLPL3",  d:"27/11/2025",v:15.75},
+    {a:"RAIL3",  d:"03/11/2021",v:16.98},
+    {a:"RRRP3",  d:"07/04/2026",v:21.29},
+    {a:"SLCE3",  d:"19/01/2026",v:15.11},
+    {a:"SMFT3",  d:"27/11/2025",v:25.55},
+    {a:"SMTO3",  d:"11/09/2017",v:17.78},
+    {a:"TAEE11", d:"31/10/2025",v:38.33},
+    {a:"TASA4",  d:"04/09/2020",v:6.89},
+    {a:"TCSA3",  d:"09/01/2020",v:1.89},
+    {a:"TIMP3",  d:"20/10/2017",v:12.22},
+    {a:"USIM5",  d:"20/10/2019",v:7.65},
+    {a:"VALE3",  d:"20/04/2026",v:88.69},
+    {a:"VALE5",  d:"24/08/2017",v:31.17},
+    {a:"VIIA3",  d:"11/11/2021",v:159.75},
+    {a:"VVAR3",  d:"23/10/2020",v:20.28},
+    {a:"WEGE3",  d:"23/04/2026",v:48.60},
+  ],
+  "FRANCINE XP": [
+    {a:"ABEV3",  d:"25/10/2018",v:15.04},
+    {a:"AMER3",  d:"28/12/2023",v:91.00},
+    {a:"ANIM3",  d:"07/11/2025",v:3.55},
+    {a:"AZUL4",  d:"25/01/2024",v:13.97},
+    {a:"BBAS3",  d:"23/01/2025",v:25.81},
+    {a:"BBDC4",  d:"07/08/2024",v:14.05},
+    {a:"BEEF3",  d:"08/01/2020",v:13.68},
+    {a:"BIDI4",  d:"06/01/2020",v:17.19},
+    {a:"BOVA11", d:"09/08/2024",v:126.59},
+    {a:"BRFS3",  d:"23/08/2024",v:25.21},
+    {a:"BRKM5",  d:"09/09/2020",v:22.26},
+    {a:"BTOW3",  d:"06/07/2020",v:114.83},
+    {a:"CCRO3",  d:"12/07/2019",v:15.08},
+    {a:"CMIN3",  d:"30/04/2021",v:10.69},
+    {a:"CSMG3",  d:"11/07/2024",v:20.82},
+    {a:"CSNA3",  d:"29/06/2018",v:7.84},
+    {a:"CURY3",  d:"11/07/2024",v:21.70},
+    {a:"ECOR3",  d:"30/07/2019",v:11.71},
+    {a:"ELET3",  d:"25/07/2018",v:17.64},
+    {a:"EMBR3",  d:"28/03/2022",v:15.16},
+    {a:"FJTA3",  d:"31/01/2020",v:5.30},
+    {a:"FJTA4",  d:"20/04/2020",v:3.80},
+    {a:"GGBR4",  d:"18/09/2018",v:16.59},
+    {a:"INTB3",  d:"30/04/2024",v:22.30},
+    {a:"IRBR3",  d:"20/04/2020",v:11.93},
+    {a:"ITUB4",  d:"08/07/2020",v:26.87},
+    {a:"JBSS3",  d:"15/05/2024",v:26.00},
+    {a:"KEPL3",  d:"09/08/2024",v:11.32},
+    {a:"MGLU3",  d:"13/11/2023",v:1.86},
+    {a:"MRFG3",  d:"29/02/2024",v:9.90},
+    {a:"OIBR3",  d:"13/11/2023",v:6.20},
+    {a:"OIBR4",  d:"13/11/2023",v:1.65},
+    {a:"ONCO3",  d:"22/12/2023",v:12.40},
+    {a:"ORVR3",  d:"08/03/2024",v:37.98},
+    {a:"PETR3",  d:"06/03/2026",v:46.16},
+    {a:"RAIL3",  d:"13/06/2019",v:19.76},
+    {a:"RRRP3",  d:"07/04/2026",v:21.30},
+    {a:"SLCE3",  d:"04/06/2019",v:20.48},
+    {a:"STBP3",  d:"25/01/2024",v:9.76},
+    {a:"TASA4",  d:"09/12/2021",v:25.11},
+    {a:"TCSA3",  d:"08/07/2019",v:1.58},
+    {a:"TTEN3",  d:"18/01/2024",v:11.76},
+    {a:"USIM5",  d:"11/10/2019",v:7.67},
+    {a:"VALE3",  d:"14/01/2026",v:77.09},
+    {a:"VALE5",  d:"04/08/2017",v:29.13},
+    {a:"VIIA3",  d:"15/08/2022",v:3.17},
+    {a:"VIVA3",  d:"07/12/2023",v:30.62},
+    {a:"VULC3",  d:"23/01/2024",v:20.60},
+    {a:"VVAR3",  d:"23/10/2020",v:20.29},
+    {a:"WEGE3",  d:"01/04/2026",v:50.98},
+  ],
+  "LETICIA XP": [
+    {a:"ANIM3",  d:"15/05/2024",v:4.03},
+    {a:"AZUL4",  d:"10/01/2024",v:15.23},
+    {a:"BBAS3",  d:"22/01/2025",v:25.81},
+    {a:"BBDC4",  d:"07/08/2024",v:14.05},
+    {a:"BOVA11", d:"09/08/2024",v:126.59},
+    {a:"BRFS3",  d:"23/08/2024",v:25.60},
+    {a:"CSMG3",  d:"11/07/2024",v:20.74},
+    {a:"CURY3",  d:"11/07/2024",v:21.70},
+    {a:"INTB3",  d:"20/06/2025",v:15.58},
+    {a:"IVVB11", d:"27/11/2023",v:247.37},
+    {a:"JBSS3",  d:"15/05/2024",v:26.00},
+    {a:"KEPL3",  d:"09/08/2024",v:11.32},
+    {a:"KLBN11", d:"08/01/2024",v:22.40},
+    {a:"MRFG3",  d:"29/02/2024",v:9.90},
+    {a:"ONCO3",  d:"22/12/2023",v:12.40},
+    {a:"ORVR3",  d:"08/03/2024",v:38.01},
+    {a:"PETR3",  d:"06/03/2026",v:46.16},
+    {a:"PTBL3",  d:"11/12/2023",v:6.95},
+    {a:"RANI3",  d:"27/10/2023",v:11.85},
+    {a:"RECV3",  d:"01/11/2023",v:20.79},
+    {a:"RRRP3",  d:"07/04/2026",v:21.30},
+    {a:"STBP3",  d:"25/01/2024",v:9.76},
+    {a:"TRPL4",  d:"20/11/2023",v:25.38},
+    {a:"TTEN3",  d:"18/01/2024",v:11.76},
+    {a:"TUPY3",  d:"04/04/2024",v:28.78},
+    {a:"VALE3",  d:"15/01/2026",v:77.09},
+    {a:"VIVA3",  d:"08/12/2023",v:31.27},
+    {a:"VULC3",  d:"23/01/2024",v:20.60},
+    {a:"WEGE3",  d:"03/02/2026",v:54.00},
+  ],
+  "NUNAM": [
+    {a:"AGN",    d:"27/02/2020",v:190.31},
+    {a:"ALLY",   d:"22/08/2025",v:39.98},
+    {a:"AMD",    d:"21/01/2026",v:247.93},
+    {a:"AMZN",   d:"31/01/2020",v:2042.00},
+    {a:"ASND",   d:"13/11/2025",v:0.13},
+    {a:"AVGO",   d:"23/06/2025",v:253.50},
+    {a:"BABA",   d:"14/05/2018",v:198.50},
+    {a:"BBA",    d:"17/07/2018",v:8.18},
+    {a:"BLK",    d:"09/04/2026",v:1002.59},
+    {a:"BRF",    d:"08/10/2018",v:5.90},
+    {a:"DIS",    d:"13/06/2018",v:107.15},
+    {a:"DXCM",   d:"10/01/2018",v:56.00},
+    {a:"EWB",    d:"18/01/2024",v:69.49},
+    {a:"FB",     d:"24/05/2018",v:186.28},
+    {a:"GGB",    d:"01/09/2020",v:3.73},
+    {a:"GOOGL",  d:"13/10/2017",v:1009.85},
+    {a:"INTC",   d:"16/03/2026",v:48.04},
+    {a:"ITUB",   d:"17/07/2018",v:11.48},
+    {a:"JBSAY",  d:"03/02/2021",v:9.38},
+    {a:"LIV",    d:"20/02/2018",v:47.50},
+    {a:"LYV",    d:"03/11/2017",v:43.63},
+    {a:"MDLZ",   d:"18/12/2017",v:43.46},
+    {a:"MELI",   d:"17/08/2020",v:1191.00},
+    {a:"NVDIA",  d:"20/08/2024",v:128.52},
+    {a:"NVIDIA", d:"10/04/2026",v:189.23},
+    {a:"ORCL",   d:"20/04/2026",v:175.61},
+    {a:"PANW",   d:"22/11/2017",v:153.15},
+    {a:"PBR",    d:"06/03/2026",v:17.56},
+    {a:"PBR UBS",d:"16/01/2026",v:12.74},
+    {a:"PBR2",   d:"09/08/2024",v:14.05},
+    {a:"PFE",    d:"28/06/2021",v:38.99},
+    {a:"SBUX",   d:"09/11/2017",v:57.01},
+    {a:"SCPA",   d:"13/04/2018",v:6.95},
+    {a:"SHFG",   d:"18/09/2024",v:57.04},
+    {a:"SLB",    d:"02/02/2026",v:48.38},
+    {a:"TCEHY",  d:"27/02/2020",v:50.27},
+    {a:"TSLA",   d:"15/06/2021",v:653.00},
+    {a:"TSLA3",  d:"24/10/2019",v:296.15},
+    {a:"VALE",   d:"20/04/2026",v:17.50},
+    {a:"VALE2",  d:"06/01/2026",v:14.05},
+    {a:"VTRS",   d:"17/01/2024",v:11.64},
+    {a:"VZ",     d:"22/04/2024",v:41.33},
+    {a:"WFC",    d:"03/09/2024",v:58.27},
+    {a:"XLE",    d:"14/01/2026",v:47.61},
+    {a:"XOM",    d:"15/01/2026",v:130.14},
+    {a:"ZALG",   d:"13/06/2018",v:55.53},
+  ],
+};
+
+// Ticker map for historico stocks (BR → .SA, USD as-is, unknown → null)
+var historicoTickerMap = {
+  // BR stocks
+  "ABEV3":"ABEV3.SA","ANIM3":"ANIM3.SA","AZUL4":"AZUL4.SA","BBAS3":"BBAS3.SA",
+  "BBDC3":"BBDC3.SA","BBDC4":"BBDC4.SA","BBSE3":"BBSE3.SA","BEEF3":"BEEF3.SA",
+  "BIDI4":"BIDI4.SA","BOVA11":"BOVA11.SA","BRAV3":"BRAV3.SA","BRFS3":"BRFS3.SA",
+  "BRKM5":"BRKM5.SA","BTOW3":null,"CCRO3":"CCRO3.SA","CIEL3":"CIEL3.SA",
+  "CMIG4":"CMIG4.SA","CMIN3":"CMIN3.SA","CSMG3":"CSMG3.SA","CSNA3":"CSNA3.SA",
+  "CURY3":"CURY3.SA","ECOR3":"ECOR3.SA","ELET3":"ELET3.SA","EMBR3":"EMBR3.SA",
+  "FJTA3":null,"FJTA4":null,"GGBR4":"GGBR4.SA","GOLL4":"GOLL4.SA",
+  "INTB3":"INTB3.SA","IRBR3":"IRBR3.SA","ISAE4":"ISAE4.SA","ITSA4":"ITSA4.SA",
+  "ITUB3":"ITUB3.SA","ITUB4":"ITUB4.SA","IVVB11":"IVVB11.SA","JBSS3":"JBSS3.SA",
+  "JBSS32":null,"KEPL3":"KEPL3.SA","KLBN11":"KLBN11.SA","KLNB11":null,
+  "MGLU3":"MGLU3.SA","MOVI3":null,"MRFG3":"MRFG3.SA","OIBR3":null,"OIBR4":null,
+  "ONCO3":"ONCO3.SA","ORVR3":"ORVR3.SA","PBR UBS":"PBR","PETR3":"PETR3.SA",
+  "PLPL3":"PLPL3.SA","PTBL3":null,"RAIL3":"RAIL3.SA","RANI3":"RANI3.SA",
+  "RECV3":"RECV3.SA","RRRP3":"RRRP3.SA","SLCE3":"SLCE3.SA","SMFT3":"SMFT3.SA",
+  "SMTO3":"SMTO3.SA","STBP3":"STBP3.SA","TAEE11":"TAEE11.SA","TASA4":"TASA4.SA",
+  "TCSA3":null,"TIMP3":null,"TRPL4":"TRPL4.SA","TTEN3":"TTEN3.SA",
+  "TUPY3":"TUPY3.SA","USIM5":"USIM5.SA","VALE3":"VALE3.SA","VALE5":null,
+  "VIIA3":null,"VIVA3":"VIVA3.SA","VULC3":"VULC3.SA","VVAR3":null,"WEGE3":"WEGE3.SA",
+  // USD stocks
+  "AGN":"AGN","ALLY":"ALLY","AMD":"AMD","AMZN":"AMZN","ASND":"ASND",
+  "AVGO":"AVGO","BABA":"BABA","BBA":null,"BLK":"BLK","BRF":"BRFS3.SA",
+  "DIS":"DIS","DXCM":"DXCM","EWB":"EWB","FB":"META","GGB":"GGB",
+  "GOOGL":"GOOGL","INTC":"INTC","ITUB":"ITUB","JBSAY":"JBSAY","LIV":null,
+  "LYV":"LYV","MDLZ":"MDLZ","MELI":"MELI","NVDIA":"NVDA","NVIDIA":"NVDA",
+  "ORCL":"ORCL","PANW":"PANW","PBR":"PBR","PBR2":"PBR","PFE":"PFE",
+  "SBUX":"SBUX","SCPA":null,"SHFG":null,"SLB":"SLB","TCEHY":"TCEHY",
+  "TSLA":"TSLA","TSLA3":null,"VALE":"VALE","VALE2":"VALE","VTRS":"VTRS",
+  "VZ":"VZ","WFC":"WFC","XLE":"XLE","XOM":"XOM","ZALG":null,
+};
+
+var historicoPriceCache = {};
+
+async function fetchHistoricoPrice(acao){
+  var sym = historicoTickerMap[acao];
+  if(sym === null) return null;   // known delisted/unavailable
+  if(sym === undefined) sym = acao;
+  if(historicoPriceCache[sym] !== undefined) return historicoPriceCache[sym];
+
+  var price = await fetchPrice(sym);
+  historicoPriceCache[sym] = price;
+  return price;
+}
+
+function renderHistoricoView(container){
+  var frag = document.createDocumentFragment();
+
+  // Header with status
+  var hdrBar = document.createElement('div');
+  hdrBar.style.cssText = 'display:flex;align-items:center;gap:10px;margin-bottom:10px;margin-top:4px;flex-wrap:wrap;';
+  hdrBar.innerHTML =
+    '<span style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;flex:1;">Historico - Acoes Vendidas</span>' +
+    '<span id="hist-status" style="font-size:11px;color:var(--muted);font-family:monospace;">Buscando cotacoes...</span>' +
+    '<button onclick="refreshHistorico()" style="background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;">&#8635; Atualizar</button>';
+  frag.appendChild(hdrBar);
+
+  var note = document.createElement('div');
+  note.style.cssText = 'font-size:11px;color:var(--muted);margin-bottom:14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;';
+  note.textContent = 'Cotacao atual buscada automaticamente via Yahoo Finance. Acoes deslistadas ou sem dados aparecem como N/D.';
+  frag.appendChild(note);
+
+  allInvestors.forEach(function(inv){
+    var lista = (historicoVendas[inv] || []).slice().sort(function(a,b){ return a.a.localeCompare(b.a,'pt-BR'); });
+    if(!lista.length) return;
+    var isN = inv === 'NUNAM';
+    var cur = isN ? '$' : 'R$';
+    var ik = inv.replace(/\s/g,'_');
+
+    var blk = document.createElement('div');
+    blk.style.marginBottom = '16px';
+
+    var hdr = document.createElement('div');
+    hdr.className = 'vendas-inv-header';
+    hdr.style.borderRadius = '12px';
+    hdr.innerHTML =
+      '<div class="vendas-inv-name">' + inv + '</div>' +
+      '<div style="display:flex;gap:10px;align-items:center;">' +
+        '<span style="font-family:monospace;font-size:12px;color:var(--muted);">' + lista.length + ' acoes</span>' +
+        '<span class="chevron">&#9660;</span>' +
+      '</div>';
+    blk.appendChild(hdr);
+
+    var bd = document.createElement('div');
+    bd.className = 'vendas-body';
+    var sc = document.createElement('div');
+    sc.className = 'table-scroll';
+
+    var tbl = document.createElement('table');
+    tbl.innerHTML =
+      '<thead><tr>' +
+      '<th style="text-align:left">Acao</th>' +
+      '<th>Ultima Venda</th>' +
+      '<th>Vl. Venda ' + cur + '</th>' +
+      '<th>Cotacao Atual</th>' +
+      '<th>Var. %</th>' +
+      '</tr></thead>';
+
+    var tbody = document.createElement('tbody');
+    lista.forEach(function(item){
+      var tr = document.createElement('tr');
+      tr.id = 'hist-' + ik + '-' + item.a.replace(/[\s.]/g,'_');
+      tr.innerHTML =
+        '<td>' + item.a + '</td>' +
+        '<td style="text-align:right;color:var(--muted);">' + item.d + '</td>' +
+        '<td style="text-align:right;font-family:monospace;">' + fmt(item.v, 2) + '</td>' +
+        '<td style="text-align:right;color:var(--muted);font-size:11px;">...</td>' +
+        '<td style="text-align:right;color:var(--muted);">-</td>';
+      tbody.appendChild(tr);
+    });
+
+    tbl.appendChild(tbody);
+    sc.appendChild(tbl);
+    bd.appendChild(sc);
+    blk.appendChild(bd);
+    frag.appendChild(blk);
+
+    var open = false;
+    hdr.onclick = function(){
+      open = !open;
+      bd.style.display = open ? 'block' : 'none';
+      hdr.querySelector('.chevron').style.transform = open ? 'rotate(180deg)' : '';
+    };
+  });
+
+  container.appendChild(frag);
+
+  // Load prices asynchronously
+  loadHistoricoPrices();
+}
+
+async function loadHistoricoPrices(){
+  var statusEl = document.getElementById('hist-status');
+  var loaded = 0, failed = 0, total = 0;
+
+  // Collect all unique acoes
+  var allAcoes = [];
+  allInvestors.forEach(function(inv){
+    (historicoVendas[inv]||[]).forEach(function(item){
+      if(allAcoes.indexOf(item.a) === -1) allAcoes.push(item.a);
+    });
+  });
+  total = allAcoes.length;
+
+  // Fetch prices sequentially to avoid rate limiting
+  for(var i = 0; i < allAcoes.length; i++){
+    var acao = allAcoes[i];
+    var price = await fetchHistoricoPrice(acao);
+
+    // Update all rows with this acao across all investors
+    allInvestors.forEach(function(inv){
+      var isN = inv === 'NUNAM';
+      var ik = inv.replace(/\s/g,'_');
+      var lista = historicoVendas[inv] || [];
+      lista.forEach(function(item){
+        if(item.a !== acao) return;
+        var tr = document.getElementById('hist-' + ik + '-' + item.a.replace(/[\s.]/g,'_'));
+        if(!tr) return;
+        if(price === null){
+          tr.cells[3].innerHTML = '<span style="color:var(--muted);font-size:11px;">N/D</span>';
+          tr.cells[4].innerHTML = '<span style="color:var(--muted);">-</span>';
+        } else {
+          var pct = item.v > 0 ? ((price - item.v) / item.v) * 100 : 0;
+          var pC = pct >= 0 ? 'var(--green)' : 'var(--red)';
+          tr.cells[3].innerHTML = '<span style="font-family:monospace;font-weight:600;">' + fmt(price,2) + '</span>';
+          tr.cells[4].innerHTML = '<span style="color:' + pC + ';font-weight:600;">' + (pct>=0?'+':'') + fmt(pct,1) + '%</span>';
+        }
+      });
+    });
+
+    if(price !== null) loaded++; else failed++;
+    if(statusEl) statusEl.textContent = 'Carregando... ' + (i+1) + '/' + total;
+  }
+
+  var now = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  if(statusEl) statusEl.textContent = loaded + ' cotacoes | ' + now + (failed ? ' | ' + failed + ' N/D' : '');
+}
+
+function refreshHistorico(){
+  Object.keys(historicoPriceCache).forEach(function(k){ delete historicoPriceCache[k]; });
+  var el = document.getElementById('app-content');
+  if(el){ el.innerHTML=''; renderHistoricoView(el); }
 }
 
 // Init
