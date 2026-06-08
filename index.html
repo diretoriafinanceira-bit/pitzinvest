@@ -122,15 +122,15 @@
 // ── DATA ──────────────────────────────────────────────
 const investimentos = [
   // LEONILDES XP
-  {inv:"LEONILDES XP",acao:"ANIM3",qtde:713000,   compra:3.899416,  total:2780283.55,  ultimo:3.07,   subtotal:2188910,    resultado:-592962.17,  pct:-0.213152},
-  {inv:"LEONILDES XP",acao:"INTB3",qtde:1600,     compra:13.95,     total:22320,       ultimo:13.13,  subtotal:21008,      resultado:-1312,       pct:-0.058781},
-  {inv:"LEONILDES XP",acao:"ONCO3",qtde:420000,   compra:1.435,     total:602700,      ultimo:1.25,   subtotal:525000,     resultado:-77887.95,   pct:-0.129191},
-  {inv:"LEONILDES XP",acao:"PETR3",qtde:90000,    compra:49.435556, total:4449200,     ultimo:46.08,  subtotal:4147200,    resultado:-302538.62,  pct:-0.067990},
-  {inv:"LEONILDES XP",acao:"PETR4",qtde:202000,   compra:44.553564, total:8999820,     ultimo:41.27,  subtotal:8336540,    resultado:-664347.58,  pct:-0.073809},
-  {inv:"LEONILDES XP",acao:"PRIO3",qtde:12500,    compra:68.48,     total:856000,      ultimo:62.70,  subtotal:783750,     resultado:-72250,      pct:-0.084404},
-  {inv:"LEONILDES XP",acao:"VLID3",qtde:69000,    compra:21.304522, total:1470012,     ultimo:17.18,  subtotal:1185420,    resultado:-285357.64,  pct:-0.194018},
-  {inv:"LEONILDES XP",acao:"VULC3",qtde:250000,   compra:17.153947, total:4288486.84,  ultimo:14.42,  subtotal:3605000,    resultado:-684733.64,  pct:-0.159621},
-  {inv:"LEONILDES XP",acao:"WEGE3",qtde:93200,    compra:43.275708, total:4033296,     ultimo:41.99,  subtotal:3913468,    resultado:-119833.66,  pct:-0.029711},
+  {inv:"LEONILDES XP",acao:"ANIM3",qtde:713000,   compra:3.899416,  total:2780283.55,  ultimo:3.06,   subtotal:2181780,    resultado:-600089.89,  pct:-0.215715},
+  {inv:"LEONILDES XP",acao:"INTB3",qtde:1600,     compra:13.95,     total:22320,       ultimo:13.53,  subtotal:21648,      resultado:-672,        pct:-0.030108},
+  {inv:"LEONILDES XP",acao:"ONCO3",qtde:420000,   compra:1.435,     total:602700,      ultimo:1.26,   subtotal:529200,     resultado:-73688.65,   pct:-0.122226},
+  {inv:"LEONILDES XP",acao:"PETR3",qtde:90000,    compra:49.435556, total:4449200,     ultimo:45.71,  subtotal:4113900,    resultado:-335836.53,  pct:-0.075473},
+  {inv:"LEONILDES XP",acao:"PETR4",qtde:202000,   compra:44.553564, total:8999820,     ultimo:40.89,  subtotal:8259780,    resultado:-741102.85,  pct:-0.082337},
+  {inv:"LEONILDES XP",acao:"PRIO3",qtde:12500,    compra:68.48,     total:856000,      ultimo:61.12,  subtotal:764000,     resultado:-92000,      pct:-0.107477},
+  {inv:"LEONILDES XP",acao:"VLID3",qtde:69000,    compra:21.304522, total:1470012,     ultimo:17.56,  subtotal:1211640,    resultado:-259145.20,  pct:-0.176195},
+  {inv:"LEONILDES XP",acao:"VULC3",qtde:250000,   compra:17.153947, total:4288486.84,  ultimo:14.40,  subtotal:3600000,    resultado:-689732.85,  pct:-0.160787},
+  {inv:"LEONILDES XP",acao:"WEGE3",qtde:93200,    compra:43.275708, total:4033296,     ultimo:42.46,  subtotal:3957272,    resultado:-76029.69,   pct:-0.018850},
   {inv:"LEONILDES XP",acao:"AMER3",qtde:52247,    compra:106.289898,total:5553328.29,  ultimo:0,      subtotal:0,          resultado:-5554994.98, pct:-1},
   {inv:"LEONILDES XP",acao:"AZUL4",qtde:14.428831,compra:794243.66915,total:11460007.47,ultimo:0,     subtotal:0,          resultado:-11462329.37,pct:-1},
   {inv:"LEONILDES XP",acao:"MGLU3",qtde:25600,    compra:73.532031, total:1882420,     ultimo:0,      subtotal:0,          resultado:-1882997.26, pct:-1},
@@ -139,38 +139,54 @@ const investimentos = [
   {inv:"LEONILDES XP",acao:"TASA4",qtde:82060,    compra:17.87982,  total:1467218,     ultimo:0,      subtotal:0,          resultado:-1467679.64, pct:-1},
   {inv:"LEONILDES XP",acao:"VIIA3",qtde:10360,    compra:143.210305,total:1483658.76,  ultimo:0,      subtotal:0,          resultado:-1483632.54, pct:-1},
   // FRANCINE XP
-  {inv:"FRANCINE XP", acao:"ANIM3",qtde:330000,   compra:3.701637,  total:1221540.08,  ultimo:3.07,   subtotal:1013100,    resultado:-208440.08,  pct:-0.170637},
-  {inv:"FRANCINE XP", acao:"BBSE3",qtde:24000,    compra:38.993387, total:935841.28,   ultimo:35.05,  subtotal:841200,     resultado:-94930.17,   pct:-0.101407},
-  {inv:"FRANCINE XP", acao:"PETR3",qtde:64000,    compra:50.22,     total:3214080,     ultimo:46.08,  subtotal:2949120,    resultado:-264960,     pct:-0.082437},
-  {inv:"FRANCINE XP", acao:"VLID3",qtde:15000,    compra:19.55,     total:293250,      ultimo:17.18,  subtotal:257700,     resultado:-35550,      pct:-0.121228},
+  {inv:"FRANCINE XP", acao:"ANIM3",qtde:330000,   compra:3.701637,  total:1221540.08,  ultimo:3.06,   subtotal:1009800,    resultado:-211740.08,  pct:-0.173339},
+  {inv:"FRANCINE XP", acao:"BBSE3",qtde:24000,    compra:38.993387, total:935841.28,   ultimo:35.39,  subtotal:849360,     resultado:-86772.97,   pct:-0.092693},
+  {inv:"FRANCINE XP", acao:"PETR3",qtde:64000,    compra:50.22,     total:3214080,     ultimo:45.71,  subtotal:2925440,    resultado:-288640,     pct:-0.089805},
+  {inv:"FRANCINE XP", acao:"VLID3",qtde:15000,    compra:19.55,     total:293250,      ultimo:17.56,  subtotal:263400,     resultado:-29850,      pct:-0.101790},
   {inv:"FRANCINE XP", acao:"AMER3",qtde:268500,   compra:12.098878, total:3248548.83,  ultimo:0,      subtotal:0,          resultado:-3248548.83, pct:-1},
   {inv:"FRANCINE XP", acao:"AZUL4",qtde:167016.7, compra:12.751666, total:2129741.20,  ultimo:0,      subtotal:0,          resultado:-2129741.20, pct:-1},
   {inv:"FRANCINE XP", acao:"MGLU3",qtde:189000,   compra:6.677393,  total:1262027.24,  ultimo:0,      subtotal:0,          resultado:-1262027.24, pct:-1},
   {inv:"FRANCINE XP", acao:"OIBR3",qtde:14150,    compra:35.70434,  total:505216.42,   ultimo:0,      subtotal:0,          resultado:-505216.42,  pct:-1},
   {inv:"FRANCINE XP", acao:"TASA3",qtde:25850,    compra:17.938612, total:463713.12,   ultimo:0,      subtotal:0,          resultado:-463713.12,  pct:-1},
   // LETICIA XP
-  {inv:"LETICIA XP",  acao:"ANIM3",qtde:280000,   compra:3.666146,  total:1026520.96,  ultimo:3.07,   subtotal:859600,     resultado:-166920.96,  pct:-0.162608},
-  {inv:"LETICIA XP",  acao:"BBSE3",qtde:14000,    compra:38.98,     total:545720,      ultimo:35.05,  subtotal:490700,     resultado:-55380.45,   pct:-0.101414},
-  {inv:"LETICIA XP",  acao:"PETR3",qtde:52000,    compra:50.379231, total:2619720,     ultimo:46.08,  subtotal:2396160,    resultado:-223560,     pct:-0.085337},
-  {inv:"LETICIA XP",  acao:"VLID3",qtde:15000,    compra:19.55,     total:293250,      ultimo:17.18,  subtotal:257700,     resultado:-35550,      pct:-0.121228},
+  {inv:"LETICIA XP",  acao:"ANIM3",qtde:280000,   compra:3.666146,  total:1026520.96,  ultimo:3.06,   subtotal:856800,     resultado:-169720.96,  pct:-0.165336},
+  {inv:"LETICIA XP",  acao:"BBSE3",qtde:14000,    compra:38.98,     total:545720,      ultimo:35.39,  subtotal:495460,     resultado:-50622.10,   pct:-0.092701},
+  {inv:"LETICIA XP",  acao:"PETR3",qtde:52000,    compra:50.379231, total:2619720,     ultimo:45.71,  subtotal:2376920,    resultado:-242800,     pct:-0.092682},
+  {inv:"LETICIA XP",  acao:"VLID3",qtde:15000,    compra:19.55,     total:293250,      ultimo:17.56,  subtotal:263400,     resultado:-29850,      pct:-0.101790},
   {inv:"LETICIA XP",  acao:"AMER3",qtde:118500,   compra:16.012658, total:1897500,     ultimo:0,      subtotal:0,          resultado:-1898114.23, pct:-1},
   {inv:"LETICIA XP",  acao:"AZUL4",qtde:160016,   compra:12.199349, total:1952091,     ultimo:0,      subtotal:0,          resultado:-1952747.41, pct:-1},
-  {inv:"LETICIA XP",  acao:"ONCO3",qtde:37000,    compra:10.746216, total:397610,      ultimo:1.25,   subtotal:46250,      resultado:-351505.57,  pct:-0.883723},
+  {inv:"LETICIA XP",  acao:"ONCO3",qtde:37000,    compra:10.746216, total:397610,      ultimo:1.26,   subtotal:46620,      resultado:-351135.69,  pct:-0.882792},
   {inv:"LETICIA XP",  acao:"TASA4",qtde:33000,    compra:17.436364, total:575400,      ultimo:0,      subtotal:0,          resultado:-575400,     pct:-1},
   // NUNAM — COP CS usa cotação COP; CVX CS usa cotação CVX
   {inv:"NUNAM",acao:"OURO UBS",qtde:2667.43,  compra:243.68,    total:649999.34,   ultimo:242.21, subtotal:646078.22,  resultado:-4170.25,    pct:-0.006413},
-  {inv:"NUNAM",acao:"CERT",    qtde:380000,   compra:2.12,      total:805600,      ultimo:1.89,   subtotal:718200,     resultado:-87400,      pct:-0.108491},
-  {inv:"NUNAM",acao:"COP",     qtde:21000,    compra:122.33381, total:2569010,     ultimo:119.05, subtotal:2500050,    resultado:-68960,      pct:-0.026843},
-  {inv:"NUNAM",acao:"COP CS",  qtde:4277,     compra:116.88,    total:499895.76,   ultimo:119.05, subtotal:509176.85,  resultado:9281.09,     pct:0.018566},
-  {inv:"NUNAM",acao:"CVX",     qtde:16000,    compra:188.969937,total:3023519,     ultimo:189.71, subtotal:3035360,    resultado:11841,       pct:0.003916},
-  {inv:"NUNAM",acao:"CVX CS",  qtde:2676,     compra:186.87156, total:500068.29,   ultimo:189.71, subtotal:507663.96,  resultado:7595.67,     pct:0.015189},
-  {inv:"NUNAM",acao:"FEVR",    qtde:35500,    compra:21.350032, total:757926.15,   ultimo:7.46,   subtotal:264830,     resultado:-494632.98,  pct:-0.651293},
-  {inv:"NUNAM",acao:"FEVR CS", qtde:10030,    compra:8.590299,  total:86160.70,    ultimo:7.46,   subtotal:74823.8,    resultado:-11443.68,   pct:-0.132653},
-  {inv:"NUNAM",acao:"HPQ",     qtde:86000,    compra:24.060698, total:2069220,     ultimo:26.07,  subtotal:2242020,    resultado:172800,      pct:0.083510},
-  {inv:"NUNAM",acao:"NVIDIA",  qtde:3600,     compra:222.13,    total:799668,      ultimo:214.75, subtotal:773100,     resultado:-26568,      pct:-0.033224},
-  {inv:"NUNAM",acao:"ORCL CS", qtde:4900,     compra:191.536598,total:938529.33,   ultimo:230.33, subtotal:1128617,    resultado:190087.67,   pct:0.202538},
+  {inv:"NUNAM",acao:"CERT",    qtde:380000,   compra:2.12,      total:805600,      ultimo:1.73,   subtotal:657400,     resultado:-148200,     pct:-0.183962},
+  {inv:"NUNAM",acao:"COP",     qtde:21000,    compra:122.33381, total:2569010,     ultimo:117.14, subtotal:2459940,    resultado:-109070,     pct:-0.042456},
+  {inv:"NUNAM",acao:"COP CS",  qtde:4277,     compra:116.88,    total:499895.76,   ultimo:117.14, subtotal:501007.78,  resultado:1112.02,     pct:0.002225},
+  {inv:"NUNAM",acao:"CVX",     qtde:16000,    compra:188.969937,total:3023519,     ultimo:187.31, subtotal:2996960,    resultado:-26559,      pct:-0.008784},
+  {inv:"NUNAM",acao:"CVX CS",  qtde:2676,     compra:186.87156, total:500068.29,   ultimo:187.31, subtotal:501241.56,  resultado:1173.27,     pct:0.002346},
+  {inv:"NUNAM",acao:"FEVR",    qtde:35500,    compra:21.350032, total:757926.15,   ultimo:7.63,   subtotal:270865,     resultado:-488607.05,  pct:-0.643351},
+  {inv:"NUNAM",acao:"FEVR CS", qtde:10030,    compra:8.590299,  total:86160.70,    ultimo:7.63,   subtotal:76528.9,    resultado:-9739.71,    pct:-0.112900},
+  {inv:"NUNAM",acao:"HPQ",     qtde:86000,    compra:24.060698, total:2069220,     ultimo:25.58,  subtotal:2199880,    resultado:130660,      pct:0.063145},
+  {inv:"NUNAM",acao:"NVIDIA",  qtde:3600,     compra:222.13,    total:799668,      ultimo:205.10, subtotal:738360,     resultado:-61308,      pct:-0.076667},
+  {inv:"NUNAM",acao:"ORCL CS", qtde:4900,     compra:191.536598,total:938529.33,   ultimo:213.68, subtotal:1047032,    resultado:108502.67,   pct:0.115609},
   {inv:"NUNAM",acao:"BKI",     qtde:3145500,  compra:0.269836,  total:848769.30,   ultimo:0.11,   subtotal:346005,     resultado:-506120.92,  pct:-0.593951},
 ];
+
+const saldosCC = {
+  "LEONILDES XP": 10348.61,
+  "FRANCINE XP":  79324.87,
+  "LETICIA XP":   76420.27,
+  "NUNAM UBS":    36156.96,
+  "NUNAM CS":     103756.80
+};
+
+const lucrosAcumulados = {
+  "LEONILDES XP": {JAN:212373.62, FEV:366212.74, MAR:3953415.45, ABR:1019612.18, MAI:494127.58},
+  "FRANCINE XP":  {JAN:168072.27, FEV:138795.52, MAR:949621.70,  ABR:276521.79,  MAI:31921.54},
+  "LETICIA XP":   {JAN:168766.95, FEV:61240.92,  MAR:1063833.09, ABR:229285.97,  MAI:20654.45},
+  "NUNAM UBS":    {JAN:855277.62, FEV:52342.18,  MAR:103317.48,  ABR:249536.62,  MAI:377400},
+  "NUNAM CS":     {JAN:164718,    FEV:0,          MAR:229600,     ABR:0,          MAI:150875.94},
+};
 
 const simplePortfolio = [
   {inv:"GILSON XP",      acao:"AMER3",  qtde:15100,     compra:22.786536,  total:344076.69,  ultimo:5.09},
@@ -193,23 +209,6 @@ const simplePortfolio = [
   {inv:"PATRÍCIA LEO",   acao:"TASA3",  qtde:700,       compra:27.90,      total:19530.00,   ultimo:4.98},
   {inv:"PATRÍCIA LEO",   acao:"TASA4",  qtde:2600,      compra:23.637692,  total:61458.00,   ultimo:4.75},
 ];
-
-
-const saldosCC = {
-  "LEONILDES XP": 9068.95,
-  "FRANCINE XP":  75753.27,
-  "LETICIA XP":   78148.51,
-  "NUNAM UBS":    36156.96,
-  "NUNAM CS":     103756.80
-};
-
-const lucrosAcumulados = {
-  "LEONILDES XP": {JAN:212373.62, FEV:366212.74, MAR:3953415.45, ABR:1019612.18, MAI:494127.58},
-  "FRANCINE XP":  {JAN:168072.27, FEV:138795.52, MAR:949621.70,  ABR:276521.79,  MAI:31921.54},
-  "LETICIA XP":   {JAN:168766.95, FEV:61240.92,  MAR:1063833.09, ABR:229285.97,  MAI:20654.45},
-  "NUNAM UBS":    {JAN:855277.62, FEV:52342.18,  MAR:103317.48,  ABR:249536.62,  MAI:377400},
-  "NUNAM CS":     {JAN:164718,    FEV:0,          MAR:229600,     ABR:0,          MAI:150875.94},
-};
 
 const ordens = {
   "LEONILDES XP": {
