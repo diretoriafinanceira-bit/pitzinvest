@@ -107,7 +107,6 @@
     <div class="date-badge" id="date-display">—</div>
   </div>
   <div class="view-toggle">
-    <button class="toggle-btn" onclick="setView('destaques')">🏠 Destaques</button>
     <button class="toggle-btn active" onclick="setView('investor')">Por Investidor</button>
     <button class="toggle-btn" onclick="setView('action')">Por Ação</button>
     <button class="toggle-btn" onclick="setView('outros')">Outros Investidores</button>
@@ -123,14 +122,14 @@
 // ── DATA ──────────────────────────────────────────────
 const investimentos = [
   // LEONILDES XP
-  {inv:"LEONILDES XP",acao:"ANIM3",qtde:713000,   compra:3.899416,  total:2780283.55,  ultimo:3.07,   subtotal:2188910,    resultado:-592962.17,  pct:-0.213152},
-  {inv:"LEONILDES XP",acao:"INTB3",qtde:74600,    compra:13.764075, total:1026800,     ultimo:13.02,  subtotal:971292,     resultado:-55508,      pct:-0.054059},
-  {inv:"LEONILDES XP",acao:"ONCO3",qtde:920000,   compra:1.343152,  total:1235700,     ultimo:1.22,   subtotal:1122400,    resultado:-113491.69,  pct:-0.091830},
-  {inv:"LEONILDES XP",acao:"PETR3",qtde:90000,    compra:49.435556, total:4449200,     ultimo:46.19,  subtotal:4157100,    resultado:-292639.24,  pct:-0.065765},
-  {inv:"LEONILDES XP",acao:"PETR4",qtde:202000,   compra:44.553564, total:8999820,     ultimo:41.18,  subtotal:8318360,    resultado:-682526.46,  pct:-0.075829},
-  {inv:"LEONILDES XP",acao:"PRIO3",qtde:12500,    compra:68.48,     total:856000,      ultimo:61.34,  subtotal:766750,     resultado:-89250,      pct:-0.104264},
-  {inv:"LEONILDES XP",acao:"VLID3",qtde:69000,    compra:21.304522, total:1470012,     ultimo:17.32,  subtotal:1195080,    resultado:-275700.43,  pct:-0.187452},
-  {inv:"LEONILDES XP",acao:"VULC3",qtde:250000,   compra:17.153947, total:4288486.84,  ultimo:14.87,  subtotal:3717500,    resultado:-572251.41,  pct:-0.133400},
+  {inv:"LEONILDES XP",acao:"ANIM3",qtde:713000,   compra:3.899416,  total:2780283.55,  ultimo:3.05,   subtotal:2174650,    resultado:-607217.61,  pct:-0.218277},
+  {inv:"LEONILDES XP",acao:"INTB3",qtde:74600,    compra:13.764075, total:1026800,     ultimo:13.01,  subtotal:970546,     resultado:-56254,      pct:-0.054786},
+  {inv:"LEONILDES XP",acao:"ONCO3",qtde:920000,   compra:1.343152,  total:1235700,     ultimo:1.20,   subtotal:1104000,    resultado:-131890.20,  pct:-0.106717},
+  {inv:"LEONILDES XP",acao:"PETR3",qtde:90000,    compra:49.435556, total:4449200,     ultimo:43.74,  subtotal:3936600,    resultado:-512600.42,  pct:-0.115192},
+  {inv:"LEONILDES XP",acao:"PETR4",qtde:202000,   compra:44.553564, total:8999820,     ultimo:39.06,  subtotal:7890120,    resultado:-1109700.09, pct:-0.123304},
+  {inv:"LEONILDES XP",acao:"PRIO3",qtde:12500,    compra:68.48,     total:856000,      ultimo:57.10,  subtotal:713750,     resultado:-142250,     pct:-0.166180},
+  {inv:"LEONILDES XP",acao:"VLID3",qtde:69000,    compra:21.304522, total:1470012,     ultimo:17.50,  subtotal:1207500,    resultado:-262512.00,  pct:-0.178573},
+  {inv:"LEONILDES XP",acao:"VULC3",qtde:250000,   compra:17.153947, total:4288486.84,  ultimo:14.80,  subtotal:3700000,    resultado:-588486.84,  pct:-0.137185},
   {inv:"LEONILDES XP",acao:"AMER3",qtde:52247,    compra:106.289898,total:5553328.29,  ultimo:0,      subtotal:0,          resultado:-5554994.98, pct:-1},
   {inv:"LEONILDES XP",acao:"AZUL4",qtde:14.428831,compra:794243.66915,total:11460007.47,ultimo:0,     subtotal:0,          resultado:-11462329.37,pct:-1},
   {inv:"LEONILDES XP",acao:"MGLU3",qtde:25600,    compra:73.532031, total:1882420,     ultimo:0,      subtotal:0,          resultado:-1882997.26, pct:-1},
@@ -139,36 +138,36 @@ const investimentos = [
   {inv:"LEONILDES XP",acao:"TASA4",qtde:82060,    compra:17.87982,  total:1467218,     ultimo:0,      subtotal:0,          resultado:-1467679.64, pct:-1},
   {inv:"LEONILDES XP",acao:"VIIA3",qtde:10360,    compra:143.210305,total:1483658.76,  ultimo:0,      subtotal:0,          resultado:-1483632.54, pct:-1},
   // FRANCINE XP
-  {inv:"FRANCINE XP", acao:"ANIM3",qtde:330000,   compra:3.701637,  total:1221540.08,  ultimo:3.07,   subtotal:1013100,    resultado:-208440.08,  pct:-0.170637},
-  {inv:"FRANCINE XP", acao:"BBSE3",qtde:24000,    compra:38.993387, total:935841.28,   ultimo:37.87,  subtotal:908880,     resultado:-27273.41,   pct:-0.029133},
-  {inv:"FRANCINE XP", acao:"PETR3",qtde:64000,    compra:50.22,     total:3214080,     ultimo:46.19,  subtotal:2956160,    resultado:-257920,     pct:-0.080247},
-  {inv:"FRANCINE XP", acao:"VLID3",qtde:15000,    compra:19.55,     total:293250,      ultimo:17.32,  subtotal:259800,     resultado:-33450,      pct:-0.114066},
+  {inv:"FRANCINE XP", acao:"ANIM3",qtde:330000,   compra:3.701637,  total:1221540.08,  ultimo:3.05,   subtotal:1006500,    resultado:-215040.08,  pct:-0.176040},
+  {inv:"FRANCINE XP", acao:"BBSE3",qtde:24000,    compra:38.993387, total:935841.28,   ultimo:37.78,  subtotal:906720,     resultado:-29121.28,   pct:-0.031120},
+  {inv:"FRANCINE XP", acao:"PETR3",qtde:64000,    compra:50.22,     total:3214080,     ultimo:43.74,  subtotal:2799360,    resultado:-414720,     pct:-0.129032},
+  {inv:"FRANCINE XP", acao:"VLID3",qtde:15000,    compra:19.55,     total:293250,      ultimo:17.50,  subtotal:262500,     resultado:-30750,      pct:-0.104859},
   {inv:"FRANCINE XP", acao:"AMER3",qtde:268500,   compra:12.098878, total:3248548.83,  ultimo:0,      subtotal:0,          resultado:-3248548.83, pct:-1},
   {inv:"FRANCINE XP", acao:"AZUL4",qtde:167016.7, compra:12.751666, total:2129741.20,  ultimo:0,      subtotal:0,          resultado:-2129741.20, pct:-1},
   {inv:"FRANCINE XP", acao:"MGLU3",qtde:189000,   compra:6.677393,  total:1262027.24,  ultimo:0,      subtotal:0,          resultado:-1262027.24, pct:-1},
   {inv:"FRANCINE XP", acao:"OIBR3",qtde:14150,    compra:35.70434,  total:505216.42,   ultimo:0,      subtotal:0,          resultado:-505216.42,  pct:-1},
   {inv:"FRANCINE XP", acao:"TASA3",qtde:25850,    compra:17.938612, total:463713.12,   ultimo:0,      subtotal:0,          resultado:-463713.12,  pct:-1},
   // LETICIA XP
-  {inv:"LETICIA XP",  acao:"ANIM3",qtde:280000,   compra:3.666146,  total:1026520.96,  ultimo:3.07,   subtotal:859600,     resultado:-166920.96,  pct:-0.162608},
-  {inv:"LETICIA XP",  acao:"BBSE3",qtde:14000,    compra:38.98,     total:545720,      ultimo:37.87,  subtotal:530180,     resultado:-15914.18,   pct:-0.029142},
-  {inv:"LETICIA XP",  acao:"PETR3",qtde:52000,    compra:50.379231, total:2619720,     ultimo:46.19,  subtotal:2401880,    resultado:-217840,     pct:-0.083154},
-  {inv:"LETICIA XP",  acao:"VLID3",qtde:15000,    compra:19.55,     total:293250,      ultimo:17.32,  subtotal:259800,     resultado:-33450,      pct:-0.114066},
+  {inv:"LETICIA XP",  acao:"ANIM3",qtde:280000,   compra:3.666146,  total:1026520.96,  ultimo:3.05,   subtotal:854000,     resultado:-172520.96,  pct:-0.168064},
+  {inv:"LETICIA XP",  acao:"BBSE3",qtde:14000,    compra:38.98,     total:545720,      ultimo:37.78,  subtotal:528920,     resultado:-16800,      pct:-0.030780},
+  {inv:"LETICIA XP",  acao:"PETR3",qtde:52000,    compra:50.379231, total:2619720,     ultimo:43.74,  subtotal:2274480,    resultado:-345240,     pct:-0.131785},
+  {inv:"LETICIA XP",  acao:"VLID3",qtde:15000,    compra:19.55,     total:293250,      ultimo:17.50,  subtotal:262500,     resultado:-30750,      pct:-0.104859},
   {inv:"LETICIA XP",  acao:"AMER3",qtde:118500,   compra:16.012658, total:1897500,     ultimo:0,      subtotal:0,          resultado:-1898114.23, pct:-1},
   {inv:"LETICIA XP",  acao:"AZUL4",qtde:160016,   compra:12.199349, total:1952091,     ultimo:0,      subtotal:0,          resultado:-1952747.41, pct:-1},
-  {inv:"LETICIA XP",  acao:"ONCO3",qtde:37000,    compra:10.746216, total:397610,      ultimo:1.27,   subtotal:46990,      resultado:-350765.81,  pct:-0.881862},
+  {inv:"LETICIA XP",  acao:"ONCO3",qtde:37000,    compra:10.746216, total:397610,      ultimo:1.20,   subtotal:44400,      resultado:-353210,     pct:-0.888228},
   {inv:"LETICIA XP",  acao:"TASA4",qtde:33000,    compra:17.436364, total:575400,      ultimo:0,      subtotal:0,          resultado:-575400,     pct:-1},
   // NUNAM — COP CS usa cotação COP; CVX CS usa cotação CVX
-  {inv:"NUNAM",acao:"OURO UBS",qtde:2667.43,  compra:243.68,    total:649999.34,   ultimo:232.64, subtotal:620550.92,  resultado:-29692.65,   pct:-0.045664},
-  {inv:"NUNAM",acao:"CERT",    qtde:380000,   compra:2.12,      total:805600,      ultimo:1.67,   subtotal:634600,     resultado:-171000,     pct:-0.212264},
-  {inv:"NUNAM",acao:"COP",     qtde:21000,    compra:122.33381, total:2569010,     ultimo:116.98, subtotal:2456580,    resultado:-112430,     pct:-0.043764},
-  {inv:"NUNAM",acao:"COP CS",  qtde:4277,     compra:116.88,    total:499895.76,   ultimo:116.98, subtotal:500323.46,  resultado:427.70,      pct:0.000856},
-  {inv:"NUNAM",acao:"CVX",     qtde:16000,    compra:188.969937,total:3023519,     ultimo:187.22, subtotal:2995520,    resultado:-27999,      pct:-0.009260},
-  {inv:"NUNAM",acao:"CVX CS",  qtde:2676,     compra:186.87156, total:500068.29,   ultimo:187.22, subtotal:501000.72,  resultado:932.43,      pct:0.001865},
-  {inv:"NUNAM",acao:"FEVR",    qtde:35500,    compra:21.350032, total:757926.15,   ultimo:8.40,   subtotal:298200,     resultado:-461313.13,  pct:-0.607380},
-  {inv:"NUNAM",acao:"FEVR CS", qtde:10030,    compra:8.590299,  total:86160.70,    ultimo:8.40,   subtotal:84252,      resultado:-2021.73,    pct:-0.023434},
-  {inv:"NUNAM",acao:"HPQ",     qtde:86000,    compra:24.060698, total:2069220,     ultimo:25.24,  subtotal:2170640,    resultado:101420,      pct:0.049014},
-  {inv:"NUNAM",acao:"NVIDIA",  qtde:3600,     compra:222.13,    total:799668,      ultimo:205.19, subtotal:738684,     resultado:-60984,      pct:-0.076262},
-  {inv:"NUNAM",acao:"ORCL CS", qtde:4900,     compra:191.536598,total:938529.33,   ultimo:184.13, subtotal:902237,     resultado:-36292.33,   pct:-0.038669},
+  {inv:"NUNAM",acao:"OURO UBS",qtde:2667.43,  compra:243.68,    total:649999.34,   ultimo:232.64, subtotal:620550.92,  resultado:-29448.42,   pct:-0.045304},
+  {inv:"NUNAM",acao:"CERT",    qtde:380000,   compra:2.12,      total:805600,      ultimo:1.76,   subtotal:668800,     resultado:-136800,     pct:-0.169811},
+  {inv:"NUNAM",acao:"COP",     qtde:21000,    compra:122.33381, total:2569010,     ultimo:112.26, subtotal:2357460,    resultado:-211550,     pct:-0.082347},
+  {inv:"NUNAM",acao:"COP CS",  qtde:4277,     compra:116.88,    total:499895.76,   ultimo:112.26, subtotal:480136.02,  resultado:-19759.74,   pct:-0.039528},
+  {inv:"NUNAM",acao:"CVX",     qtde:16000,    compra:188.969937,total:3023519,     ultimo:180.40, subtotal:2886400,    resultado:-137119,     pct:-0.045351},
+  {inv:"NUNAM",acao:"CVX CS",  qtde:2676,     compra:186.87156, total:500068.29,   ultimo:180.40, subtotal:482750.40,  resultado:-17317.89,   pct:-0.034631},
+  {inv:"NUNAM",acao:"FEVR",    qtde:35500,    compra:21.350032, total:757926.15,   ultimo:8.36,   subtotal:296780,     resultado:-461146.15,  pct:-0.608468},
+  {inv:"NUNAM",acao:"FEVR CS", qtde:10030,    compra:8.590299,  total:86160.70,    ultimo:8.36,   subtotal:83850.8,    resultado:-2309.90,    pct:-0.026808},
+  {inv:"NUNAM",acao:"HPQ",     qtde:86000,    compra:24.060698, total:2069220,     ultimo:24.60,  subtotal:2115600,    resultado:46380,       pct:0.022414},
+  {inv:"NUNAM",acao:"NVIDIA",  qtde:3600,     compra:222.13,    total:799668,      ultimo:212.45, subtotal:764820,     resultado:-34848,      pct:-0.043578},
+  {inv:"NUNAM",acao:"ORCL CS", qtde:4900,     compra:191.536598,total:938529.33,   ultimo:192.66, subtotal:944034,     resultado:5504.67,     pct:0.005865},
   {inv:"NUNAM",acao:"BKI",     qtde:3145500,  compra:0.269836,  total:848769.30,   ultimo:0.105,  subtotal:330277.5,   resultado:-521804.23,  pct:-0.612388},
 ];
 
@@ -405,8 +404,7 @@ function selectInvestor(inv){selectedInvestor=inv;renderContent();}
 function renderContent(){
   const el=document.getElementById('app-content');
   el.innerHTML=''; el.className='fade-in'; void el.offsetWidth;
-  if(currentView==='destaques') renderDestaquesView(el);
-  else if(currentView==='investor') el.appendChild(renderInvestorView());
+  if(currentView==='investor') el.appendChild(renderInvestorView());
   else if(currentView==='action') el.appendChild(renderActionView());
   else if(currentView==='vendas') el.appendChild(renderVendasView());
   else if(currentView==='pregao') renderPregaoView(el);
@@ -1838,68 +1836,6 @@ function renderExtratoView(container){
 
 // Init
 document.getElementById('date-display').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
-// ── DESTAQUES VIEW ────────────────────────────────────────────────────────
-const destaquesData = {
-  usd:    { val: 5.0621, var: -0.64 },
-  eur:    { val: 5.8754, var: -0.76 },
-  brent:  { val: 86.79,  var: -3.98 },
-  update: '12/06/2026'
-};
-
-function renderDestaquesView(el) {
-  const d = destaquesData;
-
-  function fmtN(v, dec=2) {
-    return v.toLocaleString('pt-BR', {minimumFractionDigits:dec, maximumFractionDigits:dec});
-  }
-
-  function varColor(v) { return v >= 0 ? '#4fffb0' : '#ff4f6a'; }
-  function varSign(v)  { return v >= 0 ? '+' : ''; }
-
-  function dCard(icon, title, val, unit, varPct, valColor) {
-    const vc = varColor(varPct);
-    return '<div class="dest-card">' +
-      '<div class="dest-icon">' + icon + '</div>' +
-      '<div class="dest-title">' + title + '</div>' +
-      '<div class="dest-val" style="color:' + valColor + '">' + unit + ' ' + fmtN(val) + '</div>' +
-      '<div class="dest-var" style="color:' + vc + '">' + varSign(varPct) + fmtN(varPct) + '%</div>' +
-    '</div>';
-  }
-
-  el.innerHTML = '<style>' +
-    '.dest-wrap{padding:16px 0}' +
-    '.dest-header{text-align:center;margin-bottom:24px}' +
-    '.dest-headline{font-size:22px;font-weight:800;letter-spacing:-0.5px;color:var(--accent2);font-family:"Syne",sans-serif}' +
-    '.dest-sub{font-size:12px;color:var(--muted);margin-top:4px;font-family:"Space Mono",monospace}' +
-    '.dest-stitle{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:20px 0 10px;display:flex;align-items:center;gap:8px}' +
-    '.dest-stitle::after{content:"";flex:1;height:1px;background:var(--border)}' +
-    '.dest-g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}' +
-    '.dest-g1{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:6px}' +
-    '.dest-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 14px;text-align:center}' +
-    '.dest-icon{font-size:30px;margin-bottom:8px}' +
-    '.dest-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;font-family:"Space Mono",monospace;margin-bottom:8px}' +
-    '.dest-val{font-size:22px;font-weight:700;font-family:"Space Mono",monospace}' +
-    '.dest-var{font-size:13px;font-weight:600;margin-top:6px;font-family:"Space Mono",monospace}' +
-    '.dest-ts{text-align:center;font-size:11px;color:var(--muted);margin-top:16px;font-family:"Space Mono",monospace}' +
-    '</style>' +
-    '<div class="dest-wrap">' +
-      '<div class="dest-header">' +
-        '<div class="dest-headline">DESTAQUES DO DIA</div>' +
-        '<div class="dest-sub">Fechamento de ' + d.update + '</div>' +
-      '</div>' +
-      '<div class="dest-stitle">Câmbio</div>' +
-      '<div class="dest-g2">' +
-        dCard('🇺🇸','USD / BRL', d.usd.val, 'R$', d.usd.var, '#4fffb0') +
-        dCard('🇪🇺','EUR / BRL', d.eur.val, 'R$', d.eur.var, '#4fc3ff') +
-      '</div>' +
-      '<div class="dest-stitle">Commodities</div>' +
-      '<div class="dest-g1">' +
-        dCard('🛢️','Petróleo Brent (USD/barril)', d.brent.val, '$', d.brent.var, '#f59e0b') +
-      '</div>' +
-      '<div class="dest-ts">Fechamento do pregão</div>' +
-    '</div>';
-}
-
 renderContent();
 
 // ── OUTROS INVESTIDORES ────────────────────────────────────────────────
