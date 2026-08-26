@@ -120,7 +120,7 @@
 <script>const investimentos = [
   // LEONILDES XP
   {inv:"LEONILDES XP",acao:"ANIM3", qtde:713000, compra:3.899415918653576, total:2780283.55, ultimo:2.74, subtotal:1953620.0000000002, resultado:-828176.9488192791, pct:-0.29771294025280853},
-  {inv:"LEONILDES XP",acao:"ONCO3", qtde:420000, compra:1.3431521739130434, total:564123.9130434783, ultimo:1.75, subtotal:735000, resultado:170770.47937531542, pct:0.3026613694126594},
+  {inv:"LEONILDES XP",acao:"ONCO3", qtde:94000, compra:1.3431521739130434, total:126256.30434782608, ultimo:1.75, subtotal:164500, resultado:38220.05966971346, pct:0.30266136941265953},
   {inv:"LEONILDES XP",acao:"PETR3", qtde:145000, compra:47.15379310344827, total:6837299.999999999, ultimo:45.98, subtotal:6667100, resultado:-170750.6021043589, pct:-0.024971385313947946},
   {inv:"LEONILDES XP",acao:"PETR4", qtde:202000, compra:44.55356435643564, total:8999820, ultimo:41.35, subtotal:8352700, resultado:-648188.5714234791, pct:-0.07201384244233222},
   {inv:"LEONILDES XP",acao:"PRIO3", qtde:12500, compra:68.48, total:856000, ultimo:60.88, subtotal:761000, resultado:-95000, pct:-0.11098130841121495},
@@ -153,16 +153,16 @@
 ];
 
 const saldosCC = {
-  "LEONILDES XP": 77736.44,
-  "FRANCINE XP":  3065.20,
-  "LETICIA XP":   3212.13,
-  "NUNAM UBS":    7437097.00,
+  "LEONILDES XP": 1628364.12,
+  "FRANCINE XP":  32253.91,
+  "LETICIA XP":   25003.07,
+  "NUNAM UBS":    7422950.00,
   "NUNAM CS":     0,
   "GILSON UBS":   130782.25
 };
 
 const lucrosAcumulados = {
-  "LEONILDES XP": {JAN:212373.62, FEV:366212.74, MAR:3953415.45, ABR:1019612.18, MAI:494127.58, JUN:25561.13, JUL:81756, AGO:200369.31969373897},
+  "LEONILDES XP": {JAN:212373.62, FEV:366212.74, MAR:3953415.45, ABR:1019612.18, MAI:494127.58, JUN:25561.13, JUL:81756, AGO:332502.72578005703},
   "FRANCINE XP":  {JAN:168072.27, FEV:138795.52, MAR:949621.70,  ABR:276521.79,  MAI:31921.54,  JUN:0,        JUL:0},
   "LETICIA XP":   {JAN:168766.95, FEV:61240.92,  MAR:1063833.09, ABR:229285.97,  MAI:20654.45,  JUN:0,        JUL:0},
   "NUNAM UBS":    {JAN:855277.62, FEV:52342.18,  MAR:103317.48,  ABR:249536.62,  MAI:659687.38, JUN:0,        JUL:124640, AGO:546403.31544},
@@ -326,7 +326,7 @@ const vendasRealizadas = {
     {a:"PETR3",d:"18/05/26",q:50000,  cu:49.984,    ct:2499200,     vu:50.66,   vt:2533000,    r:33521.23,    p:1.34},
     {a:"PRIO3",d:"19/05/26",q:12500,  cu:66.25,     ct:828125,      vu:68.82,   vt:860250,     r:32125,       p:3.88},
     {a:"WEGE3",d:"09/06/26",q:93200,  cu:43.275708, ct:4033296,     vu:43.55,   vt:4058860,    r:25561.13,    p:0.63},
-    {a:"ONCO3",d:"25/08/26",q:500000, cu:1.343152,  ct:671576.09,   vu:1.744,   vt:872000,     r:200369.32,   p:29.83},
+    {a:"ONCO3",d:"25/08/26",q:826000, cu:1.343152,  ct:1109443.70,  vu:1.746429, vt:1442550,    r:332502.73,   p:29.95},
   ],
   "FRANCINE XP": [
     {a:"VALE3",d:"14/01/26",q:28500,  cu:71.145895, ct:2027658,     vu:77.09,   vt:2197065,    r:168072.27,   p:8.28},
@@ -451,12 +451,23 @@ const tickerMap = {
   "HPQ":      "HPQ",
   "ORCL":     "ORCL",
   "BKI":      "BKI",
+  "VALE":     "VALE",
 };
 
 const priceCache = {};
 
 const FINNHUB_TOKEN = 'd7mb2k9r01qk7lvvmb20d7mb2k9r01qk7lvvmb2g';
 const BRAPI_TOKEN = 'ojPMC2vsSvFtcriTX97gGx';
+const TWELVEDATA_TOKEN = '46b791c0fa3143a28704465b983d609e';
+
+// Finnhub's free plan doesn't cover Canadian TSX/TSXV or London Stock Exchange listings,
+// so these three go through Twelve Data instead (free plan covers those exchanges).
+const twelveDataMap = {
+  "BKI":     { symbol: "BKI",  exchange: "TSXV" }, // Black Iron Inc. (TSX Venture Exchange, CAD)
+  "CERT":    { symbol: "CERT", exchange: "TSXV" }, // Cerrado Gold Inc. (TSX Venture Exchange, CAD)
+  "FEVR":    { symbol: "FEVR", exchange: "LSE" },  // Fevertree Drinks PLC (London Stock Exchange, GBP)
+  "FEVR CS": { symbol: "FEVR", exchange: "LSE" },
+};
 
 // Safe fetch - no AbortController (Safari mobile compatibility)
 function fetchWithTimeout(url, ms){
@@ -495,6 +506,21 @@ async function fetchFinnhubPrice(symbol){
   return null;
 }
 
+// Fetch price via Twelve Data (covers exchanges Finnhub's free plan doesn't: TSX/TSXV, LSE, etc.)
+async function fetchTwelveDataPrice(symbol, exchange){
+  try {
+    var url = 'https://api.twelvedata.com/quote?symbol=' + encodeURIComponent(symbol) +
+      '&exchange=' + encodeURIComponent(exchange) + '&apikey=' + TWELVEDATA_TOKEN;
+    var r = await fetchWithTimeout(url, 10000);
+    if(!r.ok) throw new Error('status ' + r.status);
+    var j = await r.json();
+    if(j && j.code) throw new Error('api error ' + j.code + ': ' + j.message);
+    var price = j && (j.close || j.price) ? parseFloat(j.close || j.price) : null;
+    if(price && !isNaN(price) && price > 0) return price;
+  } catch(e){ console.warn('TwelveData ' + symbol + '.' + exchange + ': ' + e.message); }
+  return null;
+}
+
 // Fetch price for any stock: BR uses Brapi, USD uses Finnhub
 async function fetchPrice(sym){
   // BR stocks end in .SA
@@ -511,6 +537,22 @@ async function fetchAllPrices(acoes){
   for(var i = 0; i < acoes.length; i++){
     var acao = acoes[i];
     if(priceCache[acao] !== undefined) continue;
+
+    // Canadian TSX/TSXV and London-listed tickers → Twelve Data (Finnhub free plan doesn't cover these)
+    var td = twelveDataMap[acao];
+    if(td){
+      var tdKey = 'TD:' + td.symbol + ':' + td.exchange;
+      if(fetched[tdKey] !== undefined){
+        priceCache[acao] = fetched[tdKey];
+      } else {
+        var tdPrice = await fetchTwelveDataPrice(td.symbol, td.exchange);
+        fetched[tdKey] = tdPrice;
+        if(tdPrice !== null) priceCache[acao] = tdPrice;
+        console.log('Pregao ' + acao + ' (TwelveData ' + td.symbol + '.' + td.exchange + '): ' + tdPrice);
+      }
+      continue;
+    }
+
     var sym = tickerMap[acao];
 
     // null = use stored ultimo value from investimentos data
@@ -532,10 +574,8 @@ async function fetchAllPrices(acoes){
       // BR stock → Brapi (strip .SA)
       price = await fetchBrapiPrice(sym.replace('.SA',''));
     } else if(sym.endsWith('.L')){
-      // London stock → Finnhub with exchange prefix
-      price = await fetchFinnhubPrice('LSE:' + sym.replace('.L',''));
-      // Fallback: try without prefix
-      if(price === null) price = await fetchFinnhubPrice(sym);
+      // London stock → Finnhub (symbol already carries the .L suffix)
+      price = await fetchFinnhubPrice(sym);
     } else {
       // US stock → Finnhub
       price = await fetchFinnhubPrice(sym);
