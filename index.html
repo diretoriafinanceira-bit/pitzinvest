@@ -107,55 +107,56 @@
     <div class="date-badge" id="date-display">—</div>
   </div>
   <div class="view-toggle">
-    <button class="toggle-btn active" onclick="setView('investor')">Por Investidor</button>
-    <button class="toggle-btn" onclick="setView('action')">Por Ação</button>
-    <button class="toggle-btn" onclick="setView('outros')">Outros Investidores</button>
-    <button class="toggle-btn" onclick="setView('vendas')">Vendas</button>
-    <button class="toggle-btn" onclick="setView('pregao')">Pregão Online</button>
-    <button class="toggle-btn" onclick="setView('historico')">Histórico</button>
-    <button class="toggle-btn" onclick="setView('extrato')">Extrato</button>
+    <button class="toggle-btn active" data-view="investor" onclick="setView('investor')">Por Investidor</button>
+    <button class="toggle-btn" data-view="ordensColocadas" onclick="setView('ordensColocadas')">Ordens Colocadas</button>
+    <button class="toggle-btn" data-view="action" onclick="setView('action')">Por Ação</button>
+    <button class="toggle-btn" data-view="outros" onclick="setView('outros')">Outros Investidores</button>
+    <button class="toggle-btn" data-view="vendas" onclick="setView('vendas')">Vendas</button>
+    <button class="toggle-btn" data-view="pregao" onclick="setView('pregao')">Pregão Online</button>
+    <button class="toggle-btn" data-view="historico" onclick="setView('historico')">Histórico</button>
+    <button class="toggle-btn" data-view="extrato" onclick="setView('extrato')">Extrato</button>
   </div>
 </div>
 <div class="container"><div id="app-content"></div></div>
 <script>const investimentos = [
-  {inv:"LEONILDES XP",acao:"ANIM3", qtde:713000, compra:3.899415918653576, total:2780283.55, ultimo:2.86, subtotal:2039180, resultado:-742644.3018064303, pct:-0.26696305058668884},
-  {inv:"LEONILDES XP",acao:"BRAV3", qtde:27000, compra:17.81514815, total:481009.00005, ultimo:17.52, subtotal:473040, resultado:-8282.516361802645, pct:-0.017207830675381924},
-  {inv:"LEONILDES XP",acao:"ONCO3", qtde:994000, compra:1.2210828011245733, total:1213756.304317826, ultimo:1.04, subtotal:1033760, resultado:-180701.7868726243, pct:-0.1487916613152166},
-  {inv:"LEONILDES XP",acao:"PETR3", qtde:11000, compra:54.28, total:597080, ultimo:54, subtotal:594000, resultado:-3471.408626435703, pct:-0.005810166940735023},
-  {inv:"LEONILDES XP",acao:"PETR4", qtde:10000, compra:48.93, total:489300, ultimo:48.61, subtotal:486100, resultado:-3520.532604212466, pct:-0.007190328774586561},
-  {inv:"LEONILDES XP",acao:"PRIO3", qtde:28500, compra:64.94315789473684, total:1850880, ultimo:63.29, subtotal:1803765, resultado:-47115, pct:-0.02545545902489627},
-  {inv:"LEONILDES XP",acao:"VALE3", qtde:26000, compra:77.065, total:2003690, ultimo:74.51, subtotal:1937260.0000000002, resultado:-66429.99999999977, pct:-0.03315383118147007},
-  {inv:"LEONILDES XP",acao:"VLID3", qtde:69000, compra:21.304521704347824, total:1470011.9976, ultimo:17.67, subtotal:1219230.0000000002, resultado:-251557.3885335863, pct:-0.17103586180759656},
-  {inv:"LEONILDES XP",acao:"VULC3", qtde:400000, compra:15.6874670875, total:6274986.835, ultimo:13.4, subtotal:5360000, resultado:-916242.8247310497, pct:-0.14598587886381098},
+  {inv:"LEONILDES XP",acao:"ANIM3", qtde:713000, compra:3.899415918653576, total:2780283.55, ultimo:2.87, subtotal:2046310, resultado:-735516.5812220263, pct:-0.26440058707718644},
+  {inv:"LEONILDES XP",acao:"BRAV3", qtde:27000, compra:17.81514815, total:481009.00005, ultimo:17.35, subtotal:468450.00000000006, resultado:-12871.008011737653, pct:-0.026741006100909216},
+  {inv:"LEONILDES XP",acao:"ONCO3", qtde:994000, compra:1.2210828011245733, total:1213756.304317826, ultimo:1.29, subtotal:1282260, resultado:67720.21039407824, pct:0.05575791832727952},
+  {inv:"LEONILDES XP",acao:"PETR3", qtde:11000, compra:54.28, total:597080, ultimo:53.41, subtotal:587510, resultado:-9959.275904884196, pct:-0.01666910133546297},
+  {inv:"LEONILDES XP",acao:"PETR4", qtde:10000, compra:48.93, total:489300, ultimo:48.5, subtotal:485000, resultado:-4620.171125983397, pct:-0.009436235266529876},
+  {inv:"LEONILDES XP",acao:"PRIO3", qtde:28500, compra:64.94315789473684, total:1850880, ultimo:63.24, subtotal:1802340, resultado:-48540, pct:-0.02622536307053942},
+  {inv:"LEONILDES XP",acao:"VALE3", qtde:26000, compra:77.065, total:2003690, ultimo:73.37, subtotal:1907620.0000000002, resultado:-96069.99999999977, pct:-0.04794653863621608},
+  {inv:"LEONILDES XP",acao:"VLID3", qtde:69000, compra:21.304521704347824, total:1470011.9976, ultimo:17.31, subtotal:1194390, resultado:-276390.2263998672, pct:-0.1879208201461935},
+  {inv:"LEONILDES XP",acao:"VULC3", qtde:400000, compra:15.6874670875, total:6274986.835, ultimo:13.41, subtotal:5364000, resultado:-912243.2565286095, pct:-0.1453486136917471},
   // FRANCINE XP
-  {inv:"FRANCINE XP", acao:"ANIM3", qtde:340000, compra:2.96, total:1006400, ultimo:2.86, subtotal:972400, resultado:-34000, pct:-0.033783783783783786},
-  {inv:"FRANCINE XP", acao:"PETR3", qtde:11000, compra:54.28, total:597080, ultimo:54, subtotal:594000, resultado:-3080, pct:-0.005158437730287398},
-  {inv:"FRANCINE XP", acao:"PETR4", qtde:10000, compra:48.93, total:489300, ultimo:48.61, subtotal:486100, resultado:-3200, pct:-0.006539955037809115},
-  {inv:"FRANCINE XP", acao:"VALE3", qtde:26000, compra:77.065, total:2003690, ultimo:74.51, subtotal:1937260.0000000002, resultado:-66429.99999999977, pct:-0.03315383118147007},
-  {inv:"FRANCINE XP", acao:"VLID3", qtde:21100, compra:19.119241706161137, total:403416, ultimo:17.67, subtotal:372837.00000000006, resultado:-30578.99999999994, pct:-0.07580016657742862},
+  {inv:"FRANCINE XP", acao:"ANIM3", qtde:340000, compra:2.96, total:1006400, ultimo:2.87, subtotal:975800, resultado:-30600, pct:-0.030405405405405404},
+  {inv:"FRANCINE XP", acao:"PETR3", qtde:11000, compra:54.28, total:597080, ultimo:53.41, subtotal:587510, resultado:-9570, pct:-0.016028002947678702},
+  {inv:"FRANCINE XP", acao:"PETR4", qtde:10000, compra:48.93, total:489300, ultimo:48.5, subtotal:485000, resultado:-4300, pct:-0.008788064582055999},
+  {inv:"FRANCINE XP", acao:"VALE3", qtde:26000, compra:77.065, total:2003690, ultimo:73.37, subtotal:1907620.0000000002, resultado:-96069.99999999977, pct:-0.04794653863621608},
+  {inv:"FRANCINE XP", acao:"VLID3", qtde:21100, compra:19.119241706161137, total:403416, ultimo:17.31, subtotal:365241, resultado:-38175, pct:-0.09462936522101256},
   // LETICIA XP
-  {inv:"LETICIA XP",  acao:"ANIM3", qtde:340000, compra:2.96, total:1006400, ultimo:2.86, subtotal:972400, resultado:-34000, pct:-0.033783783783783786},
-  {inv:"LETICIA XP",  acao:"ONCO3", qtde:857000, compra:1.6238156340723453, total:1391609.9984, ultimo:1.04, subtotal:891280, resultado:-500543.9133666834, pct:-0.35963163770905304},
-  {inv:"LETICIA XP",  acao:"PETR3", qtde:10000, compra:54.28, total:542800, ultimo:54, subtotal:540000, resultado:-2800, pct:-0.005158437730287398},
-  {inv:"LETICIA XP",  acao:"PETR4", qtde:10000, compra:48.93, total:489300, ultimo:48.61, subtotal:486100, resultado:-3200, pct:-0.006539955037809115},
-  {inv:"LETICIA XP",  acao:"VALE3", qtde:26000, compra:77.065, total:2003690, ultimo:74.51, subtotal:1937260.0000000002, resultado:-66429.99999999977, pct:-0.03315383118147007},
-  {inv:"LETICIA XP",  acao:"VLID3", qtde:15000, compra:19.55, total:293250, ultimo:17.67, subtotal:265050, resultado:-28200, pct:-0.09616368286445014},
+  {inv:"LETICIA XP",  acao:"ANIM3", qtde:340000, compra:2.96, total:1006400, ultimo:2.87, subtotal:975800, resultado:-30600, pct:-0.030405405405405404},
+  {inv:"LETICIA XP",  acao:"ONCO3", qtde:857000, compra:1.6238156340723453, total:1391609.9984, ultimo:1.29, subtotal:1105530, resultado:-286313.98935880046, pct:-0.20570839228231363},
+  {inv:"LETICIA XP",  acao:"PETR3", qtde:10000, compra:54.28, total:542800, ultimo:53.41, subtotal:534100, resultado:-8700, pct:-0.016028002947678702},
+  {inv:"LETICIA XP",  acao:"PETR4", qtde:10000, compra:48.93, total:489300, ultimo:48.5, subtotal:485000, resultado:-4300, pct:-0.008788064582055999},
+  {inv:"LETICIA XP",  acao:"VALE3", qtde:26000, compra:77.065, total:2003690, ultimo:73.37, subtotal:1907620.0000000002, resultado:-96069.99999999977, pct:-0.04794653863621608},
+  {inv:"LETICIA XP",  acao:"VLID3", qtde:15000, compra:19.55, total:293250, ultimo:17.31, subtotal:259649.99999999997, resultado:-33600.00000000003, pct:-0.1145780051150896},
   // NUNAM
-  {inv:"NUNAM",acao:"OURO UBS", qtde:2667.43, compra:243.68, total:649999.3424, ultimo:230.57, subtotal:615029.3350999999, resultado:-35213.165519796516, pct:-0.054153897178717374},
-  {inv:"NUNAM",acao:"FEVR", qtde:56530, compra:16.44360251194056, total:929556.85, ultimo:8.68, subtotal:490680.39999999997, resultado:-308974.6138461139, pct:-0.38638488910365687},
-  {inv:"NUNAM",acao:"ORCL", qtde:33500, compra:148.5292317563848, total:4975729.263838891, ultimo:150.59, subtotal:5044765, resultado:86613.86932640382, pct:0.0174689853220825},
-  {inv:"NUNAM",acao:"BKI", qtde:3145500, compra:0.26983605047661147, total:848769.2967741814, ultimo:0.08, subtotal:251640, resultado:-600220.807899607, pct:-0.7045996274667725},
-  {inv:"NUNAM",acao:"CERT", qtde:400000, compra:2.41, total:964000, ultimo:2.55, subtotal:1019999.9999999999, resultado:55999.99999999988, pct:0.058091286307053826},
-  {inv:"NUNAM",acao:"MU", qtde:1500, compra:935.45, total:1403175, ultimo:977.5, subtotal:1466250, resultado:63075, pct:0.044951627558928856},
-  {inv:"NUNAM",acao:"NVIDIA", qtde:9000, compra:213.14, total:1918259.9999999998, ultimo:219.34, subtotal:1974060, resultado:55800.00000000023, pct:0.029088861780989145},
-  {inv:"NUNAM",acao:"SNDK", qtde:900, compra:1555.75, total:1400175, ultimo:1614.39, subtotal:1452951, resultado:52776, pct:0.037692431303229953},
+  {inv:"NUNAM",acao:"OURO UBS", qtde:2667.43, compra:243.68, total:649999.3424, ultimo:236.25, subtotal:630180.3374999999, resultado:-20065.075378496447, pct:-0.030857696157628674},
+  {inv:"NUNAM",acao:"FEVR", qtde:56530, compra:16.44360251194056, total:929556.85, ultimo:8.41, subtotal:475417.3, resultado:-325633.75152601587, pct:-0.40650811319163505},
+  {inv:"NUNAM",acao:"ORCL", qtde:33500, compra:148.5292317563848, total:4975729.263838891, ultimo:147.61, subtotal:4944935, resultado:-13391.254274058087, pct:-0.0027007610204179034},
+  {inv:"NUNAM",acao:"BKI", qtde:3145500, compra:0.26983605047661147, total:848769.2967741814, ultimo:0.085, subtotal:267367.5, resultado:-584537.4930417788, pct:-0.6861533830840126},
+  {inv:"NUNAM",acao:"CERT", qtde:400000, compra:2.41, total:964000, ultimo:2.61, subtotal:1044000, resultado:80000, pct:0.08298755186721993},
+  {inv:"NUNAM",acao:"COP", qtde:4500, compra:132.62, total:596790, ultimo:131.83, subtotal:593235, resultado:-3555, pct:-0.005956869250490122},
+  {inv:"NUNAM",acao:"MU", qtde:1500, compra:935.45, total:1403175, ultimo:1015.94, subtotal:1523910, resultado:120735, pct:0.086044149874392},
+  {inv:"NUNAM",acao:"NVIDIA", qtde:9000, compra:213.14, total:1918259.9999999998, ultimo:222.06, subtotal:1998540, resultado:80280.00000000023, pct:0.041850426949423036},
 ];
 
 const saldosCC = {
   "LEONILDES XP": 12144218.09,
   "FRANCINE XP":  6466525.94,
   "LETICIA XP":   5163723.07,
-  "NUNAM UBS":    2685392.51,
+  "NUNAM UBS":    3698801.51,
   "NUNAM CS":     0,
   "GILSON UBS":   130782.25
 };
@@ -164,7 +165,7 @@ const lucrosAcumulados = {
   "LEONILDES XP": {JAN:212373.62, FEV:366212.74, MAR:3953415.45, ABR:1019612.18, MAI:494127.58, JUN:25561.13, JUL:81756, AGO:852328.10, SET:586825.79},
   "FRANCINE XP":  {JAN:168072.27, FEV:138795.52, MAR:949621.70,  ABR:276521.79,  MAI:31921.54,  JUN:0,        JUL:0, AGO:52501.78, SET:832924.64},
   "LETICIA XP":   {JAN:168766.95, FEV:61240.92,  MAR:1063833.09, ABR:229285.97,  MAI:20654.45,  JUN:0,        JUL:0, AGO:0, SET:965679.25},
-  "NUNAM UBS":    {JAN:855277.62, FEV:52342.18,  MAR:103317.48,  ABR:249536.62,  MAI:659687.38, JUN:0,        JUL:124640, AGO:546403.32, SET:482831.40},
+  "NUNAM UBS":    {JAN:855277.62, FEV:52342.18,  MAR:103317.48,  ABR:249536.62,  MAI:659687.38, JUN:0,        JUL:124640, AGO:546403.32, SET:692855.40},
   "NUNAM CS":     {JAN:164718,    FEV:0,          MAR:229600,     ABR:0,          MAI:0,         JUN:0,        JUL:0,     AGO:0,      SET:0},
 };
 
@@ -408,11 +409,49 @@ const vendasRealizadas = {
     {a:"VALE",   d:"01/09/26",q:135000, cu:14.79,     ct:1996650,     vu:15.19,   vt:2050650,    r:54000,       p:2.70},
     {a:"CERT",   d:"04/09/26",q:379700, cu:2.12,      ct:804964,      vu:2.57,    vt:975829,     r:170865.00,   p:21.23},
       {a:"AMD",    d:"16/09/26",q:4000,   cu:483.53,    ct:1934120,     vu:521.98,  vt:2087920,    r:153800,      p:7.95},
+      {a:"SNDK",   d:"18/09/26",q:900,    cu:1555.75,   ct:1400175,     vu:1789.11, vt:1610199,    r:210024,      p:15.00},
   ],
 };
 
 const allInvestors = ["LEONILDES XP","FRANCINE XP","LETICIA XP","NUNAM","GILSON UBS"];
 const nunamAcoes = new Set(investimentos.filter(i=>i.inv==="NUNAM").map(i=>i.acao));
+
+// ── ORDENS COLOCADAS (ordens de compra/venda pendentes, ainda não executadas) ──
+// Fonte: aba "Posição Atualizada" da planilha, a partir da linha 223. Ordem preservada
+// exatamente como aparece na planilha, agrupada por papel.
+const ordensColocadas = [
+  {papel:"ANIM3",  tipo:"VD", preco:4.06,   carteira:"LEONILDES XP"},
+  {papel:"ANIM3",  tipo:"VD", preco:3.30,   carteira:"FRANCINE XP"},
+  {papel:"ANIM3",  tipo:"VD", preco:3.30,   carteira:"LETICIA XP"},
+  {papel:"INTB3",  tipo:"CP", preco:14.05,  carteira:"FRANCINE XP"},
+  {papel:"INTB3",  tipo:"CP", preco:14.05,  carteira:"LEONILDES XP"},
+  {papel:"INTB3",  tipo:"CP", preco:14.05,  carteira:"LETICIA XP"},
+  {papel:"ONCO3",  tipo:"VD", preco:1.89,   carteira:"LEONILDES XP"},
+  {papel:"ONCO3",  tipo:"VD", preco:1.89,   carteira:"LETICIA XP"},
+  {papel:"PETR3",  tipo:"VD", preco:56.04,  carteira:"FRANCINE XP"},
+  {papel:"PETR3",  tipo:"VD", preco:56.04,  carteira:"LEONILDES XP"},
+  {papel:"PETR3",  tipo:"VD", preco:56.04,  carteira:"LETICIA XP"},
+  {papel:"PETR4",  tipo:"VD", preco:50.25,  carteira:"FRANCINE XP"},
+  {papel:"PETR4",  tipo:"VD", preco:50.25,  carteira:"LEONILDES XP"},
+  {papel:"PETR4",  tipo:"VD", preco:50.25,  carteira:"LETICIA XP"},
+  {papel:"PRIO3",  tipo:"VD", preco:69.31,  carteira:"LEONILDES XP"},
+  {papel:"VALE3",  tipo:"VD", preco:81.98,  carteira:"FRANCINE XP"},
+  {papel:"VALE3",  tipo:"VD", preco:81.98,  carteira:"LEONILDES XP"},
+  {papel:"VALE3",  tipo:"VD", preco:81.98,  carteira:"LETICIA XP"},
+  {papel:"VLID3",  tipo:"VD", preco:22.15,  carteira:"FRANCINE XP"},
+  {papel:"VLID3",  tipo:"VD", preco:22.15,  carteira:"LEONILDES XP"},
+  {papel:"VLID3",  tipo:"VD", preco:22.15,  carteira:"LETICIA XP"},
+  {papel:"VULC3",  tipo:"VD", preco:16.32,  carteira:"LEONILDES XP"},
+  {papel:"WEGE3",  tipo:"CP", preco:45.53,  carteira:"FRANCINE XP"},
+  {papel:"WEGE3",  tipo:"CP", preco:45.53,  carteira:"LEONILDES XP"},
+  {papel:"WEGE3",  tipo:"CP", preco:45.53,  carteira:"LETICIA XP"},
+  {papel:"AMD",    tipo:"CP", preco:525.40, carteira:"NUNAM"},
+  {papel:"CERT",   tipo:"VD", preco:2.69,   carteira:"NUNAM"},
+  {papel:"INTL",   tipo:"CP", preco:106.23, carteira:"NUNAM"},
+  {papel:"MU",     tipo:"VD", preco:1077.80,carteira:"NUNAM"},
+  {papel:"NVIDIA", tipo:"VD", preco:229.36, carteira:"NUNAM"},
+  {papel:"ORCL",   tipo:"VD", preco:162.58, carteira:"NUNAM"},
+];
 
 let currentView='investor', selectedInvestor=allInvestors[0];
 
@@ -437,8 +476,8 @@ function diasAtras(dateStr){
 // ── CONTROL ────────────────────────────────────────────
 function setView(v){
   currentView=v;
-  document.querySelectorAll('.toggle-btn').forEach((b,i)=>
-    b.classList.toggle('active',(i===0&&v==='investor')||(i===1&&v==='action')||(i===2&&v==='outros')||(i===3&&v==='vendas')||(i===4&&v==='pregao')||(i===5&&v==='historico')||(i===6&&v==='extrato')));
+  document.querySelectorAll('.toggle-btn').forEach((b)=>
+    b.classList.toggle('active', b.getAttribute('data-view')===v));
   renderContent();
 }
 function selectInvestor(inv){selectedInvestor=inv;renderContent();}
@@ -446,6 +485,7 @@ function renderContent(){
   const el=document.getElementById('app-content');
   el.innerHTML=''; el.className='fade-in'; void el.offsetWidth;
   if(currentView==='investor') el.appendChild(renderInvestorView());
+  else if(currentView==='ordensColocadas') renderOrdensColocadasView(el);
   else if(currentView==='action') el.appendChild(renderActionView());
   else if(currentView==='vendas') el.appendChild(renderVendasView());
   else if(currentView==='pregao') renderPregaoView(el);
@@ -1042,6 +1082,56 @@ function renderActionView(){
   return frag;
 }
 
+// ── ORDENS COLOCADAS (compras/vendas pendentes) ───────
+function renderOrdensColocadasView(container){
+  const frag=document.createDocumentFragment();
+  const st=document.createElement('div'); st.className='section-title'; st.style.marginTop='4px';
+  st.textContent='Ordens Colocadas'; frag.appendChild(st);
+
+  const sub=document.createElement('div');
+  sub.style.cssText='color:var(--muted);font-size:12px;margin-bottom:16px;';
+  sub.textContent='Ordens de compra e venda registradas na planilha, ainda não executadas.';
+  frag.appendChild(sub);
+
+  // Agrupa por papel, preservando a ordem de primeira ocorrência na planilha
+  const groups=[]; const idx={};
+  ordensColocadas.forEach(o=>{
+    if(!(o.papel in idx)){ idx[o.papel]=groups.length; groups.push({papel:o.papel, items:[]}); }
+    groups[idx[o.papel]].items.push(o);
+  });
+
+  groups.forEach(g=>{
+    const blk=document.createElement('div'); blk.className='vendas-block';
+    const ih=document.createElement('div'); ih.className='vendas-inv-header'; ih.style.cursor='default';
+    ih.innerHTML=`
+      <div class="vendas-inv-name">${g.papel}</div>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted)">${g.items.length} ${g.items.length>1?'ordens':'ordem'}</span>
+      </div>`;
+
+    const bd=document.createElement('div'); bd.className='vendas-body'; bd.style.display='block';
+    const sc=document.createElement('div'); sc.className='table-scroll';
+    const tbl=document.createElement('table');
+    tbl.innerHTML=`<thead><tr><th>Carteira</th><th>Tipo</th><th>Preço</th></tr></thead>`;
+    const tbody=document.createElement('tbody');
+    g.items.forEach(o=>{
+      const tr=document.createElement('tr');
+      const tipoLabel = o.tipo==='CP' ? 'COMPRA' : 'VENDA';
+      const tipoColor = o.tipo==='CP' ? 'var(--green)' : 'var(--red)';
+      const cur = o.carteira==='NUNAM' ? '$' : 'R$';
+      tr.innerHTML=`
+        <td>${o.carteira}</td>
+        <td style="color:${tipoColor};font-weight:700;">${tipoLabel}</td>
+        <td>${cur} ${fmt(o.preco,2)}</td>`;
+      tbody.appendChild(tr);
+    });
+    tbl.appendChild(tbody); sc.appendChild(tbl); bd.appendChild(sc);
+    blk.appendChild(ih); blk.appendChild(bd); frag.appendChild(blk);
+  });
+
+  container.appendChild(frag);
+}
+
 // ── VENDAS REALIZADAS ────────────────────────────────
 function renderVendasView(){
   const frag=document.createDocumentFragment();
@@ -1364,7 +1454,7 @@ const historicoVendas = {
     {a:"SCPA",   d:"13/04/2018",v:6.95},
     {a:"SHFG",   d:"18/09/2024",v:57.04},
     {a:"SLB",    d:"02/02/2026",v:48.38},
-    {a:"SNDK",   d:"01/09/2026",v:1534.11},
+    {a:"SNDK",   d:"18/09/2026",v:1789.11},
     {a:"TCEHY",  d:"27/02/2020",v:50.27},
     {a:"TSLA",   d:"15/06/2021",v:653.00},
     {a:"TSLA3",  d:"24/10/2019",v:296.15},
@@ -1739,7 +1829,7 @@ const histLedger = {
     "BLK": [["08/01/2026", "CP", 360.0, 1086.86, 391269.6, null, null, null, 360.0, 1086.86], ["15/01/2026", "VD", 360.0, 1147.24, 413006.4, 391269.6, 21736.8, 5.56, 0, 0], ["17/03/2026", "CP", 1000.0, 964.88, 964880.0, null, null, null, 1000.0, 964.88], ["09/04/2026", "VD", 1000.0, 1002.59, 1002590.0, 964880.0, 37710.0, 3.91, 0, 0]],
     "BRF": [["25/04/2018", "CP", 1438.0, 7.185, 10332.03, null, null, null, 1438.0, 7.185], ["25/04/2018", "CP", 500.0, 7.205, 3602.5, null, null, null, 1938.0, 7.19016], ["25/04/2018", "CP", 1965.0, 7.195, 14138.18, null, null, null, 3903.0, 7.192597], ["25/04/2018", "CP", 14640.0, 7.19, 105261.6, null, null, null, 18543.0, 7.190547], ["25/04/2018", "CP", 1457.0, 7.2, 10490.4, null, null, null, 20000.0, 7.191235], ["11/05/2018", "CP", 40000.0, 6.65, 266000.0, null, null, null, 60000.0, 6.830412], ["13/06/2018", "CP", 30000.0, 5.422, 162661.5, null, null, null, 90000.0, 6.360958], ["03/08/2018", "VD", 300.0, 6.105, 1831.5, 2155.5, -324.0, -15.03, 89700.0, 6.358202], ["03/08/2018", "VD", 28500.0, 6.11, 174135.0, 200189.2, -26054.2, -13.01, 61200.0, 6.048064], ["03/08/2018", "VD", 1200.0, 6.115, 7338.0, 7980.0, -642.0, -8.05, 60000.0, 6.036025], ["08/10/2018", "VD", 60000.0, 5.8998, 353990.27, 362161.5, -8171.23, -2.26, 0, 0]],
     "CERT": [["15/06/2022", "CP", 7700.0, 1.6, 12320.0, null, null, null, 7700.0, 1.6], ["15/06/2022", "CP", 4200.0, 1.59, 6678.0, null, null, null, 11900.0, 1.596471], ["15/06/2022", "CP", 1000.0, 1.58, 1580.0, null, null, null, 12900.0, 1.595194], ["16/06/2022", "CP", 7300.0, 1.65, 12045.0, null, null, null, 20200.0, 1.615], ["16/06/2022", "CP", 31400.0, 1.61, 50554.0, null, null, null, 51600.0, 1.611957], ["16/06/2022", "CP", 5000.0, 1.63, 8150.0, null, null, null, 56600.0, 1.613551], ["16/06/2022", "CP", 2200.0, 1.66, 3652.0, null, null, null, 58800.0, 1.615289], ["31/12/2022", "SD", 58800.0, 1.6153, 94979.0, null, null, null, 58800.0, 1.6153], ["06/04/2023", "CP", 77000.0, 0.82, 63140.0, null, null, null, 135800.0, 1.164352], ["31/12/2023", "SD", 135800.0, 1.1644, 158119.0, null, null, null, 135800.0, 1.1644], ["14/10/2025", "VD", 135800.0, 1.58, 214564.0, 158119.0, 56445.0, 35.7, 0, 0], ["22/10/2025", "CP", 175000.0, 1.3893, 243125.05, null, null, null, 175000.0, 1.389286], ["03/11/2025", "VD", 175000.0, 1.49, 260750.0, 243125.05, 17624.95, 7.25, 0, 0], ["14/11/2025", "CP", 519210.0, 1.0262, 532838.57, null, null, null, 519210.0, 1.026249], ["25/11/2025", "VD", 120000.0, 1.49, 178800.0, 123149.84, 55650.16, 45.19, 399210.0, 1.026249], ["25/11/2025", "VD", 72300.0, 1.53, 110619.0, 74197.78, 36421.22, 49.09, 326910.0, 1.026249], ["26/11/2025", "VD", 47700.0, 1.53, 72981.0, 48952.06, 24028.94, 49.09, 279210.0, 1.026249], ["03/12/2025", "VD", 7000.0, 1.65, 11550.0, 7183.74, 4366.26, 60.78, 272210.0, 1.026249], ["12/12/2025", "VD", 99500.0, 1.65, 164175.0, 102111.74, 62063.26, 60.78, 172710.0, 1.026249], ["18/12/2025", "VD", 172710.0, 1.65, 284971.5, 177243.41, 107728.09, 60.78, 0, 0], ["23/01/2026", "CP", 380000.0, 2.12, 805600.0, null, null, null, 380000.0, 2.12], ["24/08/2026", "VD", 300.0, 2.55, 765.0, 636.0, 129.0, 20.28, 379700.0, 2.12], ["04/09/2026", "VD", 379700.0, 2.57, 975828.9999999999, 804964.0, 170864.99999999988, 21.226415094339607, 0, 0], ["15/09/2026", "CP", 400000.0, 2.41, 964000.0, null, null, null, 400000.0, 2.41]],
-    "COP": [["17/03/2026", "CP", 8000.0, 121.91, 975280.0, null, null, null, 8000.0, 121.91], ["24/04/2026", "CP", 8000.0, 121.76, 974080.0, null, null, null, 16000.0, 121.835], ["05/05/2026", "CP", 5000.0, 123.93, 619650.0, null, null, null, 21000.0, 122.33380952380952], ["01/06/2026", "CP", 4277.0, 116.88, 499895.76, null, null, null, 25277.0, 121.41099655813585], ["24/08/2026", "VD", 25277.0, 133.21, 3367149.17, 3068905.76, 298243.41, 9.72, 0, 0]],
+    "COP": [["17/03/2026", "CP", 8000.0, 121.91, 975280.0, null, null, null, 8000.0, 121.91], ["24/04/2026", "CP", 8000.0, 121.76, 974080.0, null, null, null, 16000.0, 121.835], ["05/05/2026", "CP", 5000.0, 123.93, 619650.0, null, null, null, 21000.0, 122.33380952380952], ["01/06/2026", "CP", 4277.0, 116.88, 499895.76, null, null, null, 25277.0, 121.41099655813585], ["24/08/2026", "VD", 25277.0, 133.21, 3367149.17, 3068905.76, 298243.41, 9.72, 0, 0], ["18/09/2026", "CP", 4500.0, 132.62, 596790.0, null, null, null, 4500.0, 132.62]],
     "CVX": [["08/01/2026", "CP", 2500.0, 159.45, 398625.0, null, null, null, 2500.0, 159.45], ["16/03/2026", "VD", 2500.0, 196.0, 490000.0, 398625.0, 91375.0, 22.92, 0, 0], ["18/03/2026", "CP", 2500.0, 198.72, 496800.0, null, null, null, 2500.0, 198.72], ["09/04/2026", "CP", 5200.0, 191.05, 993460.0, null, null, null, 7700.0, 193.54026], ["13/05/2026", "CP", 8300.0, 184.73, 1533259.0, null, null, null, 16000.0, 188.969937625], ["01/06/2026", "CP", 2676.0, 186.87156, 500068.29455999995, null, null, null, 18676.0, 188.66927043049904], ["24/08/2026", "VD", 18676.0, 201.95, 3771618.2, 3523587.29, 248030.91, 7.04, 0, 0]],
     "DIS": [["16/08/2017", "CP", 1970.0, 102.19, 201314.3, null, null, null, 1970.0, 102.19], ["18/12/2017", "VD", 570.0, 111.16, 63361.2, 58248.3, 5112.9, 8.78, 1400.0, 102.19], ["18/12/2017", "VD", 1000.0, 111.17, 111170.0, 102190.0, 8980.0, 8.79, 400.0, 102.19], ["18/12/2017", "VD", 400.0, 111.175, 44470.0, 40876.0, 3594.0, 8.79, 0, 0], ["28/02/2018", "CP", 1910.0, 104.7, 199977.0, null, null, null, 1910.0, 104.7], ["13/06/2018", "VD", 74.0, 107.09, 7924.66, 7747.8, 176.86, 2.28, 1836.0, 104.7], ["13/06/2018", "VD", 300.0, 107.1, 32130.0, 31410.0, 720.0, 2.29, 1536.0, 104.7], ["13/06/2018", "VD", 334.0, 107.11, 35774.74, 34969.8, 804.94, 2.3, 1202.0, 104.7], ["13/06/2018", "VD", 700.0, 107.13, 74991.0, 73290.0, 1701.0, 2.32, 502.0, 104.7], ["13/06/2018", "VD", 100.0, 107.14, 10714.0, 10470.0, 244.0, 2.33, 402.0, 104.7], ["13/06/2018", "VD", 402.0, 107.15, 43074.3, 42089.4, 984.9, 2.34, 0, 0]],
     "DXCM": [["23/02/2017", "CP", 1410.0, 77.9, 109839.0, null, null, null, 1410.0, 77.9], ["26/05/2017", "CP", 1410.0, 68.7306, 96910.15, null, null, null, 2820.0, 73.315301], ["22/08/2017", "VD", 2820.0, 76.3533, 215316.36, 206749.15, 8567.21, 4.14, 0, 0], ["29/09/2017", "CP", 300.0, 47.259, 14177.7, null, null, null, 300.0, 47.259], ["29/09/2017", "CP", 900.0, 47.26, 42534.0, null, null, null, 1200.0, 47.25975], ["29/09/2017", "CP", 500.0, 47.27, 23635.0, null, null, null, 1700.0, 47.262765], ["29/09/2017", "CP", 900.0, 47.28, 42552.0, null, null, null, 2600.0, 47.268731], ["29/09/2017", "CP", 100.0, 47.265, 4726.5, null, null, null, 2700.0, 47.268593], ["29/09/2017", "CP", 202.0, 47.29, 9552.58, null, null, null, 2902.0, 47.270083], ["29/09/2017", "CP", 100.0, 47.33, 4733.0, null, null, null, 3002.0, 47.272079], ["29/09/2017", "CP", 199.0, 47.34, 9420.66, null, null, null, 3201.0, 47.276301], ["29/09/2017", "CP", 599.0, 47.35, 28362.65, null, null, null, 3800.0, 47.287918], ["22/11/2017", "VD", 3800.0, 54.7358, 207996.06, 179694.09, 28301.97, 15.75, 0, 0], ["04/01/2018", "CP", 2800.0, 53.3494, 149378.2, null, null, null, 2800.0, 53.349357], ["10/01/2018", "VD", 2800.0, 56.0, 156800.0, 149378.2, 7421.8, 4.97, 0, 0]],
@@ -1772,7 +1862,7 @@ const histLedger = {
     "SCPA": [["02/06/2017", "CP", 19100.0, 6.5886, 125842.86, null, null, null, 19100.0, 6.588631], ["15/08/2017", "CP", 19100.0, 5.9796, 114209.85, null, null, null, 38200.0, 6.284102], ["13/10/2017", "CP", 38200.0, 6.7277, 256998.19, null, null, null, 76400.0, 6.505902], ["09/11/2017", "CP", 31547.0, 6.0905, 192138.06, null, null, null, 107947.0, 6.384512], ["09/11/2017", "CP", 2453.0, 6.1406, 15062.78, null, null, null, 110400.0, 6.379092], ["01/12/2017", "VD", 13423.0, 6.7229, 90240.9, 88439.2, 1801.71, 2.04, 96977.0, 6.350088], ["31/12/2017", "SD", 96977.0, 6.3501, 615812.53, null, null, null, 96977.0, 6.3501], ["25/01/2018", "VD", 11385.0, 6.6922, 76190.7, 71535.06, 4655.63, 6.51, 85592.0, 6.358976], ["15/02/2018", "VD", 7166.0, 6.8536, 49112.99, 42849.62, 6263.37, 14.62, 78426.0, 6.393643], ["20/02/2018", "VD", 17813.0, 6.8491, 122003.18, 115182.7, 6820.49, 5.92, 60613.0, 6.372315], ["20/02/2018", "VD", 21.0, 6.8492, 143.83, 141.28, 2.55, 1.81, 60592.0, 6.372192], ["12/03/2018", "VD", 1190.0, 6.8744, 8180.5, 8005.96, 174.54, 2.18, 59402.0, 6.36507], ["12/03/2018", "VD", 950.0, 6.8771, 6533.28, 6391.32, 141.96, 2.22, 58452.0, 6.359176], ["12/03/2018", "VD", 14947.0, 6.8688, 102668.6, 100558.95, 2109.65, 2.1, 43505.0, 6.232563], ["12/03/2018", "VD", 3505.0, 6.8716, 24084.98, 23580.59, 504.39, 2.14, 40000.0, 6.189176], ["05/04/2018", "VD", 231.0, 6.9548, 1606.57, 1554.1, 52.47, 3.38, 39769.0, 6.186048], ["06/04/2018", "VD", 7385.0, 6.9255, 51144.53, 48654.41, 2490.12, 5.12, 32384.0, 6.094322], ["09/04/2018", "VD", 4243.0, 6.9255, 29384.73, 25842.13, 3542.6, 13.71, 28141.0, 6.094893], ["10/04/2018", "VD", 21.0, 6.9255, 145.43, 127.9, 17.53, 13.71, 28120.0, 6.094897], ["11/04/2018", "VD", 28120.0, 6.983, 196362.52, 171388.5, 24974.03, 14.57, 0, 0], ["12/04/2018", "CP", 28120.0, 6.7039, 188512.82, null, null, null, 28120.0, 6.70387], ["13/04/2018", "VD", 5436.0, 6.941, 37731.28, 36442.24, 1289.04, 3.54, 22684.0, 6.70387], ["13/04/2018", "VD", 3722.0, 6.946, 25853.01, 24951.8, 901.21, 3.61, 18962.0, 6.70387], ["13/04/2018", "VD", 1477.0, 6.9421, 10253.51, 9901.62, 351.89, 3.55, 17485.0, 6.70387], ["13/04/2018", "VD", 10279.0, 6.944, 71377.38, 68909.08, 2468.3, 3.58, 7206.0, 6.70387], ["13/04/2018", "VD", 1925.0, 6.94, 13359.5, 12904.95, 454.55, 3.52, 5281.0, 6.70387], ["13/04/2018", "VD", 5281.0, 6.95, 36702.95, 35403.14, 1299.81, 3.67, 0, 0]],
     "SHFG": [["27/08/2020", "CP", 1500.0, 56.1515, 84227.2, null, null, null, 1500.0, 56.151468], ["18/09/2020", "CP", 3600.0, 55.6, 200160.0, null, null, null, 5100.0, 55.762196], ["31/12/2020", "SD", 5100.0, 55.7622, 284387.2, null, null, null, 5100.0, 55.7622], ["29/06/2021", "VD", 2600.0, 61.95, 161070.0, 145387.2, 15682.8, 10.79, 2500.0, 55.6], ["06/07/2021", "VD", 2500.0, 62.6, 156500.0, 139000.0, 17500.0, 12.59, 0, 0], ["23/07/2021", "CP", 4352.0, 55.21, 240273.92, null, null, null, 4352.0, 55.21], ["23/07/2021", "CP", 1348.0, 55.68, 75056.64, null, null, null, 5700.0, 55.321151], ["13/08/2021", "CP", 4750.0, 53.9, 256025.0, null, null, null, 10450.0, 54.675173], ["31/12/2021", "SD", 10450.0, 54.6752, 571355.56, null, null, null, 10450.0, 54.6752], ["18/09/2024", "VD", 10450.0, 57.0372, 596038.9, 571355.56, 24683.34, 4.32, 0, 0]],
     "SLB": [["22/02/2017", "CP", 1380.0, 79.75, 110055.0, null, null, null, 1380.0, 79.75], ["21/06/2017", "CP", 100.0, 65.71, 6571.0, null, null, null, 1480.0, 78.801351], ["21/06/2017", "CP", 200.0, 65.72, 13144.0, null, null, null, 1680.0, 77.244048], ["21/06/2017", "CP", 200.0, 65.74, 13148.0, null, null, null, 1880.0, 76.020213], ["21/06/2017", "CP", 200.0, 65.75, 13150.0, null, null, null, 2080.0, 75.032692], ["21/06/2017", "CP", 385.0, 65.76, 25317.6, null, null, null, 2465.0, 73.584422], ["21/06/2017", "CP", 100.0, 65.77, 6577.0, null, null, null, 2565.0, 73.279766], ["21/06/2017", "CP", 200.0, 65.8, 13160.0, null, null, null, 2765.0, 72.738734], ["21/06/2017", "CP", 100.0, 65.81, 6581.0, null, null, null, 2865.0, 72.496894], ["21/06/2017", "CP", 495.0, 65.86, 32600.7, null, null, null, 3360.0, 71.519137], ["25/08/2017", "CP", 2500.0, 63.6083, 159020.68, null, null, null, 5860.0, 68.144195], ["29/09/2017", "VD", 2600.0, 69.3608, 180338.04, 190265.6, -9927.56, -5.22, 3260.0, 64.128644], ["31/12/2017", "SD", 3260.0, 64.1286, 209059.38, null, null, null, 3260.0, 64.1286], ["24/05/2018", "VD", 3260.0, 72.6, 236676.0, 209059.38, 27616.62, 13.21, 0, 0], ["08/01/2026", "CP", 9000.0, 44.36, 399240.0, null, null, null, 9000.0, 44.36], ["02/02/2026", "VD", 9000.0, 48.38, 435420.0, 399240.0, 36180.0, 9.06, 0, 0]],
-    "SNDK": [["26/08/2026", "CP", 470.0, 1474.34, 692939.7999999999, null, null, null, 470.0, 1474.34], ["01/09/2026", "VD", 470.0, 1534.11, 721031.7, 692939.8, 28091.9, 4.05, 0, 0], ["15/09/2026", "CP", 900.0, 1555.75, 1400175.0, null, null, null, 900.0, 1555.75]],
+    "SNDK": [["26/08/2026", "CP", 470.0, 1474.34, 692939.7999999999, null, null, null, 470.0, 1474.34], ["01/09/2026", "VD", 470.0, 1534.11, 721031.7, 692939.8, 28091.9, 4.05, 0, 0], ["15/09/2026", "CP", 900.0, 1555.75, 1400175.0, null, null, null, 900.0, 1555.75], ["18/09/2026", "VD", 900.0, 1789.11, 1610199.0, 1400175.0, 210024.0, 14.99983930580106, 0, 0]],
     "TCEHY": [["12/03/2018", "CP", 2230.0, 58.44, 130321.2, null, null, null, 2230.0, 58.44], ["16/03/2018", "CP", 3370.0, 59.07, 199065.9, null, null, null, 5600.0, 58.819125], ["14/05/2018", "CP", 4900.0, 52.59, 257691.0, null, null, null, 10500.0, 55.9122], ["31/12/2018", "SD", 10500.0, 55.9122, 587078.1, null, null, null, 10500.0, 55.9122], ["25/06/2019", "CP", 6300.0, 44.14, 278082.0, null, null, null, 16800.0, 51.497625], ["31/12/2019", "SD", 16800.0, 51.4976, 865160.1, null, null, null, 16800.0, 51.4976], ["27/02/2020", "VD", 2496.0, 50.23, 125374.08, 146033.82, -20659.74, -14.15, 14304.0, 50.274488], ["27/02/2020", "VD", 2982.0, 50.24, 149815.68, 176146.74, -26331.06, -14.95, 11322.0, 47.957917], ["27/02/2020", "VD", 4490.0, 50.26, 225667.4, 236919.66, -11252.26, -4.75, 6832.0, 44.797992], ["27/02/2020", "VD", 6832.0, 50.27, 343444.64, 306059.88, 37384.76, 12.21, 0, 0]],
     "TSLA": [["10/10/2018", "CP", 1200.0, 257.8687, 309442.44, null, null, null, 1200.0, 257.8687], ["23/10/2018", "VD", 1200.0, 283.118, 339741.64, 309442.44, 30299.2, 9.79, 0, 0], ["21/05/2021", "CP", 350.0, 586.78, 205373.0, null, null, null, 350.0, 586.78], ["15/06/2021", "VD", 350.0, 653.0, 228550.0, 205373.0, 23177.0, 11.29, 0, 0]],
     "TSLA3": [["20/03/2019", "CP", 1400.0, 269.9062, 377868.71, null, null, null, 1400.0, 269.906221], ["03/04/2019", "VD", 1400.0, 292.07, 408898.0, 377868.71, 31029.29, 8.21, 0, 0], ["04/04/2019", "CP", 150.0, 265.96, 39894.0, null, null, null, 150.0, 265.96], ["04/04/2019", "CP", 150.0, 265.97, 39895.5, null, null, null, 300.0, 265.965], ["04/04/2019", "CP", 381.0, 265.98, 101338.38, null, null, null, 681.0, 265.973392], ["04/04/2019", "CP", 234.0, 265.99, 62241.66, null, null, null, 915.0, 265.977639], ["04/04/2019", "CP", 485.0, 266.0, 129010.0, null, null, null, 1400.0, 265.985386], ["24/10/2019", "VD", 1400.0, 296.1491, 414608.79, 372379.54, 42229.25, 11.34, 0, 0]],
